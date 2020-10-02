@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+  - "12"
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+install:
+  - npm install
+script:
+  - npm run coverage
+  - npx codecov
+
