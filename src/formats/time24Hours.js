@@ -1,5 +1,5 @@
 const { DateTime, FixedOffsetZone } = require('luxon');
-const LocalizedTemplate = require('../LocalizedTemplate/LocalizedTemplate.js');
+const LocaleHelper = require('../LocaleHelper/LocaleHelper.js');
 const Format = require('../Format/Format.js');
 
 // lots of 24h time such as "23:59", "T23:59:59+0700", "23:59:59 GMT-05:00", "23:59:59 CST", "T23:59:59Z"
@@ -19,7 +19,7 @@ const time24Hours = new Format({
 			dt = DateTime.local();
 		}
 		if (zone && !offset) {
-			const tpl = LocalizedTemplate.factory(locale);
+			const tpl = LocaleHelper.factory(locale);
 			offset = tpl.vars.ZONE[zone];
 			if (offset) {
 				zone = FixedOffsetZone.instance(offset);
@@ -27,7 +27,7 @@ const time24Hours = new Format({
 				zone = 'local';
 			}
 		} else if (offset) {
-			const tpl = LocalizedTemplate.factory(locale);
+			const tpl = LocaleHelper.factory(locale);
 			zone = tpl.offsetToZone(offset);
 		} else {
 			zone = 'local';

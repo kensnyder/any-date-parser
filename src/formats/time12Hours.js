@@ -1,12 +1,12 @@
 const { DateTime } = require('luxon');
-const LocalizedTemplate = require('../LocalizedTemplate/LocalizedTemplate.js');
+const LocaleHelper = require('../LocaleHelper/LocaleHelper.js');
 const Format = require('../Format/Format.js');
 
 // lots of 12h time such as "11:59", "11:59pm", "11:59:33 pm", "11:59:33 p.m."
 const time12Hours = new Format({
 	/* prettier-ignore */
 	//              $1     $2           $3           $4           $5
-	template: '^(?:(.+) )?(_H12_)(?:\\:(_MIN_)(?:\\:(_SEC_))?)? ?(_AMPM_)$',
+	template: '^(?:(.+) )?(_H12_)(?:\\:(_MIN_)(?:\\:(_SEC_))?)? ?(_MERIDIEM_)$',
 	handler: function (matches, locale) {
 		let [, dateExpr, hour, minute, second, ampm] = matches;
 		let dt;
@@ -24,7 +24,7 @@ const time12Hours = new Format({
 		if (!minute) {
 			minute = 0;
 		}
-		const tpl = LocalizedTemplate.factory(locale);
+		const tpl = LocaleHelper.factory(locale);
 		if (tpl.isEnglish) {
 			if (/^p/i.test(ampm)) {
 				hour = parseFloat(hour) + 12;

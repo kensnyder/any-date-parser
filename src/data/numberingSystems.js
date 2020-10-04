@@ -57,6 +57,9 @@ const chineseLookup = {
 const cache = {};
 
 function buildDigits(nsName) {
+	if (cache[nsName]) {
+		return cache[nsName];
+	}
 	if (nsName === 'fullwide' || nsName === 'hanidec') {
 		return { group: chineseGroup, lookup: chineseLookup };
 	}
@@ -70,10 +73,12 @@ function buildDigits(nsName) {
 	for (let i = 0; i < 10; i++) {
 		lookup[String.fromCharCode(startCode + i)] = i;
 	}
-	return {
+	// console.log({ nsName, start, end, lookup });
+	cache[nsName] = {
 		group: `[${start}-${end}]`,
 		lookup,
 	};
+	return cache[nsName];
 }
 
 module.exports = buildDigits;

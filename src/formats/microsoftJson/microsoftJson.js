@@ -1,10 +1,10 @@
 const Format = require('../../Format/Format.js');
 
-const atSeconds = new Format({
-	template: '^@(\\d+)$',
+const microsoftJson = new Format({
+	regex: /^\/Date\((\d+)([+-]\d{4})?\)\/$/,
 	handler: function (matches) {
-		const seconds = parseInt(matches[1], 10);
-		const date = new Date(seconds * 1000);
+		const milliseconds = parseInt(matches[1], 10);
+		const date = new Date(milliseconds);
 		return {
 			year: date.getUTCFullYear(),
 			month: date.getUTCMonth() + 1,
@@ -12,8 +12,10 @@ const atSeconds = new Format({
 			hour: date.getUTCHours(),
 			minute: date.getUTCMinutes(),
 			second: date.getUTCSeconds(),
+			millisecond: date.getUTCMilliseconds(),
+			offset: matches[2] || 0,
 		};
 	},
 });
 
-module.exports = atSeconds;
+module.exports = microsoftJson;

@@ -1,11 +1,9 @@
 // locale list used for unit tests
 // from https://www.techonthenet.com/js/language_tags.php
 const localeList = [
-	// non-latin numbering systems
-	// 'ar-SA',
-	// 'bn-BD',
-	// 'bn-IN',
-	// latin numbering systems
+	'ar-SA',
+	'bn-BD',
+	'bn-IN',
 	'cs-CZ',
 	'da-DK',
 	'de-AT',

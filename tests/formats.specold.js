@@ -25,20 +25,6 @@ function testDates({ name, formats, expected, locales }) {
 }
 function xtestDates() {}
 
-testDates({
-	name: 'monthname day year',
-	expected: { year: 2016, month: 9, day: 24 },
-	formats: [
-		'cccc, MMMM dd yyyy',
-		'cccc MMMM dd yyyy',
-		'ccc, MMMM dd yyyy',
-		'ccc MMMM dd yyyy',
-		'MMMM dd yyyy',
-		'MMM dd yyyy',
-		'MMM dd yy',
-	],
-});
-
 // testDates({
 // 	name: 'monthname day',
 // 	expected: { year: now.year, month: 6, day: 28 },

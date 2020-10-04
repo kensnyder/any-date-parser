@@ -1,38 +1,36 @@
 const baseLookups = require('../data/baseLookups.js');
-const baseVars = require('../data/baseVars.js');
-const numberingSystems = require('../data/numberingSystems.js');
+const { latn, other } = require('../data/templates.js');
+const buildDigits = require('../data/numberingSystems.js');
 
 const cache = {};
 
-const otherNumberVars = {
-	YEAR: '*{3}|*{2}',
-	MONTH: '*{1,2}',
-	MONTH2: '*{2}',
-	DAY: '*{1,2}',
-	DAY2: '*{2}',
-	OFFSET: '[+-]*{1,2}\\:?*{0,2}',
-	H24: '*{2}',
-	H12: '*{1,2}',
-	MIN: '*{2}',
-	SEC: '*{2}',
-	MS: '*{3}|*{6}|*{9}',
-};
-
-class LocalizedTemplate {
-	static factory(locale) {
+class LocaleHelper {
+	static factory(locale = 'en-US') {
 		if (!cache[locale.toLowerCase()]) {
-			cache[locale.toLowerCase()] = new LocalizedTemplate(locale);
+			cache[locale.toLowerCase()] = new LocaleHelper(locale);
 		}
 		return cache[locale.toLowerCase()];
 	}
-	constructor(locale) {
+	constructor(locale = 'en-US') {
 		this.locale = locale;
 		this.isEnglish = /^en/i.test(locale);
-		this.vars = { ...baseVars };
 		this.lookups = { ...baseLookups };
-		if (!this.isEnglish) {
+		if (this.isEnglish) {
+			this.vars = { ...latn };
+			this.numberingSystem = 'latn';
+		} else {
+			this.vars = { ...latn };
+			const fmt = new Intl.NumberFormat(this.locale);
+			this.numberingSystem = fmt.resolvedOptions().numberingSystem;
 			this.build();
 		}
+		// console.log({
+		// 	numberingSystem: this.numberingSystem,
+		// 	month: this.lookups.month,
+		// 	dayname: this.lookups.dayname,
+		// 	MONTHNAME: this.vars.MONTHNAME,
+		// 	DAYNAME: this.vars.DAYNAME,
+		// });
 	}
 	toInt(digitString) {
 		if (this.numberingSystem === 'latn') {
@@ -45,23 +43,22 @@ class LocalizedTemplate {
 		return parseInt(latn, 10);
 	}
 	build() {
-		this.buildNumbers();
+		if (this.numberingSystem !== 'latn') {
+			this.buildNumbers();
+		}
 		this.buildMonthNames();
 		this.buildDaynames();
 		this.buildMeridiems();
-		// console.log('this.vars', this.vars);
 	}
 	buildNumbers() {
-		const fmt = new Intl.NumberFormat(this.locale);
-		const nsName = fmt.resolvedOptions().numberingSystem;
-		const unicodeRange = numberingSystems[nsName];
-		if (unicodeRange) {
-			for (const name in otherNumberVars) {
-				if (!otherNumberVars.hasOwnProperty(name)) {
-					continue;
-				}
-				this.vars[name] = otherNumberVars[name].replace(/\*/g, unicodeRange);
+		const nsName = this.numberingSystem;
+		const { group, lookup } = buildDigits(nsName);
+		this.lookups.digit = lookup;
+		for (const name in other) {
+			if (!other.hasOwnProperty(name)) {
+				continue;
 			}
+			this.vars[name] = other[name].replace(/\*/g, group);
 		}
 	}
 	buildMonthNames() {
@@ -76,14 +73,18 @@ class LocalizedTemplate {
 		for (const dateStyle of dateStyles) {
 			const format = Intl.DateTimeFormat(this.locale, { dateStyle });
 			for (let monthIdx = 0; monthIdx < 12; monthIdx++) {
-				let text = format.formatToParts(dates[monthIdx]).find(findMonth).value;
+				const parts = format.formatToParts(dates[monthIdx]);
+				let text = parts.find(findMonth).value.toLowerCase();
+				if (/^ko/i.test(this.locale)) {
+					text += '월';
+				}
 				if (dateStyle === 'medium') {
 					text = text.replace(/\.$/, '');
-					list.push(`${text}\\.`);
+					list.push(`${text}\\.?`);
 				} else {
 					list.push(text);
 				}
-				lookup[text] = monthIdx;
+				lookup[text] = monthIdx + 1;
 			}
 		}
 		this.vars.MONTHNAME = list.join('|');
@@ -101,10 +102,11 @@ class LocalizedTemplate {
 		for (const weekday of weekdays) {
 			const format = Intl.DateTimeFormat(this.locale, { weekday });
 			for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
-				let text = format.formatToParts(dates[dayIndex]).find(findDay).value;
+				const parts = format.formatToParts(dates[dayIndex]);
+				let text = parts.find(findDay).value.toLowerCase();
 				if (weekday === 'short') {
 					text = text.replace(/\.$/, '');
-					list.push(`${text}\\.`);
+					list.push(`${text}\\.?`);
 				} else {
 					list.push(text);
 				}
@@ -115,16 +117,19 @@ class LocalizedTemplate {
 		this.lookups.dayname = lookup;
 	}
 	buildMeridiems() {
-		const dates = [new Date(2017, 0, 1), new Date(2017, 0, 1, 23)];
+		const dates = [new Date(2017, 0, 1), new Date(2017, 0, 1, 23, 0, 0)];
 		const findDayPeriod = item => item.type === 'dayPeriod';
 		const list = [];
 		const lookup = {};
-		const format = Intl.DateTimeFormat(this.locale, { timeStyle: 'short' });
+		const format = Intl.DateTimeFormat(this.locale, { timeStyle: 'long' });
 		for (let i = 0; i < 2; i++) {
-			const text = format
-				.formatToParts(dates[0])
-				.find(findDayPeriod)
-				.value.toLowerCase();
+			const parts = format.formatToParts(dates[i]);
+			const dayPeriod = parts.find(findDayPeriod);
+			if (!dayPeriod) {
+				// this locale does not use AM/PM
+				return;
+			}
+			const text = dayPeriod.value.toLowerCase();
 			list.push(text);
 			lookup[text] = i * 12;
 		}
@@ -168,9 +173,9 @@ class LocalizedTemplate {
 			}
 			return this.vars[$1];
 		});
-		// console.log({ regexString });
+		console.log({ regexString });
 		return new RegExp(regexString, 'i');
 	}
 }
 
-module.exports = LocalizedTemplate;
+module.exports = LocaleHelper;

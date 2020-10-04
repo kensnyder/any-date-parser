@@ -3,7 +3,7 @@ const timezoneNames = require('./timezoneNames.js');
 const baseVars = {
 	MONTHNAME:
 		'january|february|march|april|may|june|july|august|september|october|november|december|jan.?|feb.?|mar.?|apr.?|may.?|jun.?|jul.?|aug.?|sep.?|oct.?|nov.?|dec.?',
-	WEEKDAYS:
+	DAYNAME:
 		'sunday|monday|tuesday|thursday|friday|saturday|sun.?|mon.?|tue.?|thu.?|fri.?|sat.?',
 	ZONE: Object.keys(timezoneNames).join('|'),
 	MERIDIEM: '[ap]\\.?m?\\.?',

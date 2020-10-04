@@ -1,5 +1,13 @@
 // some hand-picked common timezone names
 const timezoneNames = {
+	'Eastern Daylight Time': -240,
+	'Eastern Standard Time': -300,
+	'Central Daylight Time': -300,
+	'Central Standard Time': -360,
+	'Mountain Daylight Time': -360,
+	'Mountain Standard Time': -420,
+	'Pacific Daylight Time': -420,
+	'Pacific Standard Time': -480,
 	ACDT: 630, // Australian Central Daylight Savings Time
 	ACST: 570, // Australian Central Standard Time
 	ACT: 480, // ASEAN Common Time

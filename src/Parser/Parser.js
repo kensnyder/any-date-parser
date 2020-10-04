@@ -36,7 +36,7 @@ class Parser {
 	 * Attempt to parse a date string
 	 * @param {String} date
 	 * @param {String|Locale} locale  The name of the locale
-	 * @returns {DateTime}
+	 * @returns {Object}
 	 */
 	attempt(date, locale) {
 		for (const format of this.formats) {
@@ -47,7 +47,7 @@ class Parser {
 		}
 		// Uh Oh! We don't know that one
 		const string = String(date).slice(0, 200);
-		return DateTime.invalid(`Unable to parse ${string}`);
+		return { invalid: `Unable to parse ${string}` };
 	}
 }
 
