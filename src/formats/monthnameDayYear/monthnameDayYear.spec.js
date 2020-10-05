@@ -2,8 +2,7 @@ const testDates = require('../../../test-fixtures/testDates.js');
 
 testDates({
 	name: 'monthname day year',
-	expected: { year: 2016, month: 2, day: 24 },
-	locales: ['fi-FI'],
+	expected: { year: 2016, month: 3, day: 27 },
 	formats: [
 		'cccc, MMMM dd yyyy',
 		'cccc MMMM dd yyyy',
@@ -11,6 +10,11 @@ testDates({
 		'ccc MMMM dd yyyy',
 		'MMMM dd yyyy',
 		'MMM dd yyyy',
-		// 'MMM dd yy',
 	],
+});
+testDates({
+	name: 'monthname day year',
+	expected: { year: 2016, month: 3, day: 27 },
+	locales: ['en', 'es', 'de', 'fi', 'fr', 'pt', 'no', 'nl', 'pl'],
+	formats: ['MMM dd yyyy'],
 });

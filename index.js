@@ -49,6 +49,26 @@ parser
 	.addFormat(microsoftJson);
 
 module.exports = parser;
+
+// Date.fromString = function(string, locale) {
+// 	const r = parser.attempt(string, locale);
+// 	if (r.invalid) {
+// 		return r;
+// 	}
+// 	if (!('year' in r) || !r.month || !r.day) {
+//
+// 	}
+// 	return new Date(
+// 		r.year || new Date().getFullYear(),
+// 		r.month ? r.month - 1 : new Date().getMonth(),
+// 		r.day || new Date().getDate(),
+// 		r.hour || 0,
+// 		r.minute || 0,
+// 		r.second || 0,
+// 		r.millisecond || 0,
+// 	);
+// };
+
 //
 // 	.addParser({
 // 		name: 'in',

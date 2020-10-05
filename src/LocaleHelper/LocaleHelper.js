@@ -62,32 +62,57 @@ class LocaleHelper {
 		}
 	}
 	buildMonthNames() {
-		const dates = [];
-		const findMonth = item => item.type === 'month';
-		for (let monthIdx = 0; monthIdx < 12; monthIdx++) {
-			dates.push(new Date(2017, monthIdx, 1));
-		}
-		const dateStyles = ['full', 'long', 'medium'];
-		const list = [];
+		const vars = {};
 		const lookup = {};
-		for (const dateStyle of dateStyles) {
-			const format = Intl.DateTimeFormat(this.locale, { dateStyle });
+		if (/^fi/i.test(this.locale)) {
+			const months =
+				'tammi|helmi|maalis|huhti|touko|kesä|heinä|elo|syys|loka|marras|joulu';
+			months.split('|').forEach((month, idx) => {
+				['', 'k', 'kuu', 'kuuta'].forEach((suffix, i) => {
+					const maybePeriod = i < 2 ? '\\.?' : '';
+					vars[month + suffix + maybePeriod] = true;
+					lookup[month + suffix] = idx + 1;
+				});
+			});
+		} else {
+			const dates = [];
+			const findMonth = item => item.type === 'month';
+			for (let monthIdx = 0; monthIdx < 12; monthIdx++) {
+				dates.push(new Date(2017, monthIdx, 1));
+			}
+			const dateStyles = ['full', 'long', 'medium'];
+			for (const dateStyle of dateStyles) {
+				const format = Intl.DateTimeFormat(this.locale, { dateStyle });
+				for (let monthIdx = 0; monthIdx < 12; monthIdx++) {
+					const parts = format.formatToParts(dates[monthIdx]);
+					let text = parts.find(findMonth).value.toLowerCase();
+					if (/^ko/i.test(this.locale)) {
+						// Korean word for month is sometimes used
+						text += '월';
+					}
+					// if (/^\d+$/.test(text)) {
+					// 	// sometimes "medium" yields just a number
+					// 	continue;
+					// }
+					if (dateStyle === 'medium') {
+						text = text.replace(/\.$/, '');
+						vars[`${text}\\.?`] = true;
+					} else {
+						vars[text] = true;
+					}
+					lookup[text] = monthIdx + 1;
+				}
+			}
+			const format = Intl.DateTimeFormat(this.locale, { month: 'short' });
 			for (let monthIdx = 0; monthIdx < 12; monthIdx++) {
 				const parts = format.formatToParts(dates[monthIdx]);
 				let text = parts.find(findMonth).value.toLowerCase();
-				if (/^ko/i.test(this.locale)) {
-					text += '월';
-				}
-				if (dateStyle === 'medium') {
-					text = text.replace(/\.$/, '');
-					list.push(`${text}\\.?`);
-				} else {
-					list.push(text);
-				}
+				text = text.replace(/\.$/, '');
+				vars[`${text}\\.?`] = true;
 				lookup[text] = monthIdx + 1;
 			}
 		}
-		this.vars.MONTHNAME = list.join('|');
+		this.vars.MONTHNAME = Object.keys(vars).join('|');
 		this.lookups.month = lookup;
 	}
 	buildDaynames() {
@@ -173,7 +198,7 @@ class LocaleHelper {
 			}
 			return this.vars[$1];
 		});
-		console.log({ regexString });
+		// console.log({ regexString });
 		return new RegExp(regexString, 'i');
 	}
 }
