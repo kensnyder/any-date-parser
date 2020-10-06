@@ -308,35 +308,3 @@ function xtestDates() {}
 // 	});
 // });
 //
-// describe('12 hour time', () => {
-// 	it('should handle "8pm"', () => {
-// 		const actual = DateTime.fromAny('8pm');
-// 		const expected = DateTime.local().set({
-// 			hour: 20,
-// 			minute: 0,
-// 			second: 0,
-// 			millisecond: 0,
-// 		});
-// 		expect(actual).toMatchDateTime(expected);
-// 	});
-// 	it('should handle "8:15pm"', () => {
-// 		const actual = DateTime.fromAny('8:15pm');
-// 		const expected = DateTime.local().set({
-// 			hour: 20,
-// 			minute: 15,
-// 			second: 0,
-// 			millisecond: 0,
-// 		});
-// 		expect(actual).toMatchDateTime(expected);
-// 	});
-// 	it('should handle "8:15:59pm"', () => {
-// 		const actual = DateTime.fromAny('8:15:59pm');
-// 		const expected = DateTime.local().set({
-// 			hour: 20,
-// 			minute: 15,
-// 			second: 59,
-// 			millisecond: 0,
-// 		});
-// 		expect(actual).toMatchDateTime(expected);
-// 	});
-// });

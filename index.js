@@ -17,20 +17,18 @@ const monthDay = require('./src/formats/monthDay.js');
 const monthDayYear = require('./src/formats/monthDayYear.js');
 const monthnameDay = require('./src/formats/monthnameDay.js');
 const monthnameDayYear = require('./src/formats/monthnameDayYear/monthnameDayYear.js');
-const time12Hours = require('./src/formats/time12Hours.js');
+const time12Hours = require('./src/formats/time12Hours/time12Hours.js');
 const time24Hours = require('./src/formats/time24Hours.js');
 const today = require('./src/formats/today.js');
 const twitter = require('./src/formats/twitter.js');
 const yearMonthDay = require('./src/formats/yearMonthDay/yearMonthDay.js');
-// /Date(1198908717056-0700)/
-// /Date(1234656000000)/
 
 // create a default parser instance and register all the default formats
 const parser = new Parser();
 parser
 	// all formats can have time strings at the end
 	// .addFormat(time24Hours)
-	// .addFormat(time12Hours)
+	.addFormat(time12Hours)
 	// from most unambiguous and popular to least
 	.addFormat(yearMonthDay)
 	// .addFormat(dayMonthnameYear)

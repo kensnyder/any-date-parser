@@ -3,6 +3,15 @@ const { latn, other } = require('../data/templates.js');
 const buildDigits = require('../data/numberingSystems.js');
 
 const cache = {};
+const units = [
+	'year',
+	'month',
+	'day',
+	'hour',
+	'minute',
+	'second',
+	'millisecond',
+];
 
 class LocaleHelper {
 	static factory(locale = 'en-US') {
@@ -33,6 +42,9 @@ class LocaleHelper {
 		// });
 	}
 	toInt(digitString) {
+		if (typeof digitString === 'number') {
+			return digitString;
+		}
 		if (this.numberingSystem === 'latn') {
 			return parseInt(digitString, 10);
 		}
@@ -179,6 +191,20 @@ class LocaleHelper {
 			}
 		});
 		return object;
+	}
+	castObject(object) {
+		const casted = {};
+		units.forEach(unit => {
+			if (unit in object) {
+				casted[unit] = this.toInt(object[unit]);
+			}
+		});
+		if (typeof object.offset === 'string') {
+			casted.offset = this.offsetToMinutes(object.offset);
+		} else if (typeof object.offset === 'number') {
+			casted.offset = object.offset;
+		}
+		return casted;
 	}
 	offsetToMinutes(offsetString) {
 		const captured = offsetString.match(/^([+-])(..?):?(..)?$/);

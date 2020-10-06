@@ -15,6 +15,7 @@ class Parser {
 	 */
 	addFormat(format) {
 		this.formats.push(format);
+		format.parser = this;
 		return this;
 	}
 
@@ -26,7 +27,8 @@ class Parser {
 	removeFormat(format) {
 		const idx = this.formats.indexOf(format);
 		if (idx > -1) {
-			this.formats.splice(idx, 1);
+			const old = this.formats.splice(idx, 1);
+			old.parser = null;
 			return true;
 		}
 		return false;

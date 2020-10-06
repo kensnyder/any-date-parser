@@ -44,14 +44,11 @@ class Format {
 		return string.match(this.getRegExp(locale));
 	}
 	toDateTime(matches, locale) {
+		const locHelper = LocaleHelper.factory(locale);
 		if (this.units) {
-			const object = LocaleHelper.factory(locale).getObject(
-				this.units,
-				matches
-			);
-			return object;
+			return locHelper.getObject(this.units, matches);
 		}
-		return this.handler(matches, locale);
+		return locHelper.castObject(this.handler(matches, locale));
 	}
 }
 
