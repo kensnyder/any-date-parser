@@ -10,7 +10,7 @@ const ago = require('./src/formats/ago.js');
 const chinese = require('./src/formats/chinese.js');
 const dayMonth = require('./src/formats/dayMonth.js');
 const dayMonthname = require('./src/formats/dayMonthname.js');
-const dayMonthnameYear = require('./src/formats/dayMonthnameYear.js');
+const dayMonthnameYear = require('./src/formats/dayMonthnameYear/dayMonthnameYear.js');
 const dayMonthYear = require('./src/formats/dayMonthYear.js');
 const defaultLocale = require('./src/defaultLocale/defaultLocale.js');
 const monthDay = require('./src/formats/monthDay.js');
@@ -31,7 +31,7 @@ parser
 	.addFormat(time12Hours)
 	// from most unambiguous and popular to least
 	.addFormat(yearMonthDay)
-	// .addFormat(dayMonthnameYear)
+	.addFormat(dayMonthnameYear)
 	.addFormat(monthnameDayYear)
 	// .addFormat(monthDayYear)
 	// .addFormat(dayMonthYear)
@@ -48,24 +48,40 @@ parser
 
 module.exports = parser;
 
-// Date.fromString = function(string, locale) {
-// 	const r = parser.attempt(string, locale);
-// 	if (r.invalid) {
-// 		return r;
-// 	}
-// 	if (!('year' in r) || !r.month || !r.day) {
-//
-// 	}
-// 	return new Date(
-// 		r.year || new Date().getFullYear(),
-// 		r.month ? r.month - 1 : new Date().getMonth(),
-// 		r.day || new Date().getDate(),
-// 		r.hour || 0,
-// 		r.minute || 0,
-// 		r.second || 0,
-// 		r.millisecond || 0,
-// 	);
-// };
+Date.fromAny = function (any, locale = 'en-US') {
+	if (any instanceof Date) {
+		return any;
+	}
+	if (typeof any === 'number') {
+		return new Date(any);
+	}
+	return Date.fromString(any, locale);
+};
+
+Date.fromString = function (string, locale = 'en-US') {
+	const parsed = parser.attempt(string, locale);
+	if (parsed.invalid) {
+		return parsed;
+	}
+	const date = new Date();
+	if (parsed.year) {
+		date.setUTCFullYear(parsed.year);
+	}
+	if (parsed.month) {
+		date.setUTCMonth(parsed.month);
+	}
+	date.setUTCDate(parsed.date || 1);
+	date.setUTCHours(parsed.hour || 0);
+	date.setUTCMinutes(parsed.minute || 0);
+	date.setUTCSeconds(parsed.seconds || 0);
+	date.setUTCMilliseconds(parsed.milliseconds || 0);
+	if (typeof parsed.offset === 'number') {
+		const myOffset = date.getTimezoneOffset();
+		const diff = parsed.offset + myOffset;
+		return new Date(date - diff);
+	}
+	return date;
+};
 
 //
 // 	.addParser({
