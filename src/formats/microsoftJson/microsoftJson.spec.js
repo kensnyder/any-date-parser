@@ -16,7 +16,7 @@ testParser({
 	dates: ['/Date(1601677889008)/'],
 });
 testParser({
-	name: 'microsoft format without offset',
+	name: 'microsoft format with offset',
 	expected: {
 		year: 2020,
 		month: 10,
@@ -25,7 +25,7 @@ testParser({
 		minute: 31,
 		second: 29,
 		millisecond: 8,
-		offset: '-0700',
+		offset: -420,
 	},
 	locales: ['en-US'],
 	dates: ['/Date(1601677889008-0700)/'],

@@ -9,6 +9,7 @@ testDates({
 		'ccc, MMMM dd yyyy',
 		'ccc MMMM dd yyyy',
 		'MMMM dd yyyy',
+		'MMM dd, yyyy',
 		'MMM dd yyyy',
 	],
 });
@@ -16,5 +17,5 @@ testDates({
 	name: 'monthname day year',
 	expected: { year: 2016, month: 3, day: 27 },
 	locales: ['en', 'es', 'de', 'fi', 'fr', 'pt', 'no', 'nl', 'pl'],
-	formats: ['MMM dd yyyy'],
+	formats: ['MMM dd yy'],
 });
