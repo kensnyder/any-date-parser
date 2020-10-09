@@ -20,7 +20,9 @@ const startCodes = {
 	tibt: 3872,
 };
 
-const chineseGroup = '[\uFF10-\uFF19〇一二三四五六七八九\\d]';
+// full-width numbers, hanidec numbers, arabic numbers
+const chineseGroup = '[０１２３４５６７８９〇一二三四五六七八九\\d]';
+
 const chineseLookup = {
 	0: '0',
 	1: '1',
@@ -32,16 +34,16 @@ const chineseLookup = {
 	7: '7',
 	8: '8',
 	9: '9',
-	'\uFF10': '0',
-	'\uFF11': '1',
-	'\uFF12': '2',
-	'\uFF13': '3',
-	'\uFF14': '4',
-	'\uFF15': '5',
-	'\uFF16': '6',
-	'\uFF17': '7',
-	'\uFF18': '8',
-	'\uFF19': '9',
+	'０': '0',
+	'１': '1',
+	'２': '2',
+	'３': '3',
+	'４': '4',
+	'５': '5',
+	'６': '6',
+	'７': '7',
+	'８': '8',
+	'９': '9',
 	〇: '0',
 	一: '1',
 	二: '2',
@@ -80,5 +82,9 @@ function buildDigits(nsName) {
 	};
 	return cache[nsName];
 }
+
+buildDigits.chineseGroup = chineseGroup;
+buildDigits.defaultLookup = chineseLookup;
+buildDigits.startCodes = startCodes;
 
 module.exports = buildDigits;

@@ -7,7 +7,7 @@ const microsoftJson = require('./src/formats/microsoftJson/microsoftJson.js');
 
 // old folder
 const ago = require('./src/formats/ago.js');
-const chinese = require('./src/formats/chinese.js');
+const chinese = require('./src/formats/chinese/chinese.js');
 const dayMonth = require('./src/formats/dayMonth/dayMonth.js');
 const dayMonthname = require('./src/formats/dayMonthname.js');
 const dayMonthnameYear = require('./src/formats/dayMonthnameYear/dayMonthnameYear.js');
@@ -35,7 +35,7 @@ parser
 	.addFormat(monthnameDayYear)
 	.addFormat(monthDayYear)
 	// .addFormat(dayMonthYear)
-	// .addFormat(chinese)
+	.addFormat(chinese)
 	// .addFormat(twitter)
 	// .addFormat(today)
 	// .addFormat(ago)
