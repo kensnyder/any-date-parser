@@ -8,13 +8,13 @@ const microsoftJson = require('./src/formats/microsoftJson/microsoftJson.js');
 // old folder
 const ago = require('./src/formats/ago.js');
 const chinese = require('./src/formats/chinese.js');
-const dayMonth = require('./src/formats/dayMonth.js');
+const dayMonth = require('./src/formats/dayMonth/dayMonth.js');
 const dayMonthname = require('./src/formats/dayMonthname.js');
 const dayMonthnameYear = require('./src/formats/dayMonthnameYear/dayMonthnameYear.js');
 const dayMonthYear = require('./src/formats/dayMonthYear.js');
 const defaultLocale = require('./src/defaultLocale/defaultLocale.js');
 const monthDay = require('./src/formats/monthDay.js');
-const monthDayYear = require('./src/formats/monthDayYear.js');
+const monthDayYear = require('./src/formats/monthDayYear/monthDayYear.js');
 const monthnameDay = require('./src/formats/monthnameDay.js');
 const monthnameDayYear = require('./src/formats/monthnameDayYear/monthnameDayYear.js');
 const time12Hours = require('./src/formats/time12Hours/time12Hours.js');
@@ -33,7 +33,7 @@ parser
 	.addFormat(yearMonthDay)
 	.addFormat(dayMonthnameYear)
 	.addFormat(monthnameDayYear)
-	// .addFormat(monthDayYear)
+	.addFormat(monthDayYear)
 	// .addFormat(dayMonthYear)
 	// .addFormat(chinese)
 	// .addFormat(twitter)
@@ -42,7 +42,7 @@ parser
 	// .addFormat(monthnameDay)
 	// .addFormat(dayMonthname)
 	// .addFormat(monthDay)
-	// .addFormat(dayMonth)
+	.addFormat(dayMonth)
 	.addFormat(atSeconds)
 	.addFormat(microsoftJson);
 
@@ -78,7 +78,9 @@ Date.fromString = function (string, locale = 'en-US') {
 	if (typeof parsed.offset === 'number') {
 		const myOffset = date.getTimezoneOffset();
 		const diff = parsed.offset + myOffset;
-		return new Date(date - diff);
+		if (diff !== 0) {
+			return new Date(date - diff);
+		}
 	}
 	return date;
 };
