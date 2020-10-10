@@ -11,7 +11,7 @@ const chinese = require('./src/formats/chinese/chinese.js');
 const dayMonth = require('./src/formats/dayMonth/dayMonth.js');
 const dayMonthname = require('./src/formats/dayMonthname/dayMonthname.js');
 const dayMonthnameYear = require('./src/formats/dayMonthnameYear/dayMonthnameYear.js');
-// const dayMonthYear = require('./src/formats/dayMonthYear.js');
+const dayMonthYear = require('./src/formats/dayMonthYear/dayMonthYear.js');
 // const defaultLocale = require('./src/defaultLocale/defaultLocale.js');
 // const monthDay = require('./src/formats/monthDay.js');
 const monthDayYear = require('./src/formats/monthDayYear/monthDayYear.js');
@@ -34,7 +34,7 @@ parser
 	.addFormat(dayMonthnameYear)
 	.addFormat(monthnameDayYear)
 	.addFormat(monthDayYear)
-	// .addFormat(dayMonthYear)
+	.addFormat(dayMonthYear)
 	.addFormat(chinese)
 	// .addFormat(twitter)
 	// .addFormat(today)
