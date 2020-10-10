@@ -1,5 +1,3 @@
-const { DateTime } = require('luxon');
-
 class Parser {
 	/**
 	 * Initialize an object with an empty array of registered formats
