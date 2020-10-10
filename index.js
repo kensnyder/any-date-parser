@@ -15,7 +15,7 @@ const dayMonthYear = require('./src/formats/dayMonthYear/dayMonthYear.js');
 // const defaultLocale = require('./src/defaultLocale/defaultLocale.js');
 const monthDay = require('./src/formats/monthDay/monthDay.js');
 const monthDayYear = require('./src/formats/monthDayYear/monthDayYear.js');
-// const monthnameDay = require('./src/formats/monthnameDay.js');
+const monthnameDay = require('./src/formats/monthnameDay/monthnameDay.js');
 const monthnameDayYear = require('./src/formats/monthnameDayYear/monthnameDayYear.js');
 const time12Hours = require('./src/formats/time12Hours/time12Hours.js');
 const time24Hours = require('./src/formats/time24Hours/time24Hours.js');
@@ -39,7 +39,7 @@ parser
 	// .addFormat(twitter)
 	// .addFormat(today)
 	// .addFormat(ago)
-	// .addFormat(monthnameDay)
+	.addFormat(monthnameDay)
 	.addFormat(dayMonthname)
 	.addFormat(monthDay)
 	.addFormat(dayMonth)
