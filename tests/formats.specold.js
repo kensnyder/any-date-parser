@@ -147,12 +147,7 @@ function xtestDates() {}
 // 	formats: ['dd-LLLL', 'dd LLLL', 'dd-LLL', 'dd LLL', 'd LLLL', 'd LLL'],
 // });
 //
-// testDates({
-// 	name: 'chinese',
-// 	expected: { year: 2020, month: 9, day: 26 },
-// 	locales: ['zh-CN'],
-// 	formats: ['yyyy年MM月dd日', 'yyyy年M月d日'],
-// });
+
 //
 // testDates({
 // 	name: '@unix',

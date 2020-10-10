@@ -15,7 +15,8 @@
 	"scripts": {
 		"build": "npx browserify index.js -p tinyify -o dist/browser-bundle.js -t",
 		"test": "node --icu-data-dir=node_modules/full-icu node_modules/jest/bin/jest.js",
-		"watch": "node --icu-data-dir=node_modules/full-icu node_modules/jest/bin/jest.js --watch"
+		"watch": "node --icu-data-dir=node_modules/full-icu node_modules/jest/bin/jest.js --watch",
+		"coverage": "node --icu-data-dir=node_modules/full-icu node_modules/jest/bin/jest.js --collectCoverage"
 	},
 	"browserify": {
 		"transform": [

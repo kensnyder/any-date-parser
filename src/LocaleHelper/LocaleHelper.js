@@ -102,11 +102,11 @@ class LocaleHelper {
 						// Korean word for month is sometimes used
 						text += '월';
 					}
-					// if (/^\d+$/.test(text)) {
-					// 	// sometimes "medium" yields just a number
-					// 	continue;
-					// }
 					if (dateStyle === 'medium') {
+						// some languages (including arabic and chinese) don't have a 'medium' size
+						if (/^ar|zh/i.test(this.locale)) {
+							return;
+						}
 						text = text.replace(/\.$/, '');
 						vars[`${text}\\.?`] = true;
 					} else {

@@ -1,4 +1,4 @@
-const Format = require('../Format/Format.js');
+const Format = require('../../Format/Format.js');
 
 const dayMonthname = new Format({
 	/* prettier-ignore */

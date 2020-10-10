@@ -8,7 +8,7 @@ const chinese = new Format({
 	/* prettier-ignore */
 	//           $1                $2           $3
 	template: `^(${d}{4}|${d}{2})年(${d}{1,2})月(${d}{1,2})日$`,
-	handler: function ([$0, year, month, day]) {
+	handler: function ([, year, month, day]) {
 		if (!locHelper) {
 			// sometimes zh has numbering system "latn" instead of fullwide or hanidec
 			locHelper = new LocaleHelper('zh');

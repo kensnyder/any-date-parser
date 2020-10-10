@@ -9,7 +9,7 @@ const microsoftJson = require('./src/formats/microsoftJson/microsoftJson.js');
 // const ago = require('./src/formats/ago.js');
 const chinese = require('./src/formats/chinese/chinese.js');
 const dayMonth = require('./src/formats/dayMonth/dayMonth.js');
-// const dayMonthname = require('./src/formats/dayMonthname.js');
+const dayMonthname = require('./src/formats/dayMonthname/dayMonthname.js');
 const dayMonthnameYear = require('./src/formats/dayMonthnameYear/dayMonthnameYear.js');
 // const dayMonthYear = require('./src/formats/dayMonthYear.js');
 // const defaultLocale = require('./src/defaultLocale/defaultLocale.js');
@@ -40,7 +40,7 @@ parser
 	// .addFormat(today)
 	// .addFormat(ago)
 	// .addFormat(monthnameDay)
-	// .addFormat(dayMonthname)
+	.addFormat(dayMonthname)
 	// .addFormat(monthDay)
 	.addFormat(dayMonth)
 	.addFormat(atSeconds)

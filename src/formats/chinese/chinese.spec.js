@@ -5,7 +5,7 @@ const parser = require('../../../index.js');
 testDates({
 	name: 'chinese',
 	expected: { year: 2020, month: 9, day: 26 },
-	locales: ['zh-CN'],
+	locales: ['en-US'],
 	formats: ['yyyy年MM月dd日', 'yyyy年M月d日'],
 });
 
