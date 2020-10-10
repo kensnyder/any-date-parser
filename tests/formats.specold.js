@@ -38,12 +38,6 @@ function xtestDates() {}
 // 	],
 // });
 //
-// testDates({
-// 	name: 'month day',
-// 	expected: { year: now.year, month: 3, day: 14 },
-// 	locales: ['en-US'],
-// 	formats: ['MM/dd', 'MM-dd', 'M/dd', 'M-dd'],
-// });
 //
 // testDates({
 // 	name: 'year month day',

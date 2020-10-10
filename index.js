@@ -13,7 +13,7 @@ const dayMonthname = require('./src/formats/dayMonthname/dayMonthname.js');
 const dayMonthnameYear = require('./src/formats/dayMonthnameYear/dayMonthnameYear.js');
 const dayMonthYear = require('./src/formats/dayMonthYear/dayMonthYear.js');
 // const defaultLocale = require('./src/defaultLocale/defaultLocale.js');
-// const monthDay = require('./src/formats/monthDay.js');
+const monthDay = require('./src/formats/monthDay/monthDay.js');
 const monthDayYear = require('./src/formats/monthDayYear/monthDayYear.js');
 // const monthnameDay = require('./src/formats/monthnameDay.js');
 const monthnameDayYear = require('./src/formats/monthnameDayYear/monthnameDayYear.js');
@@ -41,7 +41,7 @@ parser
 	// .addFormat(ago)
 	// .addFormat(monthnameDay)
 	.addFormat(dayMonthname)
-	// .addFormat(monthDay)
+	.addFormat(monthDay)
 	.addFormat(dayMonth)
 	.addFormat(atSeconds)
 	.addFormat(microsoftJson);
