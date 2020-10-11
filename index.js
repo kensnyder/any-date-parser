@@ -1,5 +1,7 @@
 // import our Parser
 const Parser = require('./src/Parser/Parser.js');
+const fromString = require('./src/fromString/fromString.js');
+const fromAny = require('./src/fromAny/fromAny.js');
 // import our formats
 // new folder
 const atSeconds = require('./src/formats/atSeconds/atSeconds.js');
@@ -10,7 +12,7 @@ const dayMonth = require('./src/formats/dayMonth/dayMonth.js');
 const dayMonthname = require('./src/formats/dayMonthname/dayMonthname.js');
 const dayMonthnameYear = require('./src/formats/dayMonthnameYear/dayMonthnameYear.js');
 const dayMonthYear = require('./src/formats/dayMonthYear/dayMonthYear.js');
-// const defaultLocale = require('./src/defaultLocale/defaultLocale.js');
+const defaultLocale = require('./src/defaultLocale/defaultLocale.js');
 const monthDay = require('./src/formats/monthDay/monthDay.js');
 const monthDayYear = require('./src/formats/monthDayYear/monthDayYear.js');
 const monthnameDay = require('./src/formats/monthnameDay/monthnameDay.js');
@@ -44,61 +46,11 @@ parser
 	.addFormat(atSeconds)
 	.addFormat(microsoftJson);
 
+Date.fromString = fromString(parser, defaultLocale);
+Date.fromAny = fromAny(Date.fromString);
+
 module.exports = parser;
 
-Date.fromAny = function (any, locale = 'en-US') {
-	if (any instanceof Date) {
-		return any;
-	}
-	if (typeof any === 'number') {
-		return new Date(any);
-	}
-	return Date.fromString(any, locale);
-};
-
-Date.fromString = function (string, locale = 'en-US') {
-	const parsed = parser.attempt(string, locale);
-	if (parsed.invalid) {
-		return parsed;
-	}
-	const date = new Date();
-	if (parsed.year) {
-		date.setUTCFullYear(parsed.year);
-	}
-	if (parsed.month) {
-		date.setUTCMonth(parsed.month);
-	}
-	date.setUTCDate(parsed.date || 1);
-	date.setUTCHours(parsed.hour || 0);
-	date.setUTCMinutes(parsed.minute || 0);
-	date.setUTCSeconds(parsed.seconds || 0);
-	date.setUTCMilliseconds(parsed.milliseconds || 0);
-	if (typeof parsed.offset === 'number') {
-		const myOffset = date.getTimezoneOffset();
-		const diff = parsed.offset + myOffset;
-		if (diff !== 0) {
-			return new Date(date - diff);
-		}
-	}
-	return date;
-};
-
-//
-// 	.addParser({
-// 		name: 'in',
-// 		template: '^in ([\\d.]+) (_UNIT_)s?$',
-// 		handler: function (match) {
-// 			return moment().add(parseFloat(match[1]), match[2]);
-// 		},
-// 	})
-// 	.addParser({
-// 		name: 'plus',
-// 		template: '^([+-]) ?([\\d.]+) ?(_UNIT_)s?$',
-// 		handler: function (match) {
-// 			var mult = match[1] == '-' ? -1 : 1;
-// 			return moment().add(mult * parseFloat(match[2]), match[3]);
-// 		},
-// 	})
 // 	.addParser({
 // 		name: 'firstlastdayof',
 // 		matcher: /^(first|last) day of (last|this|the|next) (week|month|year)/i,

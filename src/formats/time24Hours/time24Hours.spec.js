@@ -13,6 +13,48 @@ testDates({
 	},
 	formats: ["yyyy-MM-dd'T'HH:mm:ss'Z'"],
 });
+testDates({
+	name: '24 hour time with milliseconds',
+	locales: ['en-US'],
+	expected: {
+		year: 2020,
+		month: 10,
+		day: 6,
+		hour: 17,
+		minute: 41,
+		second: 28,
+		millisecond: 999,
+	},
+	formats: ["yyyy-MM-dd'T'HH:mm:ss.999'Z'"],
+});
+testDates({
+	name: '24 hour time with microseconds',
+	locales: ['en-US'],
+	expected: {
+		year: 2020,
+		month: 10,
+		day: 6,
+		hour: 17,
+		minute: 41,
+		second: 28,
+		millisecond: 999,
+	},
+	formats: ["yyyy-MM-dd'T'HH:mm:ss.999999'Z'"],
+});
+testDates({
+	name: '24 hour time with nanoseconds',
+	locales: ['en-US'],
+	expected: {
+		year: 2020,
+		month: 10,
+		day: 6,
+		hour: 17,
+		minute: 41,
+		second: 28,
+		millisecond: 999,
+	},
+	formats: ["yyyy-MM-dd'T'HH:mm:ss.999999999'Z'"],
+});
 
 testDates({
 	name: '24 hour time with timezone name - "MST"',
