@@ -1,3 +1,5 @@
+const defaultLocale = require('../data/defaultLocale.js');
+
 class Parser {
 	/**
 	 * Initialize an object with an empty array of registered formats
@@ -25,7 +27,8 @@ class Parser {
 	removeFormat(format) {
 		const idx = this.formats.indexOf(format);
 		if (idx > -1) {
-			const old = this.formats.splice(idx, 1);
+			const old = this.formats[idx];
+			this.formats.splice(idx, 1);
 			old.parser = null;
 			return true;
 		}
@@ -35,10 +38,10 @@ class Parser {
 	/**
 	 * Attempt to parse a date string
 	 * @param {String} date
-	 * @param {String|Locale} locale  The name of the locale
+	 * @param {String} locale  The name of the locale
 	 * @returns {Object}
 	 */
-	attempt(date, locale) {
+	attempt(date, locale = defaultLocale) {
 		for (const format of this.formats) {
 			const dt = format.attempt(date, locale);
 			if (dt) {

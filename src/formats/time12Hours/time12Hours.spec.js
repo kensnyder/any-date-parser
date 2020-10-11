@@ -1,6 +1,10 @@
 const parser = require('../../../index.js');
 
 describe('12 hour time', () => {
+	// it('should handle invalid date: "Foobar at 8pm"', () => {
+	// 	const actual = parser.attempt('Foobar at 8pm');
+	// 	expect(actual.invalid).toMatch(/unable to parse/i);
+	// });
 	it('should handle hours: "8pm"', () => {
 		const actual = parser.attempt('8pm');
 		const expected = {

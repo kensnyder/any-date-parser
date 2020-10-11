@@ -1,31 +1,55 @@
 const baseLookups = require('../data/baseLookups.js');
 const { latn, other } = require('../data/templates.js');
-const buildDigits = require('../data/numberingSystems.js');
+const { buildDigits } = require('../data/numberingSystems.js');
+const defaultLocale = require('../data/defaultLocale.js');
+const units = require('../data/units.js');
 
+// keep track of singletons by locale name
 const cache = {};
-const units = [
-	'year',
-	'month',
-	'day',
-	'hour',
-	'minute',
-	'second',
-	'millisecond',
-];
 
 class LocaleHelper {
-	static factory(locale = 'en-US') {
+	/**
+	 * Get a singleton instance with the given locale
+	 * @param {String} locale such as en, en-US, es, fr-FR, etc.
+	 * @returns {LocaleHelper}
+	 */
+	static factory(locale = defaultLocale) {
 		if (!cache[locale.toLowerCase()]) {
 			cache[locale.toLowerCase()] = new LocaleHelper(locale);
 		}
 		return cache[locale.toLowerCase()];
 	}
-	constructor(locale = 'en-US') {
+
+	/**
+	 * Create a new instance with the given locale
+	 * @param {String} locale such as en, en-US, es, fr-FR, etc.
+	 */
+	constructor(locale = defaultLocale) {
+		/**
+		 * The locale string
+		 * @type {String}
+		 */
 		this.locale = locale;
+		/**
+		 * True if locale string begins with en
+		 * @type {Boolean}
+		 */
 		this.isEnglish = /^en/i.test(locale);
+		/**
+		 * Lookups for zone, year, meridiem, month, dayname, digit
+		 * @type {Object}
+		 */
 		this.lookups = { ...baseLookups };
 		if (this.isEnglish) {
+			/**
+			 * Template variables including MONTHNAME, MONTH, ZONE, etc.
+			 * @type {Object}
+			 */
 			this.vars = { ...latn };
+			/**
+			 * The numbering system to use (latn=standard arabic digits)
+			 * @type {String}
+			 */
 			this.numberingSystem = 'latn';
 		} else {
 			this.vars = { ...latn };
@@ -41,6 +65,12 @@ class LocaleHelper {
 		// 	DAYNAME: this.vars.DAYNAME,
 		// });
 	}
+
+	/**
+	 * Cast a string to an integer, minding numbering system
+	 * @param {String|Number} digitString  Such as "2020" or "二〇二〇"
+	 * @returns {Number}
+	 */
 	toInt(digitString) {
 		if (typeof digitString === 'number') {
 			return digitString;
@@ -54,6 +84,10 @@ class LocaleHelper {
 		}
 		return parseInt(latn, 10);
 	}
+
+	/**
+	 * Build lookups for digits, month names, day names, and meridiems based on the locale
+	 */
 	build() {
 		if (this.numberingSystem !== 'latn') {
 			this.buildNumbers();
@@ -62,6 +96,10 @@ class LocaleHelper {
 		this.buildDaynames();
 		this.buildMeridiems();
 	}
+
+	/**
+	 * Build lookups for digits
+	 */
 	buildNumbers() {
 		const nsName = this.numberingSystem;
 		const { group, lookup } = buildDigits(nsName);
@@ -73,6 +111,10 @@ class LocaleHelper {
 			this.vars[name] = other[name].replace(/\*/g, group);
 		}
 	}
+
+	/**
+	 * Build lookup for month names
+	 */
 	buildMonthNames() {
 		const vars = {};
 		const lookup = {};
@@ -127,6 +169,10 @@ class LocaleHelper {
 		this.vars.MONTHNAME = Object.keys(vars).join('|');
 		this.lookups.month = lookup;
 	}
+
+	/**
+	 * Build lookup for day name
+	 */
 	buildDaynames() {
 		const dates = [];
 		const findDay = item => item.type === 'weekday';
@@ -153,6 +199,10 @@ class LocaleHelper {
 		this.vars.DAYNAME = list.join('|');
 		this.lookups.dayname = lookup;
 	}
+
+	/**
+	 * Build lookup for meridiems (e.g. AM/PM)
+	 */
 	buildMeridiems() {
 		const dates = [new Date(2017, 0, 1), new Date(2017, 0, 1, 23, 0, 0)];
 		const findDayPeriod = item => item.type === 'dayPeriod';
@@ -173,6 +223,13 @@ class LocaleHelper {
 		this.vars.MERIDIEM = list.join('|');
 		this.lookups.meridiem = lookup;
 	}
+
+	/**
+	 * Given a list of unit names and matches, build result object
+	 * @param {Array} units  Unit names such as "year", "month" and "millisecond"
+	 * @param {Array} matches  The values matched by a Format's RegExp
+	 * @returns {Object}
+	 */
 	getObject(units, matches) {
 		const object = {};
 		units.forEach((unit, i) => {
@@ -192,6 +249,12 @@ class LocaleHelper {
 		});
 		return object;
 	}
+
+	/**
+	 * Take a response object and cast each unit to Number
+	 * @param {Object} object  An object with one or more units
+	 * @returns {Object}  An object with same units but Numeric
+	 */
 	castObject(object) {
 		const casted = {};
 		units.forEach(unit => {
@@ -206,6 +269,12 @@ class LocaleHelper {
 		}
 		return casted;
 	}
+
+	/**
+	 * Convert an offset string to Numeric minutes (e.g. "-0500", "+5", "+03:30")
+	 * @param {String} offsetString
+	 * @returns {Number}
+	 */
 	offsetToMinutes(offsetString) {
 		const captured = offsetString.match(/^([+-])(..?):?(..)?$/);
 		let offsetMinutes;
@@ -217,6 +286,12 @@ class LocaleHelper {
 		}
 		return offsetMinutes;
 	}
+
+	/**
+	 * Compile template into a RegExp and return it
+	 * @param {String} template  The template string
+	 * @returns {RegExp}
+	 */
 	compile(template) {
 		const regexString = template.replace(/_([A-Z0-9]+)_/g, ($0, $1) => {
 			if (!this.vars[$1]) {
