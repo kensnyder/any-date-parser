@@ -1,4 +1,4 @@
-var OFF = 0,
+const OFF = 0,
 	WARN = 1,
 	ERROR = 2;
 
@@ -20,7 +20,14 @@ module.exports = {
 
 	extends: 'eslint:recommended',
 
-	globals: { navigator: true, describe: true, it: true, expect: true },
+	globals: {
+		navigator: true,
+		describe: true,
+		it: true,
+		beforeAll: true,
+		beforeEach: true,
+		expect: true,
+	},
 
 	rules: {
 		// Possible Errors (overrides from recommended set)
@@ -183,7 +190,7 @@ module.exports = {
 		'func-names': WARN,
 		'func-style': [WARN, 'declaration'],
 		'id-length': [WARN, { min: 2, max: 32 }],
-		indent: [WARN, 'tab'],
+		indent: OFF, // prettier will handle this
 		'jsx-quotes': [WARN, 'prefer-double'],
 		'linebreak-style': [WARN, 'unix'],
 		'lines-around-comment': [WARN, { beforeBlockComment: false }],
@@ -196,6 +203,7 @@ module.exports = {
 		'no-array-constructor': WARN,
 		'no-bitwise': OFF,
 		'no-continue': OFF,
+		'no-fallthrough': OFF,
 		'no-inline-comments': OFF,
 		'no-lonely-if': WARN,
 		'no-mixed-spaces-and-tabs': WARN,

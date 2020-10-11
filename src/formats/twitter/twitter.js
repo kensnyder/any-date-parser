@@ -1,4 +1,4 @@
-const Format = require('../Format/Format.js');
+const Format = require('../../Format/Format.js');
 
 // example: "Fri Apr 09 12:53:54 +0000 2010"
 const twitter = new Format({

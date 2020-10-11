@@ -7,7 +7,6 @@ const latn = {
 		'sunday|monday|tuesday|wednesday|thursday|friday|saturday|sun\\.?|mon\\.?|tue\\.?|wed\\.?|thu\\.?|fri\\.?|sat\\.?',
 	ZONE: Object.keys(timezoneNames).join('|'),
 	MERIDIEM: '[ap]\\.?m?\\.?',
-	UNIT: 'year|month|week|day|hour|minute|second|millisecond',
 	ORDINAL: 'st|nd|rd|th|\\.',
 	YEAR: '[1-9]\\d{3}|\\d{2}',
 	MONTH: '1[0-2]|0?[1-9]',

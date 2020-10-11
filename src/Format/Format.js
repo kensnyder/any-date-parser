@@ -50,6 +50,14 @@ class Format {
 		}
 		return locHelper.castObject(this.handler(matches, locale));
 	}
+
+	/**
+	 * Return the current date (used for unit tests)
+	 * @returns {Date}
+	 */
+	now() {
+		return new Date();
+	}
 }
 
 module.exports = Format;
