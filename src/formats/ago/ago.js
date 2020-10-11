@@ -6,6 +6,10 @@ const ago = new Format({
 	handler: function ([, sign, amount, unit, ago]) {
 		amount = parseFloat(amount);
 		unit = unit.toLowerCase();
+		if (unit === 'week') {
+			unit = 'day';
+			amount *= 7;
+		}
 		if (sign === '-' || ago) {
 			amount *= -1;
 		}

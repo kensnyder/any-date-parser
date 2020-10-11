@@ -21,6 +21,15 @@ describe('(amount) (unit) ago', () => {
 		};
 		expect(actual).toEqual(expected);
 	});
+	it('should handle "2 weeks"', () => {
+		const actual = parser.attempt('2 weeks ago');
+		const expected = {
+			year: 2020,
+			month: 2,
+			day: 16,
+		};
+		expect(actual).toEqual(expected);
+	});
 	it('should handle "2 days ago"', () => {
 		const actual = parser.attempt('2 days ago');
 		const expected = {
@@ -107,6 +116,15 @@ describe('-(amount) (unit)', () => {
 		};
 		expect(actual).toEqual(expected);
 	});
+	it('should handle "-2 weeks"', () => {
+		const actual = parser.attempt('-2 weeks');
+		const expected = {
+			year: 2020,
+			month: 2,
+			day: 16,
+		};
+		expect(actual).toEqual(expected);
+	});
 	it('should handle "-18 hours"', () => {
 		const actual = parser.attempt('-18 hours');
 		const expected = {
@@ -172,6 +190,15 @@ describe('in (amount) (unit)', () => {
 		const expected = {
 			year: 2021,
 			month: 8,
+		};
+		expect(actual).toEqual(expected);
+	});
+	it('should handle "in 1 week"', () => {
+		const actual = parser.attempt('in 1 week');
+		const expected = {
+			year: 2020,
+			month: 3,
+			day: 8,
 		};
 		expect(actual).toEqual(expected);
 	});
@@ -249,6 +276,15 @@ describe('+(amount) (unit)', () => {
 		const expected = {
 			year: 2021,
 			month: 8,
+		};
+		expect(actual).toEqual(expected);
+	});
+	it('should handle "+2 weeks"', () => {
+		const actual = parser.attempt('+2 weeks');
+		const expected = {
+			year: 2020,
+			month: 3,
+			day: 15,
 		};
 		expect(actual).toEqual(expected);
 	});
