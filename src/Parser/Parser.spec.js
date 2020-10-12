@@ -17,6 +17,12 @@ describe('Parser', () => {
 		expect(format.parser).toBe(null);
 		expect(parser.formats).toEqual([]);
 	});
+	it('should fail to remove unadded format', () => {
+		const format = {};
+		const parser = new Parser();
+		const result = parser.removeFormat(format);
+		expect(result).toBe(false);
+	});
 	it('should attempt() a single format', () => {
 		const format = { attempt: jest.fn(() => 'foo') };
 		const parser = new Parser();

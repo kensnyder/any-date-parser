@@ -31,32 +31,22 @@ class LocaleHelper {
 		 */
 		this.locale = locale;
 		/**
-		 * True if locale string begins with en
-		 * @type {Boolean}
-		 */
-		this.isEnglish = /^en/i.test(locale);
-		/**
 		 * Lookups for zone, year, meridiem, month, dayname, digit
 		 * @type {Object}
 		 */
 		this.lookups = { ...baseLookups };
-		if (this.isEnglish) {
-			/**
-			 * Template variables including MONTHNAME, MONTH, ZONE, etc.
-			 * @type {Object}
-			 */
-			this.vars = { ...latn };
-			/**
-			 * The numbering system to use (latn=standard arabic digits)
-			 * @type {String}
-			 */
-			this.numberingSystem = 'latn';
-		} else {
-			this.vars = { ...latn };
-			const fmt = new Intl.NumberFormat(this.locale);
-			this.numberingSystem = fmt.resolvedOptions().numberingSystem;
-			this.build();
-		}
+		/**
+		 * Template variables including MONTHNAME, MONTH, ZONE, etc.
+		 * @type {Object}
+		 */
+		this.vars = { ...latn };
+		const fmt = new Intl.NumberFormat(this.locale);
+		/**
+		 * The numbering system to use (latn=standard arabic digits)
+		 * @type {String}
+		 */
+		this.numberingSystem = fmt.resolvedOptions().numberingSystem;
+		this.build();
 		// console.log({
 		// 	numberingSystem: this.numberingSystem,
 		// 	month: this.lookups.month,
@@ -92,9 +82,11 @@ class LocaleHelper {
 		if (this.numberingSystem !== 'latn') {
 			this.buildNumbers();
 		}
-		this.buildMonthNames();
-		this.buildDaynames();
-		this.buildMeridiems();
+		if (!/^en/i.test(this.locale)) {
+			this.buildMonthNames();
+			this.buildDaynames();
+			this.buildMeridiems();
+		}
 	}
 
 	/**
@@ -105,6 +97,7 @@ class LocaleHelper {
 		const { group, lookup } = buildDigits(nsName);
 		this.lookups.digit = lookup;
 		for (const name in other) {
+			/* istanbul ignore next */
 			if (!other.hasOwnProperty(name)) {
 				continue;
 			}

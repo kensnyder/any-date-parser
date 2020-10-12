@@ -69,7 +69,11 @@ class Format {
 		if (this.units) {
 			return locHelper.getObject(this.units, matches);
 		}
-		return locHelper.castObject(this.handler(matches, locale));
+		const dt = this.handler(matches, locale);
+		if (!dt || dt.invalid) {
+			return dt;
+		}
+		return locHelper.castObject(dt);
 	}
 
 	/**

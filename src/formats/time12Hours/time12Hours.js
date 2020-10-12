@@ -12,7 +12,8 @@ const time12Hours = new Format({
 		if (dateExpr) {
 			result = this.parser.attempt(dateExpr, locale);
 			if (result.invalid) {
-				return result;
+				// let other matchers have a chance
+				return null;
 			}
 		} else {
 			const now = new Date();
@@ -23,8 +24,9 @@ const time12Hours = new Format({
 			};
 		}
 		const tpl = LocaleHelper.factory(locale);
-		if (ampm && tpl.lookups.meridiem[ampm.toLowerCase()] === 12) {
-			hour = parseFloat(hour) + 12;
+		if (ampm) {
+			const offset = tpl.lookups.meridiem[ampm.toLowerCase()] || 0;
+			hour = parseFloat(hour) + offset;
 		}
 		result.hour = hour;
 		if (minute) {
