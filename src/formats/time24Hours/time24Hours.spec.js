@@ -1,3 +1,4 @@
+const parser = require('../../../index.js');
 const testDates = require('../../../test-fixtures/testDates.js');
 
 testDates({
@@ -12,6 +13,16 @@ testDates({
 		second: 28,
 	},
 	formats: ["yyyy-MM-dd'T'HH:mm:ss'Z'"],
+});
+testDates({
+	name: '24 hour time with no date',
+	locales: ['en-US'],
+	expected: {
+		hour: 17,
+		minute: 41,
+		second: 28,
+	},
+	formats: ['HH:mm:ss'],
 });
 testDates({
 	name: '24 hour time with milliseconds',
@@ -144,4 +155,11 @@ testDates({
 		offset: 540,
 	},
 	formats: ["yyyy-MM-dd'T'HH:mm:ss'+0900'"],
+});
+
+describe('24 hour time - invalid', () => {
+	it('should handle invalid date: "Foobarbaz at 23:59:59"', () => {
+		const actual = parser.attempt('Foobarbaz at 23:59:59');
+		expect(actual.invalid).toBe('Unable to parse Foobarbaz at 23:59:59');
+	});
 });

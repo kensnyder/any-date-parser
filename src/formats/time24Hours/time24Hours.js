@@ -9,26 +9,15 @@ const time24Hours = new Format({
 	template: '^(?:(.+?)[ T])?(_H24_)\\:(_MIN_)(?:\\:(_SEC_)(?:[\\.,](_MS_))?)? ?(?:GMT)? ?(_OFFSET_)? ?(_ZONE_)?$',
 	handler: function (matches, locale) {
 		let [, dateExpr, hour, minute, second, millisecond, offset, zone] = matches;
-		let result;
+		let result = {};
 		if (dateExpr) {
 			result = this.parser.attempt(dateExpr, locale);
 			if (result.invalid) {
 				return result;
 			}
-		} else {
-			const now = new Date();
-			result = {
-				year: now.getUTCFullYear(),
-				month: now.getUTCMonth(),
-				day: now.getUTCDate(),
-			};
 		}
-		if (hour) {
-			result.hour = hour;
-		}
-		if (minute) {
-			result.minute = minute;
-		}
+		result.hour = hour;
+		result.minute = minute;
 		if (second) {
 			result.second = second;
 		}

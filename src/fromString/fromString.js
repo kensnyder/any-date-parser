@@ -6,8 +6,10 @@ function fromString(parser, defaultLocale) {
 		}
 		const date = new Date();
 		if (parsed.year) {
+			// default to current year
 			date.setUTCFullYear(parsed.year);
 		}
+		// default to first period for other units
 		date.setUTCMonth(parsed.month ? parsed.month - 1 : 0);
 		date.setUTCDate(parsed.day || 1);
 		date.setUTCHours(parsed.hour || 0);

@@ -11,6 +11,14 @@ describe('LocaleHelper general', () => {
 		const l2 = LocaleHelper.factory('En');
 		expect(l1).toBe(l2);
 	});
+	it('should factory default to system default', () => {
+		const l1 = LocaleHelper.factory();
+		expect(l1.locale).toBeTruthy();
+	});
+	it('should instance default to system default', () => {
+		const l1 = new LocaleHelper();
+		expect(l1.locale).toBeTruthy();
+	});
 	it('should store locale name', () => {
 		const l = new LocaleHelper('en-GB');
 		expect(l.locale).toBe('en-GB');
@@ -49,6 +57,11 @@ describe('LocaleHelper general', () => {
 		const matches = [null, '٢٠١٧', '٦'];
 		const expected = { year: 2017, month: 6 };
 		expect(l.getObject(units, matches)).toEqual(expected);
+	});
+	it('should handle invalid offsets', () => {
+		const l = new LocaleHelper('en');
+		const actual = l.offsetToMinutes('foo');
+		expect(actual).toEqual(0);
 	});
 	it('should error on bad templates', () => {
 		const l = new LocaleHelper('ar');

@@ -270,14 +270,14 @@ class LocaleHelper {
 	 */
 	offsetToMinutes(offsetString) {
 		const captured = offsetString.match(/^([+-])(..?):?(..)?$/);
-		let offsetMinutes;
 		if (captured) {
 			const [, sign, hours, minutes] = captured;
-			offsetMinutes =
+			return (
 				(sign === '-' ? -1 : 1) *
-				(this.toInt(hours) * 60 + this.toInt(minutes || 0));
+				(this.toInt(hours) * 60 + this.toInt(minutes || 0))
+			);
 		}
-		return offsetMinutes;
+		return 0;
 	}
 
 	/**

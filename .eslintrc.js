@@ -224,7 +224,7 @@ module.exports = {
 		'operator-linebreak': OFF,
 		'padded-blocks': [WARN, 'never'],
 		'quote-props': OFF,
-		quotes: [WARN, 'single'],
+		quotes: OFF,
 		'require-jsdoc': [
 			WARN,
 			{
