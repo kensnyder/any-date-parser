@@ -15,7 +15,7 @@ Supports Node, IE11+ and evergreen browsers.
 OR
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/kensnyder/any-date-parser@1/dist/browser-bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/any-date-parser@1/dist/browser-bundle.js"></script>
 ```
 
 ## Table of Contents
@@ -73,8 +73,8 @@ parser.attempt('15 Oct 2020 at 6pm');
 3.) There are npm packages that integrate any-date-parser directly into popular
 date libraries:
 
-- Luxon: [luxon-parse][http://npmjs.com/packages/luxon-parse]
-- Moment: [moment-parseplus][http://npmjs.com/package/moment-parseplus]
+- Luxon: [luxon-parse](http://npmjs.com/packages/luxon-parse)
+- Moment: [moment-parseplus](http://npmjs.com/package/moment-parseplus)
 
 ## Supported formats
 
