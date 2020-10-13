@@ -1,8 +1,8 @@
 const Format = require('../../Format/Format.js');
 
 const ago = new Format({
-	//        $1         $2    $3                                                    $4
-	regex: /^(\+|-|in |)(\d+) (year|month|week|day|hour|minute|second|millisecond)s?( ago)?$/i,
+	//          $1         $2    $3                                                    $4
+	matcher: /^(\+|-|in |)(\d+) (year|month|week|day|hour|minute|second|millisecond)s?( ago)?$/i,
 	handler: function ([, sign, amount, unit, ago]) {
 		amount = parseFloat(amount);
 		unit = unit.toLowerCase();

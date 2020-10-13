@@ -8,24 +8,29 @@ class Format {
 	/**
 	 * Given a definition, create a parsable format
 	 * @param {String} template  A template for RegExp that can handle multiple languages
-	 * @param {RegExp} regex  An actual RegExp to match against
+	 * @param {RegExp} matcher  An actual RegExp to match against
 	 * @param {Array} units  If the template or RegExp match exact units, you can define the units
 	 * @param {Function} handler  A flexible alternative to units; must return an object
 	 */
-	constructor({ template = null, regex = null, units = null, handler = null }) {
+	constructor({
+		template = null,
+		matcher = null,
+		units = null,
+		handler = null,
+	}) {
 		if (!Array.isArray(units) && typeof handler !== 'function') {
 			throw new Error(
 				'new Format must receive a "units" array or "handler" function'
 			);
 		}
-		if (typeof template !== 'string' && !(regex instanceof RegExp)) {
+		if (typeof template !== 'string' && !(matcher instanceof RegExp)) {
 			throw new Error(
-				'new Format must receive a "template" string or "regex" RegExp'
+				'new Format must receive a "template" string or "matcher" RegExp'
 			);
 		}
 		this.template = template;
 		this.units = units;
-		this.regex = regex;
+		this.matcher = matcher;
 		this.handler = handler;
 		this.regexByLocale = {};
 	}
@@ -42,10 +47,9 @@ class Format {
 					this.template
 				);
 			}
-			// console.log({ tpl: this.template, regex: this.regexByLocale[locale] });
 			return this.regexByLocale[locale];
 		}
-		return this.regex;
+		return this.matcher;
 	}
 
 	/**
@@ -83,6 +87,7 @@ class Format {
 	 * @returns {Object|null}  Null if format can't handle this string, Object for result or error
 	 */
 	attempt(string, locale = defaultLocale) {
+		string = String(string).trim();
 		const matches = this.getMatches(string, locale);
 		if (matches) {
 			const dt = this.toDateTime(matches, locale);

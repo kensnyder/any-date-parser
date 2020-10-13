@@ -292,7 +292,6 @@ class LocaleHelper {
 			}
 			return this.vars[$1];
 		});
-		// console.log({ regexString });
 		return new RegExp(regexString, 'i');
 	}
 }

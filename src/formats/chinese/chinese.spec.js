@@ -6,7 +6,7 @@ testDates({
 	name: 'chinese',
 	expected: { year: 2020, month: 9, day: 26 },
 	locales: ['en-US'],
-	formats: ['yyyy年MM月dd日', 'yyyy年M月d日'],
+	formats: ['yyyy年MM月dd日', 'yyyy年M月d日', 'yyyy 年 M 月 d 日'],
 });
 
 // fullwide digits

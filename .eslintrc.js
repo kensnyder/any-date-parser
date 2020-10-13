@@ -60,7 +60,7 @@ module.exports = {
 		'block-scoped-var': WARN,
 		'consistent-return': OFF,
 		curly: ERROR,
-		'default-case': WARN,
+		'default-case': OFF,
 		// the dot goes with the property when doing multiline
 		'dot-location': [WARN, 'property'],
 		'dot-notation': WARN,
@@ -179,7 +179,7 @@ module.exports = {
 		'no-console': OFF,
 
 		// Stylistic - everything here is a warning because of style.
-		'array-bracket-spacing': [WARN, 'always'],
+		'array-bracket-spacing': OFF, // prettier will handle this
 		'block-spacing': [WARN, 'always'],
 		'brace-style': [WARN, '1tbs', { allowSingleLine: false }],
 		camelcase: WARN,

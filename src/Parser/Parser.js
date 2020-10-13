@@ -12,10 +12,22 @@ class Parser {
 	 * Register a format object representing a parseable date format
 	 * @param {Format} format
 	 * @returns {Parser}
+	 * @chainable
 	 */
 	addFormat(format) {
 		this.formats.push(format);
 		format.parser = this;
+		return this;
+	}
+
+	/**
+	 * Register multiple formats
+	 * @param {Format[]} formats
+	 * @returns {Parser}
+	 * @chainable
+	 */
+	addFormats(formats) {
+		formats.forEach(format => this.addFormat(format));
 		return this;
 	}
 

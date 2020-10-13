@@ -12,6 +12,19 @@ testDates({
 		minute: 41,
 		second: 28,
 	},
+	formats: ['yyyy-MM-dd HH:mm:ss'],
+});
+testDates({
+	name: '24 hour time',
+	locales: ['ar-SA', 'bn-BD', 'bn-IN', 'en-US'],
+	expected: {
+		year: 2020,
+		month: 10,
+		day: 6,
+		hour: 17,
+		minute: 41,
+		second: 28,
+	},
 	formats: ["yyyy-MM-dd'T'HH:mm:ss'Z'"],
 });
 testDates({

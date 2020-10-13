@@ -1,7 +1,7 @@
 const Format = require('../../Format/Format.js');
 
 const microsoftJson = new Format({
-	regex: /^\/Date\((\d+)([+-]\d{4})?\)\/$/,
+	matcher: /^\/Date\((\d+)([+-]\d{4})?\)\/$/,
 	handler: function (matches) {
 		const milliseconds = parseInt(matches[1], 10);
 		const date = new Date(milliseconds);

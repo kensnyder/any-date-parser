@@ -12,6 +12,10 @@ describe('now, today, yesterday and tomorrow', () => {
 			year: 2019,
 			month: 8,
 			day: 31,
+			hour: 23,
+			minute: 59,
+			second: 59,
+			millisecond: 999,
 		};
 		expect(actual).toEqual(expected);
 	});
