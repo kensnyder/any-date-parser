@@ -8,20 +8,13 @@ const time12Hours = new Format({
 	template: '^(?:(.+?) )?(?:at )?(_H12_)(?:\\:(_MIN_)(?:\\:(_SEC_))?)? ?(_MERIDIEM_)$',
 	handler: function (matches, locale) {
 		let [, dateExpr, hour, minute, second, ampm] = matches;
-		let result;
+		let result = {};
 		if (dateExpr) {
 			result = this.parser.attempt(dateExpr, locale);
 			if (result.invalid) {
 				// let other matchers have a chance
 				return null;
 			}
-		} else {
-			const now = new Date();
-			result = {
-				year: now.getUTCFullYear(),
-				month: now.getUTCMonth(),
-				day: now.getUTCDate(),
-			};
 		}
 		const tpl = LocaleHelper.factory(locale);
 		if (ampm) {
