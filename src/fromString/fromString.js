@@ -1,17 +1,21 @@
 function fromString(parser, defaultLocale) {
-	return function fromString(string, locale = defaultLocale) {
+	return function fromStringFunction(string, locale = defaultLocale) {
 		const parsed = parser.attempt(string, locale);
 		if (parsed.invalid) {
 			return parsed;
 		}
 		const date = new Date();
-		if (parsed.year) {
-			// default to current year
+		// default to current year, month and day
+		if (typeof parsed.year === 'number') {
 			date.setUTCFullYear(parsed.year);
 		}
-		// default to first period for other units
-		date.setUTCMonth(parsed.month ? parsed.month - 1 : 0);
-		date.setUTCDate(parsed.day || 1);
+		if (typeof parsed.month === 'number') {
+			date.setUTCMonth(parsed.month - 1);
+		}
+		if (typeof parsed.day === 'number') {
+			date.setUTCDate(parsed.day);
+		}
+		// default to first unit for time components
 		date.setUTCHours(parsed.hour || 0);
 		date.setUTCMinutes(parsed.minute || 0);
 		date.setUTCSeconds(parsed.second || 0);

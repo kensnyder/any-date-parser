@@ -1,5 +1,6 @@
 const fromString = require('./fromString.js');
 
+const now = new Date();
 describe('fromString', () => {
 	it('should return invalid dates', () => {
 		const invalid = { invalid: 'foo' };
@@ -7,18 +8,20 @@ describe('fromString', () => {
 		const fromFn = fromString(parser);
 		expect(fromFn()).toBe(invalid);
 	});
-	it('should reset all but year', () => {
+	it('should use current month and day', () => {
 		const result = { year: 2020 };
 		const parser = { attempt: jest.fn(() => result) };
 		const fromFn = fromString(parser);
-		const jan1 = new Date(Date.UTC(2020, 0, 1, 0, 0, 0, 0));
+		const jan1 = new Date(
+			Date.UTC(2020, now.getUTCMonth(), now.getUTCDate(), 0, 0, 0, 0)
+		);
 		expect(fromFn()).toEqual(jan1);
 	});
-	it('should reset all but month', () => {
+	it('should use current month', () => {
 		const result = { year: 2020, month: 5 };
 		const parser = { attempt: jest.fn(() => result) };
 		const fromFn = fromString(parser);
-		const may1 = new Date(Date.UTC(2020, 4, 1, 0, 0, 0, 0));
+		const may1 = new Date(Date.UTC(2020, 4, now.getUTCDate(), 0, 0, 0, 0));
 		expect(fromFn()).toEqual(may1);
 	});
 	it('should reset all but day', () => {
