@@ -1,16 +1,22 @@
 const Format = require('../../Format/Format.js');
+const unitShortcuts = require('../../data/unitShortcuts.js');
 
 const ago = new Format({
-	//          $1         $2    $3                                                    $4
-	matcher: /^(\+|-|in |)(\d+) (year|month|week|day|hour|minute|second|millisecond)s?( ago)?$/i,
-	handler: function ([, sign, amount, unit, ago]) {
+	//          $1          $2     $3                                                                                   $4
+	matcher: /^(\+|-|in|) ?(\d+) ?(years?|months?|weeks?|days?|hours?|minutes?|seconds?|milliseconds?|ms|s|m|h|w|d|M|y)( ago)?$/i,
+	handler: function ([, sign, amount, unit, isAgo]) {
 		amount = parseFloat(amount);
-		unit = unit.toLowerCase();
+		if (unit.length <= 2) {
+			unit = unitShortcuts[unit];
+		} else {
+			unit = unit.replace(/s$/, '');
+			unit = unit.toLowerCase();
+		}
 		if (unit === 'week') {
 			unit = 'day';
 			amount *= 7;
 		}
-		if (sign === '-' || ago) {
+		if (sign === '-' || isAgo) {
 			amount *= -1;
 		}
 		const now = this.now();
@@ -29,24 +35,15 @@ const ago = new Format({
 		} else if (unit === 'year') {
 			now.setUTCFullYear(now.getUTCFullYear() + amount);
 		}
-		const result = {};
-		switch (unit) {
-			case 'millisecond':
-				result.millisecond = now.getUTCMilliseconds();
-			case 'second':
-				result.second = now.getUTCSeconds();
-			case 'minute':
-				result.minute = now.getUTCMinutes();
-			case 'hour':
-				result.hour = now.getUTCHours();
-			case 'day':
-				result.day = now.getUTCDate();
-			case 'month':
-				result.month = now.getUTCMonth() + 1;
-			case 'year':
-				result.year = now.getUTCFullYear();
-		}
-		return result;
+		return {
+			year: now.getUTCFullYear(),
+			month: now.getUTCMonth() + 1,
+			day: now.getUTCDate(),
+			hour: now.getUTCHours(),
+			minute: now.getUTCMinutes(),
+			second: now.getUTCSeconds(),
+			millisecond: now.getUTCMilliseconds(),
+		};
 	},
 });
 
