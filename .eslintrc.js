@@ -157,7 +157,7 @@ module.exports = {
 		'no-path-concat': ERROR,
 		'no-process-exit': ERROR,
 		'no-restricted-modules': OFF,
-		'no-sync': WARN,
+		'no-sync': OFF,
 
 		// ECMAScript 6 support
 		'arrow-body-style': OFF,
@@ -247,6 +247,6 @@ module.exports = {
 		// 'space-return-throw-case': ERROR,
 		'space-unary-ops': ERROR,
 		'spaced-comment': [WARN, 'always'],
-		'wrap-regex': WARN,
+		'wrap-regex': OFF,
 	},
 };
