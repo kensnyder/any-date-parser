@@ -14,6 +14,7 @@
 	"main": "index.js",
 	"scripts": {
 		"build": "npx browserify index.js -p tinyify -o dist/browser-bundle.js -t",
+		"pre-publish": "node scripts/pre-publish.js",
 		"test": "node --icu-data-dir=node_modules/full-icu node_modules/jest/bin/jest.js",
 		"watch": "node --icu-data-dir=node_modules/full-icu node_modules/jest/bin/jest.js --watch",
 		"coverage": "node --icu-data-dir=node_modules/full-icu node_modules/jest/bin/jest.js --collectCoverage"
