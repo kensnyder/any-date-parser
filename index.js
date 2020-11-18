@@ -56,8 +56,8 @@ parser.Format = Format;
 parser.LocaleHelper = LocaleHelper;
 
 // create functions on Date
-Date.fromString = fromString(parser, defaultLocale);
-Date.fromAny = fromAny(Date.fromString);
+parser.fromString = Date.fromString = fromString(parser, defaultLocale);
+parser.fromAny = Date.fromAny = fromAny(parser.fromString);
 
 // export our default parser
 module.exports = parser;

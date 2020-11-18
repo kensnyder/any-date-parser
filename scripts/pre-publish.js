@@ -6,7 +6,8 @@ const execSync = require('child_process').execSync;
 const unit = process.argv[2];
 // validate unit
 if (!/^major|minor|patch/i.test(unit)) {
-	throw new Error('$1 must be "major", "minor" or "patch"');
+	console.log('$1 must be "major", "minor" or "patch"');
+	process.exit(1);
 }
 // build paths
 const packageJsonPath = path.resolve(__dirname, '../package.json');
@@ -18,9 +19,10 @@ const readme = fs.readFileSync(readmePath, 'utf8');
 const packageData = JSON.parse(packageJson);
 const oldVersionString = packageData.version;
 if (!/^(\d+)\.(\d)+\.(\d+)$/.test(oldVersionString)) {
-	throw new Error(
+	console.log(
 		`version in package.json must contain major, minor, and patch. Value was "${oldVersionString}"`
 	);
+	process.exit(1);
 }
 const [major, minor, patch] = oldVersionString.split('.');
 let newMajor = major;

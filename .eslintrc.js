@@ -155,7 +155,7 @@ module.exports = {
 		'no-new-require': ERROR,
 		// Use path.concat instead
 		'no-path-concat': ERROR,
-		'no-process-exit': ERROR,
+		'no-process-exit': OFF,
 		'no-restricted-modules': OFF,
 		'no-sync': OFF,
 
