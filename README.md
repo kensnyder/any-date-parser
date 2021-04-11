@@ -96,7 +96,7 @@ Summary:
 - now/today/yesterday/tomorrow
 - Twitter
 
-[Exhaustive list of formats](#exhaustive-list-of-formats)
+[Exhaustive list of date formats](#exhaustive-list-of-date-formats)
 
 ## Locale Support
 
@@ -208,6 +208,16 @@ parser.addFormats([time24Hours, yearMonthDay, ago]);
 
 any-date-parser has 100% code coverage.
 
+### Two steps before testing:
+
+1. Globally install internationalization data with the following command. npm
+   install -g full-icu
+2. Set an environmental variable with the full-icu data path. If the path were
+   /usr/lib/node_modules/full-icu then you would run export
+   NODE_ICU_DATA=/usr/lib/node_modules/full-icu
+
+### Testing
+
 - To run tests, run `npm test`
 - To check coverage, run `npm run coverage`
 
@@ -217,7 +227,7 @@ Contributions are welcome. Please open a GitHub ticket for bugs or feature
 requests. Please make a pull request for any fixes or new code you'd like to be
 incorporated.
 
-## Extended list of date formats
+## Exhaustive list of date formats
 
 24 hour time (any date format followed by a 24-hour time expression)
 
