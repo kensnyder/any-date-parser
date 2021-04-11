@@ -1,6 +1,6 @@
 {
 	"name": "any-date-parser",
-	"version": "1.3.0",
+	"version": "1.3.1",
 	"description": "Parse a wide range of date formats including human-input dates",
 	"tags": [
 		"date",
@@ -14,7 +14,9 @@
 	"main": "index.js",
 	"scripts": {
 		"build": "npx browserify index.js -p tinyify -o dist/browser-bundle.js -t",
-		"pre-publish": "node scripts/pre-publish.js",
+		"bump-patch": "node scripts/bump-version.js patch",
+		"bump-minor": "node scripts/bump-version.js minor",
+		"bump-major": "node scripts/bump-version.js major",
 		"test": "sh ./scripts/test.sh",
 		"watch": "sh ./scripts/test.sh --watch",
 		"coverage": "sh ./scripts/test.sh --collectCoverage"

@@ -2,8 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const execSync = require('child_process').execSync;
 
-// get unit where $0=node, $1=pre-publish, $2={major|minor|patch}
+// get unit where $0=node, $1=bump-version.js, $2={major|minor|patch}
 const unit = process.argv[2];
+
 // validate unit
 if (!/^major|minor|patch/i.test(unit)) {
 	console.log('$1 must be "major", "minor" or "patch"');
