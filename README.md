@@ -104,7 +104,7 @@ any-date-parser supports any locale that your runtime's `Intl` (ECMAScript
 Internationalization API) supports. In browsers that usually means the operating
 system language. In Node, that means the compiled language or the icu modules
 included. For unit tests, this library uses the
-[full-icu](https://npmjs.com/package/full-ucu) npm package to make all locales
+[full-icu](https://npmjs.com/package/full-icu) npm package to make all locales
 available. That package is heavy and is included as a dev dependency but not a
 dependency.
 
