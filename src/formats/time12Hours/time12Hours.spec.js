@@ -68,4 +68,16 @@ describe('12 hour time', () => {
 		};
 		expect(actual).toEqual(expected);
 	});
+	it('should handle dates with commas: "4/19/2021, 10:04:02 AM"', () => {
+		const actual = parser.attempt('4/19/2021, 10:04:02 AM');
+		const expected = {
+			year: 2021,
+			month: 4,
+			day: 19,
+			hour: 10,
+			minute: 4,
+			second: 2,
+		};
+		expect(actual).toEqual(expected);
+	});
 });

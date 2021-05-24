@@ -1,5 +1,9 @@
 ## Change Log
 
+### v1.4.1 on 2021-05-23
+
+- Support commas between date parts
+
 ### v1.4.0 on 2021-05-23
 
 - Added support for other whitespace characters between date parts
