@@ -11,12 +11,14 @@ class Format {
 	 * @param {RegExp} matcher  An actual RegExp to match against
 	 * @param {Array} units  If the template or RegExp match exact units, you can define the units
 	 * @param {Function} handler  A flexible alternative to units; must return an object
+	 * @param {Array} locales  A list of locales that this format should be restricted to
 	 */
 	constructor({
 		template = null,
 		matcher = null,
 		units = null,
 		handler = null,
+		locales = null,
 	}) {
 		if (!Array.isArray(units) && typeof handler !== 'function') {
 			throw new Error(
@@ -32,6 +34,7 @@ class Format {
 		this.units = units;
 		this.matcher = matcher;
 		this.handler = handler;
+		this.locales = locales;
 		this.regexByLocale = {};
 	}
 

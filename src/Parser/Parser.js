@@ -55,6 +55,14 @@ class Parser {
 	 */
 	attempt(date, locale = defaultLocale) {
 		for (const format of this.formats) {
+			if (
+				Array.isArray(format.locales) &&
+				format.locales.length > 0 &&
+				!format.locales.includes(new Intl.Locale(locale).baseName)
+			) {
+				// some formats only make sense for certain locales, e.g. month/day/year
+				continue;
+			}
 			const dt = format.attempt(date, locale);
 			if (dt) {
 				return dt;

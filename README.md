@@ -1,9 +1,9 @@
 # any-date-parser
 
-[![NPM Link](https://img.shields.io/npm/v/any-date-parser?v=1.3.1)](https://npm.com/package/any-date-parser)
-[![Build Status](https://travis-ci.org/kensnyder/any-date-parser.svg?branch=master&v=1.3.1)](https://travis-ci.org/kensnyder/any-date-parser)
-[![Code Coverage](https://codecov.io/gh/kensnyder/any-date-parser/branch/master/graph/badge.svg?v=1.3.1)](https://codecov.io/gh/kensnyder/any-date-parser)
-[![ISC License](https://img.shields.io/npm/l/any-date-parser.svg?v=1.3.1)](https://opensource.org/licenses/ISC)
+[![NPM Link](https://img.shields.io/npm/v/any-date-parser?v=1.4.0)](https://npm.com/package/any-date-parser)
+[![Build Status](https://travis-ci.org/kensnyder/any-date-parser.svg?branch=master&v=1.4.0)](https://travis-ci.org/kensnyder/any-date-parser)
+[![Code Coverage](https://codecov.io/gh/kensnyder/any-date-parser/branch/master/graph/badge.svg?v=1.4.0)](https://codecov.io/gh/kensnyder/any-date-parser)
+[![ISC License](https://img.shields.io/npm/l/any-date-parser.svg?v=1.4.0)](https://opensource.org/licenses/ISC)
 
 Parse a wide range of date formats including human-input dates.
 
@@ -16,7 +16,7 @@ Supports Node, IE11+ and evergreen browsers.
 OR
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/any-date-parser@1.3.1/dist/browser-bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/any-date-parser@1.4.0/dist/browser-bundle.js"></script>
 ```
 
 ## Table of Contents
@@ -51,16 +51,33 @@ There are three ways to use any-date-parser:
 
 Example:
 
-```javascript
+```js
+require('any-date-format');
 Date.fromString('2020-10-15');
 // same as new Date(2020, 9, 15, 0, 0, 0, 0)
 ```
 
-2.) It also exports `parser` with function `parser.attempt(string, locale)` that
+2.) Use the parser object:
+
+- `parser.fromString(string, locale)` - Parses a string and returns a `Date`
+  object. It is the same function as in option 1.
+- `parser.fromAny(any, locale)` - Return a `Date` object given a `Date`,
+  `Number` or string to parse. It is the same function as in option 1.
+
+Example:
+
+```js
+const parser = require('any-date-format');
+parser.fromString('2020-10-15');
+// same as new Date(2020, 9, 15, 0, 0, 0, 0)
+```
+
+3.) It also exports `parser` with function `parser.attempt(string, locale)` that
 returns an object with one or more integer values for the following keys: year,
 month, day, hour, minute, second, millisecond, offset. Example:
 
-```javascript
+```js
+const parser = require('any-date-format');
 parser.attempt('15 Oct 2020 at 6pm');
 // returns:
 {
@@ -71,11 +88,11 @@ parser.attempt('15 Oct 2020 at 6pm');
 }
 ```
 
-3.) There are npm packages that integrate any-date-parser directly into popular
+4.) There are npm packages that integrate any-date-parser directly into popular
 date libraries:
 
-- Luxon: [luxon-parse](http://npmjs.com/packages/luxon-parse) _coming soon_
-- DayJS: [dayjs-parse](http://npmjs.com/package/dayjs-parse) _coming soon_
+- Luxon: [luxon-parser](http://npmjs.com/packages/luxon-parser)
+- DayJS: [dayjs-parser](http://npmjs.com/package/dayjs-parser)
 - Moment: [moment-parseplus](http://npmjs.com/package/moment-parseplus)
 
 ## Supported formats
@@ -127,12 +144,15 @@ Second, parsers must have `units` or `handler`.
 ### Example 1: matcher + units
 
 ```js
-const parser, { Format } = require('any-date-parser');
+const parser,
+	{ Format } = require('any-date-parser');
 
-parser.addFormat(new Format({
-	matcher: /^(\d+) days? into month (\d+) in year (\d{4})$/,
-	units: ['day','month','year'],
-}));
+parser.addFormat(
+	new Format({
+		matcher: /^(\d+) days? into month (\d+) in year (\d{4})$/,
+		units: ['day', 'month', 'year'],
+	})
+);
 ```
 
 Keep in mind that `\d` does not support other numbering system such as Chinese
@@ -143,42 +163,51 @@ or Bengali. To support those you can use the `template` option given in
 ### Example 2: matcher + handler
 
 ```js
-const parser, { Format } = require('any-date-parser');
+const parser,
+	{ Format } = require('any-date-parser');
 
-parser.addFormat(new Format({
-  matcher: /^Q([1-4]) (\d{4})$/,
-  handler: function([, quarter, year]) {
-    const monthByQuarter = { '1': 1, '2': 4, '3': 7, '4': 10};
-    const month = monthByQuarter[quarter];
-    return { year, month };
-  },
-}));
+parser.addFormat(
+	new Format({
+		matcher: /^Q([1-4]) (\d{4})$/,
+		handler: function ([, quarter, year]) {
+			const monthByQuarter = { 1: 1, 2: 4, 3: 7, 4: 10 };
+			const month = monthByQuarter[quarter];
+			return { year, month };
+		},
+	})
+);
 ```
 
 ### Example 3: template + units
 
 ```js
-const parser, { Format } = require('any-date-parser');
+const parser,
+	{ Format } = require('any-date-parser');
 
-parser.addFormat(new Format({
-  template: 'The (_DAY_)(?:_ORDINAL_) day of (_MONTH_), (_YEAR_)',
-  units: ['day', 'month', 'year'],
-}));
+parser.addFormat(
+	new Format({
+		template: 'The (_DAY_)(?:_ORDINAL_) day of (_MONTH_), (_YEAR_)',
+		units: ['day', 'month', 'year'],
+	})
+);
 ```
 
 ### Example 4: template + handler
 
 ```js
-const parser, { Format } = require('any-date-parser');
+const parser,
+	{ Format } = require('any-date-parser');
 
-parser.addFormat(new Format({
-  template: '^Q([1-4]) (_YEAR_)$',
-  handler: function([, quarter, year]) {
-    const monthByQuarter = { '1': 1, '2': 4, '3': 7, '4': 10};
-    const month = monthByQuarter[quarter];
-    return { year, month };
-  },
-}));
+parser.addFormat(
+	new Format({
+		template: '^Q([1-4]) (_YEAR_)$',
+		handler: function ([, quarter, year]) {
+			const monthByQuarter = { 1: 1, 2: 4, 3: 7, 4: 10 };
+			const month = monthByQuarter[quarter];
+			return { year, month };
+		},
+	})
+);
 ```
 
 ### Removing parsing rules

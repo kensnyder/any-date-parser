@@ -19,6 +19,7 @@ const latn = {
 	MIN: '[0-5]\\d',
 	SEC: '[0-5]\\d|60',
 	MS: '\\d{9}|\\d{6}|\\d{3}',
+	SPACE: '[\\s-]',
 };
 
 const other = {

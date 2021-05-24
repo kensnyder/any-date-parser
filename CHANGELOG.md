@@ -1,5 +1,16 @@
 ## Change Log
 
-### v1.0.0 on 20XX-XX-XX
+### v1.4.0 on 2021-05-23
+
+- Added support for other whitespace characters between date parts
+- Improved docs
+- Improved test scripts to auto install luxon and full-icu if not present
+- Fixed bug in numbering system RegExp
+- Support restricting parsers to a list of locales
+- Restrict monthDayYear to `en-US` and similar locales
+
+_... incomplete history_
+
+### v1.0.0 on 2020-02-20
 
 - Initial release

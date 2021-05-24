@@ -1,6 +1,6 @@
 {
 	"name": "any-date-parser",
-	"version": "1.3.1",
+	"version": "1.4.0",
 	"description": "Parse a wide range of date formats including human-input dates",
 	"tags": [
 		"date",
@@ -37,7 +37,10 @@
 		"type": "git",
 		"url": "git+https://github.com/kensnyder/any-date-parser.git"
 	},
-	"author": "",
+	"author": {
+		"name": "Ken Snyder",
+		"email": "kendsnyder@gmail.com"
+	},
 	"license": "ISC",
 	"bugs": {
 		"url": "https://github.com/kensnyder/any-date-parser/issues"

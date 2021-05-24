@@ -1,9 +1,8 @@
 const { DateTime, FixedOffsetZone } = require('luxon');
-const localeList = require('./localeList.js');
 const parser = require('../index.js');
 
 function testDates({ name, formats, expected, locales }) {
-	for (const locale of locales || localeList) {
+	for (const locale of locales) {
 		describe(`${name} (${locale})`, () => {
 			for (const format of formats) {
 				const luxonObj = { ...expected };
