@@ -17,4 +17,8 @@ describe('normalizeLocale', () => {
 		const normalized = normalizeLocale('en_US');
 		expect(normalized).toEqual('en-US');
 	});
+	it('should fall back to en-US on invalid locales', () => {
+		const normalized = normalizeLocale('foobar 9000');
+		expect(normalized).toEqual('en-US');
+	});
 });

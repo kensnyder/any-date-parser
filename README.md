@@ -1,9 +1,9 @@
 # any-date-parser
 
-[![NPM Link](https://img.shields.io/npm/v/any-date-parser?v=1.4.2)](https://npm.com/package/any-date-parser)
-[![Build Status](https://travis-ci.org/kensnyder/any-date-parser.svg?branch=master&v=1.4.2)](https://travis-ci.org/kensnyder/any-date-parser)
-[![Code Coverage](https://codecov.io/gh/kensnyder/any-date-parser/branch/master/graph/badge.svg?v=1.4.2)](https://codecov.io/gh/kensnyder/any-date-parser)
-[![ISC License](https://img.shields.io/npm/l/any-date-parser.svg?v=1.4.2)](https://opensource.org/licenses/ISC)
+[![NPM Link](https://img.shields.io/npm/v/any-date-parser?v=1.4.3)](https://npm.com/package/any-date-parser)
+[![Build Status](https://travis-ci.org/kensnyder/any-date-parser.svg?branch=master&v=1.4.3)](https://travis-ci.org/kensnyder/any-date-parser)
+[![Code Coverage](https://codecov.io/gh/kensnyder/any-date-parser/branch/master/graph/badge.svg?v=1.4.3)](https://codecov.io/gh/kensnyder/any-date-parser)
+[![ISC License](https://img.shields.io/npm/l/any-date-parser.svg?v=1.4.3)](https://opensource.org/licenses/ISC)
 
 Parse a wide range of date formats including human-input dates.
 
@@ -16,7 +16,7 @@ Supports Node, IE11+ and evergreen browsers.
 OR
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/any-date-parser@1.4.2/dist/browser-bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/any-date-parser@1.4.3/dist/browser-bundle.js"></script>
 ```
 
 ## Table of Contents
@@ -27,6 +27,7 @@ OR
 1. [Locale support](#locale-support)
 1. [Adding custom formats](#adding-custom-formats)
 1. [Removing parsing rules](#removing-parsing-rules)
+1. [Creating a custom parser](#creating-a-custom-parser)
 1. [Unit tests](#unit-tests)
 1. [Contributing](#contributing)
 
@@ -221,7 +222,10 @@ const dayMonth = require('any-date-parser/src/formats/dayMonth/dayMonth.js');
 parser.removeFormat(dayMonth);
 ```
 
-To create a new parser with a limited list of formats, use `new Parser`
+### Creating a custom parser
+
+To create a new parser with a limited list of formats or your own custom
+formats, use `new Parser`
 
 ```js
 const { Parser } = require('any-date-parser');
@@ -233,9 +237,21 @@ const parser = new Parser();
 parser.addFormats([time24Hours, yearMonthDay, ago]);
 ```
 
+You can convert your custom parser to a function. For example:
+
+```js
+const { Parser } = require('any-date-parser');
+const parser = new Parser();
+// ....
+parser.addFormats(/*...*/);
+// Pass locale if you want to override the detected default
+Date.fromString = parser.exportAsFunction();
+Date.fromAny = parser.exportAsFunctionAny();
+```
+
 ## Unit tests
 
-any-date-parser has 100% code coverage.
+`any-date-parser` has 100% code coverage.
 
 ### Two steps before testing:
 

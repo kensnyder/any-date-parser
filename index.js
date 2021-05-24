@@ -21,9 +21,6 @@ const time24Hours = require('./src/formats/time24Hours/time24Hours.js');
 const today = require('./src/formats/today/today.js');
 const twitter = require('./src/formats/twitter/twitter.js');
 const yearMonthDay = require('./src/formats/yearMonthDay/yearMonthDay.js');
-// import our Date.* extensions
-const fromString = require('./src/fromString/fromString.js');
-const fromAny = require('./src/fromAny/fromAny.js');
 
 // create a default parser instance and register all the default formats
 const parser = new Parser();
@@ -50,14 +47,14 @@ parser
 		microsoftJson,
 	]);
 
-// make it easy to consume our other main modules
+// make it easy to consume our other main modules and functions
 parser.Parser = Parser;
 parser.Format = Format;
 parser.LocaleHelper = LocaleHelper;
 
 // create functions on Date
-parser.fromString = Date.fromString = fromString(parser, defaultLocale);
-parser.fromAny = Date.fromAny = fromAny(parser.fromString);
+parser.fromString = Date.fromString = parser.exportAsFunction();
+parser.fromAny = Date.fromAny = parser.exportAsFunctionAny();
 
 // export our default parser
 module.exports = parser;

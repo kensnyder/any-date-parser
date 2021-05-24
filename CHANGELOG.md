@@ -1,5 +1,11 @@
 ## Change Log
 
+### v1.4.3 on 2021-05-23
+
+- Provide a way to export a parser as a function: `parser.exportAsFunction()`
+  and `parser.exportAsFunctionAny()`
+  [Addresses #7](https://github.com/kensnyder/any-date-parser/issues/7)
+
 ### v1.4.2 on 2021-05-23
 
 - Normalize default locales like `en_US` and `en-US.UTF-8` -

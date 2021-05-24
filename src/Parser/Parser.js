@@ -1,4 +1,6 @@
 const defaultLocale = require('../data/defaultLocale.js');
+const fromString = require('../fromString/fromString.js');
+const fromAny = require('../fromAny/fromAny.js');
 
 class Parser {
 	/**
@@ -71,6 +73,24 @@ class Parser {
 		// Uh Oh! We don't know that one
 		const string = String(date).slice(0, 200);
 		return { invalid: `Unable to parse ${string}` };
+	}
+
+	/**
+	 * Export this parser as a single function that takes a string
+	 * @param {String} locale  The default locale it should use
+	 * @returns {Function}
+	 */
+	exportAsFunction(locale = defaultLocale) {
+		return fromString(this, locale);
+	}
+
+	/**
+	 * Export this parser as a single function that takes a string or Date
+	 * @param {String} locale  The default locale it should use
+	 * @returns {Function}
+	 */
+	exportAsFunctionAny(locale = defaultLocale) {
+		return fromAny(fromString(this, locale));
 	}
 }
 
