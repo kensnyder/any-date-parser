@@ -1,3 +1,5 @@
+const normalizeLocale = require('./normalizeLocale.js');
+
 let defaultLocale;
 /* istanbul ignore next */
 if (typeof navigator !== 'undefined') {
@@ -16,4 +18,4 @@ if (!defaultLocale) {
 	defaultLocale = 'en-US';
 }
 
-module.exports = defaultLocale;
+module.exports = normalizeLocale(defaultLocale);

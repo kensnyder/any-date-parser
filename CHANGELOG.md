@@ -1,8 +1,14 @@
 ## Change Log
 
+### v1.4.2 on 2021-05-23
+
+- Normalize default locales like `en_US` and `en-US.UTF-8` -
+  [Fixes #3](https://github.com/kensnyder/any-date-parser/issues/3)
+
 ### v1.4.1 on 2021-05-23
 
-- Support commas between date parts
+- Support commas between date parts -
+  [Fixes #2](https://github.com/kensnyder/any-date-parser/issues/2)
 
 ### v1.4.0 on 2021-05-23
 
