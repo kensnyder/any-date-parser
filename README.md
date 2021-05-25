@@ -253,18 +253,12 @@ Date.fromAny = parser.exportAsFunctionAny();
 
 `any-date-parser` has 100% code coverage.
 
-### Two steps before testing:
-
-1. Globally install internationalization data with the following command. npm
-   install -g full-icu
-2. Set an environmental variable with the full-icu data path. If the path were
-   /usr/lib/node_modules/full-icu then you would run export
-   NODE_ICU_DATA=/usr/lib/node_modules/full-icu
-
 ### Testing
 
 - To run tests, run `npm test`
 - To check coverage, run `npm run coverage`
+- _Note_ - npm test will attempt to install full-icu and luxon globally if not
+  present
 
 ## Contributing
 
