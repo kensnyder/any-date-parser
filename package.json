@@ -1,6 +1,6 @@
 {
 	"name": "any-date-parser",
-	"version": "1.4.4",
+	"version": "1.4.5",
 	"description": "Parse a wide range of date formats including human-input dates",
 	"tags": [
 		"date",

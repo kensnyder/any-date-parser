@@ -1,9 +1,9 @@
 # any-date-parser
 
-[![NPM Link](https://img.shields.io/npm/v/any-date-parser?v=1.4.3)](https://npm.com/package/any-date-parser)
-[![Build Status](https://travis-ci.org/kensnyder/any-date-parser.svg?branch=master&v=1.4.3)](https://travis-ci.org/kensnyder/any-date-parser)
-[![Code Coverage](https://codecov.io/gh/kensnyder/any-date-parser/branch/master/graph/badge.svg?v=1.4.3)](https://codecov.io/gh/kensnyder/any-date-parser)
-[![ISC License](https://img.shields.io/npm/l/any-date-parser.svg?v=1.4.3)](https://opensource.org/licenses/ISC)
+[![NPM Link](https://img.shields.io/npm/v/any-date-parser?v=1.4.5)](https://npm.com/package/any-date-parser)
+[![Build Status](https://travis-ci.org/kensnyder/any-date-parser.svg?branch=master&v=1.4.5)](https://travis-ci.org/kensnyder/any-date-parser)
+[![Code Coverage](https://codecov.io/gh/kensnyder/any-date-parser/branch/master/graph/badge.svg?v=1.4.5)](https://codecov.io/gh/kensnyder/any-date-parser)
+[![ISC License](https://img.shields.io/npm/l/any-date-parser.svg?v=1.4.5)](https://opensource.org/licenses/ISC)
 
 Parse a wide range of date formats including human-input dates.
 
@@ -16,7 +16,7 @@ Supports Node, IE11+ and evergreen browsers.
 OR
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/any-date-parser@1.4.3/dist/browser-bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/any-date-parser@1.4.5/dist/browser-bundle.js"></script>
 ```
 
 ## Table of Contents

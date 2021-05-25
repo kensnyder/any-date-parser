@@ -1,6 +1,6 @@
 ## Change Log
 
-### v1.4.4 on 2021-05-25
+### v1.4.5 on 2021-05-25
 
 - Fix link to full-icu
 - Generate index.d.ts for TypeScript support
