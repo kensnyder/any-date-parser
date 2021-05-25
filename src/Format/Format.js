@@ -7,11 +7,12 @@ const defaultLocale = require('../data/defaultLocale.js');
 class Format {
 	/**
 	 * Given a definition, create a parsable format
-	 * @param {String} template  A template for RegExp that can handle multiple languages
-	 * @param {RegExp} matcher  An actual RegExp to match against
-	 * @param {Array} units  If the template or RegExp match exact units, you can define the units
-	 * @param {Function} handler  A flexible alternative to units; must return an object
-	 * @param {Array} locales  A list of locales that this format should be restricted to
+	 * @param {Object} definition  The format definition
+	 * @property {String} template  A template for RegExp that can handle multiple languages
+	 * @property {RegExp} matcher  An actual RegExp to match against
+	 * @property {Array} units  If the template or RegExp match exact units, you can define the units
+	 * @property {Function} handler  A flexible alternative to units; must return an object
+	 * @property {Array} locales  A list of locales that this format should be restricted to
 	 */
 	constructor({
 		template = null,
@@ -30,11 +31,35 @@ class Format {
 				'new Format must receive a "template" string or "matcher" RegExp'
 			);
 		}
+		/**
+		 * @type {String} template  A template for RegExp that can handle multiple languages
+		 */
 		this.template = template;
+
+		/**
+		 * @type {Array} units  If the template or RegExp match exact units, you can define the units
+		 */
 		this.units = units;
+
+		/**
+		 * @type {RegExp} matcher  An actual RegExp to match against
+		 */
 		this.matcher = matcher;
+
+		/**
+		 * @type {Function} handler  A flexible alternative to units; must return an object
+		 */
 		this.handler = handler;
+
+		/**
+		 * @type {String[]} locales  A list of locales that this format should be restricted to
+		 */
 		this.locales = locales;
+
+		/**
+		 * A cache of RegExp indexed by locale name
+		 * @type {Object}
+		 */
 		this.regexByLocale = {};
 	}
 

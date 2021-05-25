@@ -1,6 +1,6 @@
 {
 	"name": "any-date-parser",
-	"version": "1.4.3",
+	"version": "1.4.4",
 	"description": "Parse a wide range of date formats including human-input dates",
 	"tags": [
 		"date",
@@ -19,7 +19,8 @@
 		"bump-major": "node scripts/bump-version.js major",
 		"test": "sh ./scripts/test.sh",
 		"watch": "sh ./scripts/test.sh --watch",
-		"coverage": "sh ./scripts/test.sh --collectCoverage"
+		"coverage": "sh ./scripts/test.sh --collectCoverage",
+		"generate-types": "tsc -p declaration.tsconfig.json"
 	},
 	"browserify": {
 		"transform": [

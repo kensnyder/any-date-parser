@@ -32,18 +32,18 @@ class LocaleHelper {
 		this.locale = locale;
 		/**
 		 * Lookups for zone, year, meridiem, month, dayname, digit
-		 * @type {Object}
+		 * @type {Object} lookups
 		 */
 		this.lookups = { ...baseLookups };
 		/**
 		 * Template variables including MONTHNAME, MONTH, ZONE, etc.
-		 * @type {Object}
+		 * @type {Object} vars
 		 */
 		this.vars = { ...latn };
 		const fmt = new Intl.NumberFormat(this.locale);
 		/**
 		 * The numbering system to use (latn=standard arabic digits)
-		 * @type {String}
+		 * @type {String} numberingSystem
 		 */
 		this.numberingSystem = fmt.resolvedOptions().numberingSystem;
 		this.build();

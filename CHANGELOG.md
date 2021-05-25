@@ -1,5 +1,10 @@
 ## Change Log
 
+### v1.4.4 on 2021-05-25
+
+- Fix link to full-icu
+- Generate index.d.ts for TypeScript support
+
 ### v1.4.3 on 2021-05-23
 
 - Provide a way to export a parser as a function: `parser.exportAsFunction()`

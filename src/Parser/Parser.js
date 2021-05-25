@@ -1,4 +1,5 @@
 const defaultLocale = require('../data/defaultLocale.js');
+const Format = require('../Format/Format.js'); // required to generate index.d.ts
 const fromString = require('../fromString/fromString.js');
 const fromAny = require('../fromAny/fromAny.js');
 
@@ -12,7 +13,7 @@ class Parser {
 
 	/**
 	 * Register a format object representing a parseable date format
-	 * @param {Format} format
+	 * @param {Format} format  The Format to add
 	 * @returns {Parser}
 	 * @chainable
 	 */
@@ -24,7 +25,7 @@ class Parser {
 
 	/**
 	 * Register multiple formats
-	 * @param {Format[]} formats
+	 * @param {Format[]} formats  The array of Formats to add
 	 * @returns {Parser}
 	 * @chainable
 	 */
@@ -35,7 +36,7 @@ class Parser {
 
 	/**
 	 * Unregister a format
-	 * @param {Format} format
+	 * @param {Format} format  The Format to remove
 	 * @returns {Boolean}  true if format was found and removed, false if it wasn't registered
 	 */
 	removeFormat(format) {
@@ -51,7 +52,7 @@ class Parser {
 
 	/**
 	 * Attempt to parse a date string
-	 * @param {String} date
+	 * @param {String} date  A parseable date string
 	 * @param {String} locale  The name of the locale
 	 * @returns {Object}
 	 */
