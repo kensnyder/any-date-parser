@@ -1,5 +1,10 @@
 ## Change Log
 
+### v1.4.6 on 2021-07-28
+
+- Fix typo in readme
+- Update dependencies
+
 ### v1.4.5 on 2021-05-25
 
 - Fix link to full-icu

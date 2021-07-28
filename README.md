@@ -1,9 +1,9 @@
 # any-date-parser
 
-[![NPM Link](https://img.shields.io/npm/v/any-date-parser?v=1.4.5)](https://npm.com/package/any-date-parser)
-[![Build Status](https://travis-ci.org/kensnyder/any-date-parser.svg?branch=master&v=1.4.5)](https://travis-ci.org/kensnyder/any-date-parser)
-[![Code Coverage](https://codecov.io/gh/kensnyder/any-date-parser/branch/master/graph/badge.svg?v=1.4.5)](https://codecov.io/gh/kensnyder/any-date-parser)
-[![ISC License](https://img.shields.io/npm/l/any-date-parser.svg?v=1.4.5)](https://opensource.org/licenses/ISC)
+[![NPM Link](https://img.shields.io/npm/v/any-date-parser?v=1.4.6)](https://npm.com/package/any-date-parser)
+[![Build Status](https://travis-ci.org/kensnyder/any-date-parser.svg?branch=master&v=1.4.6)](https://travis-ci.org/kensnyder/any-date-parser)
+[![Code Coverage](https://codecov.io/gh/kensnyder/any-date-parser/branch/master/graph/badge.svg?v=1.4.6)](https://codecov.io/gh/kensnyder/any-date-parser)
+[![ISC License](https://img.shields.io/npm/l/any-date-parser.svg?v=1.4.6)](https://opensource.org/licenses/ISC)
 
 Parse a wide range of date formats including human-input dates.
 
@@ -16,7 +16,7 @@ Supports Node, IE11+ and evergreen browsers.
 OR
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/any-date-parser@1.4.5/dist/browser-bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/any-date-parser@1.4.6/dist/browser-bundle.js"></script>
 ```
 
 ## Table of Contents
@@ -53,7 +53,7 @@ There are three ways to use any-date-parser:
 Example:
 
 ```js
-require('any-date-format');
+require('any-date-parser');
 Date.fromString('2020-10-15');
 // same as new Date(2020, 9, 15, 0, 0, 0, 0)
 ```
@@ -68,7 +68,7 @@ Date.fromString('2020-10-15');
 Example:
 
 ```js
-const parser = require('any-date-format');
+const parser = require('any-date-parser');
 parser.fromString('2020-10-15');
 // same as new Date(2020, 9, 15, 0, 0, 0, 0)
 ```
@@ -78,7 +78,7 @@ returns an object with one or more integer values for the following keys: year,
 month, day, hour, minute, second, millisecond, offset. Example:
 
 ```js
-const parser = require('any-date-format');
+const parser = require('any-date-parser');
 parser.attempt('15 Oct 2020 at 6pm');
 // returns:
 {
