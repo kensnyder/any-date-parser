@@ -5,7 +5,7 @@ const latn = {
 		'january|february|march|april|may|june|july|august|september|october|november|december|jan\\.?|feb\\.?|mar\\.?|apr\\.?|may\\.?|jun\\.?|jul\\.?|aug\\.?|sep\\.?|oct\\.?|nov\\.?|dec\\.?',
 	DAYNAME:
 		'sunday|monday|tuesday|wednesday|thursday|friday|saturday|sun\\.?|mon\\.?|tue\\.?|wed\\.?|thu\\.?|fri\\.?|sat\\.?',
-	ZONE: Object.keys(timezoneNames).join('|'),
+	ZONE: '\\(?(' + Object.keys(timezoneNames).join('|') + ')\\)?',
 	MERIDIEM: '[ap]\\.?m?\\.?',
 	ORDINAL: 'st|nd|rd|th|\\.',
 	YEAR: '[1-9]\\d{3}|\\d{2}',
@@ -18,7 +18,7 @@ const latn = {
 	H12: '0?[1-9]|1[012]',
 	MIN: '[0-5]\\d',
 	SEC: '[0-5]\\d|60',
-	MS: '\\d{9}|\\d{6}|\\d{3}',
+	MS: '\\d{9}|\\d{6}|\\d{1,3}',
 	SPACE: '[\\s,-]',
 };
 

@@ -72,7 +72,10 @@ class Parser {
 			}
 		}
 		// Uh Oh! We don't know that one
-		const string = String(date).slice(0, 200);
+		let string = String(date).slice(0, 200);
+		if (string === '') {
+			string = 'empty string';
+		}
 		return { invalid: `Unable to parse ${string}` };
 	}
 

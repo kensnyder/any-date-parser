@@ -1,6 +1,7 @@
 # any-date-parser
 
 [![NPM Link](https://img.shields.io/npm/v/any-date-parser?v=1.4.6)](https://npm.com/package/any-date-parser)
+[![Minified Size](https://badgen.net/bundlephobia/min/react)](https://bundlephobia.com/package/any-date-parser@1.4.6)
 [![Build Status](https://travis-ci.org/kensnyder/any-date-parser.svg?branch=master&v=1.4.6)](https://travis-ci.org/kensnyder/any-date-parser)
 [![Code Coverage](https://codecov.io/gh/kensnyder/any-date-parser/branch/master/graph/badge.svg?v=1.4.6)](https://codecov.io/gh/kensnyder/any-date-parser)
 [![ISC License](https://img.shields.io/npm/l/any-date-parser.svg?v=1.4.6)](https://opensource.org/licenses/ISC)
@@ -123,8 +124,7 @@ Internationalization API) supports. In browsers that usually means the operating
 system language. In Node, that means the compiled language or the icu modules
 included. For unit tests, this library uses the
 [full-icu](https://npmjs.com/package/full-icu) npm package to make all locales
-available. That package is heavy and is included as a dev dependency but not a
-dependency.
+available. That package is heavy and is not included as a dependency.
 
 ## Adding custom formats
 

@@ -2,8 +2,9 @@ const Format = require('../../Format/Format.js');
 const unitShortcuts = require('../../data/unitShortcuts.js');
 
 const ago = new Format({
-	//          $1          $2     $3                                                                                   $4
-	matcher: /^(\+|-|in|) ?(\d+) ?(years?|months?|weeks?|days?|hours?|minutes?|seconds?|milliseconds?|ms|s|m|h|w|d|M|y)( ago)?$/i,
+	/* prettier-ignore */
+	//          $1          $2        $3                                                                                   $4
+	matcher: /^(\+|-|in|) ?([\d.]+) ?(years?|months?|weeks?|days?|hours?|minutes?|seconds?|milliseconds?|ms|s|m|h|w|d|M|y)( ago)?$/i,
 	handler: function ([, sign, amount, unit, isAgo]) {
 		amount = parseFloat(amount);
 		if (unit.length <= 2) {

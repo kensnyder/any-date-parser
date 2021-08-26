@@ -52,6 +52,34 @@ testDates({
 	formats: ["yyyy-MM-dd'T'HH:mm:ss.999'Z'"],
 });
 testDates({
+	name: '24 hour time with 2-digit milliseconds',
+	locales: ['en-US'],
+	expected: {
+		year: 2020,
+		month: 10,
+		day: 6,
+		hour: 17,
+		minute: 41,
+		second: 28,
+		millisecond: 99,
+	},
+	formats: ["yyyy-MM-dd'T'HH:mm:ss.99'Z'"],
+});
+testDates({
+	name: '24 hour time with 1-digit milliseconds',
+	locales: ['en-US'],
+	expected: {
+		year: 2020,
+		month: 10,
+		day: 6,
+		hour: 17,
+		minute: 41,
+		second: 28,
+		millisecond: 9,
+	},
+	formats: ["yyyy-MM-dd'T'HH:mm:ss.9'Z'"],
+});
+testDates({
 	name: '24 hour time with microseconds',
 	locales: ['en-US'],
 	expected: {
@@ -123,6 +151,21 @@ testDates({
 		offset: 180,
 	},
 	formats: ["yyyy-MM-dd'T'HH:mm:ss 'GMT+03:00'"],
+});
+
+testDates({
+	name: '24 hour time with GMT hours:minutes and tz name',
+	locales: ['en-US'],
+	expected: {
+		year: 2020,
+		month: 10,
+		day: 6,
+		hour: 17,
+		minute: 41,
+		second: 28,
+		offset: 180,
+	},
+	formats: ["yyyy-MM-dd'T'HH:mm:ss 'GMT+03:00 (Eastern Daylight Time)'"],
 });
 
 testDates({

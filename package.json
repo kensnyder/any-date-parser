@@ -17,6 +17,7 @@
 		"bump-patch": "node scripts/bump-version.js patch",
 		"bump-minor": "node scripts/bump-version.js minor",
 		"bump-major": "node scripts/bump-version.js major",
+		"demo": "npm run build && npx serve -p 5050 .",
 		"test": "sh ./scripts/test.sh",
 		"watch": "sh ./scripts/test.sh --watch",
 		"coverage": "sh ./scripts/test.sh --collectCoverage",
@@ -56,6 +57,7 @@
 		"jest": "^27.0.6",
 		"luxon": "^1.26.0",
 		"prettier": "^2.3.2",
+		"serve": "^12.0.0",
 		"tinyify": "^3.0.0"
 	}
 }
