@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Demo of any-date-parser</title>
+		<script src="dist/browser-bundle.js"></script>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/mini.css/3.0.1/mini-default.min.css"
+		/>
+		<style>
+			body {
+				padding: 25px;
+			}
+			form h2:first-child {
+				margin-top: 0;
+			}
+			#results {
+				border: 0.0625rem solid var(--form-border-color);
+				padding: 16px 8px;
+				margin: 8px;
+			}
+			#examples a {
+				margin: 0 0 0 1em;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Try out any-date-parser</h1>
+		<form>
+			<h2>Enter a date string</h2>
+			<input id="input" size="50" placeholder="Date string" />
+			<button type="submit" class="primary">Parse</button>
+		</form>
+		<div id="results" style="display: none">
+			<h2>Result:</h2>
+			<pre id="output"></pre>
+		</div>
+		<form id="examples">
+			<h2>Or click an example</h2>
+			<ul>
+				<li>
+					<strong>ISO-8601:</strong>
+					<a href="#">2021-02-05 12:00:00</a>
+					<a href="#">2021-02-05 12:00:00Z</a>
+					<a href="#">2021-02-05 12:00:00+04:00</a>
+					<a href="#">2021-02-05 12:00:00 EST</a>
+					<a href="#">2021-02-05 12:00:00 Eastern Standard Time</a>
+				</li>
+				<li>
+					<strong>Relative:</strong>
+					<a href="#">-999 milliseconds</a>
+					<a href="#">+59 seconds</a>
+					<a href="#">+2 minutes</a>
+					<a href="#">+12 hours</a>
+					<a href="#">12 hours ago</a>
+					<a href="#">-12.75 hours</a>
+					<a href="#">+4 days</a>
+					<a href="#">-3 weeks</a>
+					<a href="#">+2 months</a>
+					<a href="#">+8 years</a>
+					<a href="#">in 3.5 years</a>
+				</li>
+			</ul>
+		</form>
+		<script>
+			//
+			// Code is written inline here to allow learning from view-source
+			//
+			// a function to take input and show output
+			function attempt() {
+				const result = window.anyDateParser.attempt(input.value);
+				output.textContent = JSON.stringify(result, null, 4);
+				results.style.display = '';
+			}
+			// elements we need
+			const form = document.querySelector('form');
+			const input = document.querySelector('#input');
+			const results = document.querySelector('#results');
+			const output = document.querySelector('#output');
+			// add events to form, input and example links
+			form.addEventListener('submit', evt => {
+				evt.preventDefault();
+				attempt();
+			});
+			input.addEventListener('blur', attempt);
+			document.querySelectorAll('#examples a').forEach(link => {
+				link.addEventListener('click', evt => {
+					evt.preventDefault();
+					input.value = link.textContent;
+					attempt();
+				});
+			});
+		</script>
+	</body>
+</html>

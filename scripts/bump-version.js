@@ -32,8 +32,11 @@ let newPatch = patch;
 // bump version
 if (unit === 'major') {
 	newMajor = parseInt(major, 10) + 1;
+	newMinor = 0;
+	newPatch = 0;
 } else if (unit === 'minor') {
 	newMinor = parseInt(minor, 10) + 1;
+	newPatch = 0;
 } else if (unit === 'patch') {
 	newPatch = parseInt(patch, 10) + 1;
 }

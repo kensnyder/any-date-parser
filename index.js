@@ -56,5 +56,9 @@ parser.LocaleHelper = LocaleHelper;
 parser.fromString = Date.fromString = parser.exportAsFunction();
 parser.fromAny = Date.fromAny = parser.exportAsFunctionAny();
 
+if (typeof window !== 'undefined') {
+	window.anyDateParser = parser;
+}
+
 // export our default parser
 module.exports = parser;

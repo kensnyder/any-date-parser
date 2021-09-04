@@ -1,6 +1,6 @@
 {
 	"name": "any-date-parser",
-	"version": "1.4.6",
+	"version": "1.5.0",
 	"description": "Parse a wide range of date formats including human-input dates",
 	"tags": [
 		"date",
@@ -17,6 +17,7 @@
 		"bump-patch": "node scripts/bump-version.js patch",
 		"bump-minor": "node scripts/bump-version.js minor",
 		"bump-major": "node scripts/bump-version.js major",
+		"demo": "npm run build && npx serve -p 5050 .",
 		"test": "sh ./scripts/test.sh",
 		"watch": "sh ./scripts/test.sh --watch",
 		"coverage": "sh ./scripts/test.sh --collectCoverage",
@@ -48,14 +49,15 @@
 	},
 	"homepage": "https://github.com/kensnyder/any-date-parser#readme",
 	"devDependencies": {
-		"@babel/core": "^7.14.8",
-		"@babel/preset-env": "^7.14.8",
+		"@babel/core": "^7.15.5",
+		"@babel/preset-env": "^7.15.4",
 		"babelify": "^10.0.0",
 		"browserify": "^17.0.0",
-		"eslint": "^7.24.0",
-		"jest": "^27.0.6",
+		"eslint": "^7.32.0",
+		"jest": "^27.1.0",
 		"luxon": "^1.26.0",
 		"prettier": "^2.3.2",
+		"serve": "^12.0.0",
 		"tinyify": "^3.0.0"
 	}
 }
