@@ -1,10 +1,10 @@
 # any-date-parser
 
-[![NPM Link](https://img.shields.io/npm/v/any-date-parser?v=1.4.6)](https://npm.com/package/any-date-parser)
-[![Minified Size](https://badgen.net/bundlephobia/min/react)](https://bundlephobia.com/package/any-date-parser@1.4.6)
-[![Build Status](https://travis-ci.org/kensnyder/any-date-parser.svg?branch=master&v=1.4.6)](https://travis-ci.org/kensnyder/any-date-parser)
-[![Code Coverage](https://codecov.io/gh/kensnyder/any-date-parser/branch/master/graph/badge.svg?v=1.4.6)](https://codecov.io/gh/kensnyder/any-date-parser)
-[![ISC License](https://img.shields.io/npm/l/any-date-parser.svg?v=1.4.6)](https://opensource.org/licenses/ISC)
+[![NPM Link](https://img.shields.io/npm/v/any-date-parser?v=1.5.0)](https://npm.com/package/any-date-parser)
+[![Minified Size](https://badgen.net/bundlephobia/min/react)](https://bundlephobia.com/package/any-date-parser@1.5.0)
+[![Build Status](https://travis-ci.org/kensnyder/any-date-parser.svg?branch=master&v=1.5.0)](https://travis-ci.org/kensnyder/any-date-parser)
+[![Code Coverage](https://codecov.io/gh/kensnyder/any-date-parser/branch/master/graph/badge.svg?v=1.5.0)](https://codecov.io/gh/kensnyder/any-date-parser)
+[![ISC License](https://img.shields.io/npm/l/any-date-parser.svg?v=1.5.0)](https://opensource.org/licenses/ISC)
 
 Parse a wide range of date formats including human-input dates.
 
@@ -17,7 +17,7 @@ Supports Node, IE11+ and evergreen browsers.
 OR
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/any-date-parser@1.4.6/dist/browser-bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/any-date-parser@1.5.0/dist/browser-bundle.js"></script>
 ```
 
 ## Table of Contents

@@ -1,5 +1,15 @@
 ## Change Log
 
+### v1.5.0 on 2021-09-24
+
+- Support parens around timezone
+- Allow 1- and 2-digit milliseconds
+- Allow decimals in ago format
+- In browsers, export to window
+- Fix for handling 12pm on 12-hour parser
+- Add demo page
+- Update dependencies
+
 ### v1.4.6 on 2021-07-28
 
 - Fix typo in readme
