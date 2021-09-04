@@ -7,7 +7,7 @@
 - Allow decimals in ago format
 - In browsers, export to window
 - Fix for handling 12pm on 12-hour parser
-- Add demo page
+- Add demo page (npm run demo)
 - Update dependencies
 
 ### v1.4.6 on 2021-07-28
