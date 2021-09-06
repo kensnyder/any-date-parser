@@ -1,6 +1,6 @@
 ## Change Log
 
-### v1.5.0 on 2021-09-06
+### v1.5.1 on 2021-09-06
 
 - Support dashes in day-month-year
 
