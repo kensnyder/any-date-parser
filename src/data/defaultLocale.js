@@ -1,4 +1,4 @@
-const normalizeLocale = require('./normalizeLocale.js');
+const normalizeLocale = require('../normalizeLocale/normalizeLocale.js');
 
 let defaultLocale;
 /* istanbul ignore next */

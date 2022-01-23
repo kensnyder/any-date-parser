@@ -2,6 +2,7 @@ const defaultLocale = require('../data/defaultLocale.js');
 const Format = require('../Format/Format.js'); // required to generate index.d.ts
 const fromString = require('../fromString/fromString.js');
 const fromAny = require('../fromAny/fromAny.js');
+const removeFillerWords = require('../removeFillerWords/removeFillerWords.js');
 
 class Parser {
 	/**
@@ -76,7 +77,10 @@ class Parser {
 		if (string === '') {
 			string = 'empty string';
 		}
-		return { invalid: `Unable to parse ${string}` };
+		return {
+			invalid: removeFillerWords(String(string), locale).trim(),
+		};
+		// return { invalid: `Unable to parse ${string}` };
 	}
 
 	/**

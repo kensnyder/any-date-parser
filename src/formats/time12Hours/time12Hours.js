@@ -5,7 +5,7 @@ const Format = require('../../Format/Format.js');
 const time12Hours = new Format({
 	/* prettier-ignore */
 	//           $1                               $2                 $3           $4                 $5
-	template: '^(.*?)_SPACE_*(?:at|on|T|)_SPACE_*(_H12_|_H24_)(?:\\:(_MIN_)(?:\\:(_SEC_))?)?_SPACE_*(_MERIDIEM_)$',
+	template: '^(.*?)(?:_GAP_)(?:at|on|T|)(?:_GAP_)(_H12_|_H24_)(?:\\:(_MIN_)(?:\\:(_SEC_))?)?(?:_GAP_)(_MERIDIEM_)$',
 	handler: function (matches, locale) {
 		let [, dateExpr, hour, minute, second, ampm] = matches;
 		let result = {};

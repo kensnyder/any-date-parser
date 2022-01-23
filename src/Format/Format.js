@@ -1,5 +1,6 @@
 const LocaleHelper = require('../LocaleHelper/LocaleHelper.js');
 const defaultLocale = require('../data/defaultLocale.js');
+const removeFillerWords = require('../removeFillerWords/removeFillerWords.js');
 
 /**
  * Represents a parsable date format
@@ -74,7 +75,11 @@ class Format {
 				this.regexByLocale[locale] = LocaleHelper.factory(locale).compile(
 					this.template
 				);
+				//console.log([locale, this.regexByLocale[locale]]);
 			}
+			// if (locale.slice(0, 2) === 'zh') {
+			// 	console.log(this.template, this.regexByLocale[locale]);
+			// }
 			return this.regexByLocale[locale];
 		}
 		return this.matcher;
@@ -115,7 +120,7 @@ class Format {
 	 * @returns {Object|null}  Null if format can't handle this string, Object for result or error
 	 */
 	attempt(string, locale = defaultLocale) {
-		string = String(string).trim();
+		string = removeFillerWords(String(string), locale).trim();
 		const matches = this.getMatches(string, locale);
 		if (matches) {
 			const dt = this.toDateTime(matches, locale);

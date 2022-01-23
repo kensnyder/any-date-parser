@@ -3,7 +3,7 @@ const Format = require('../../Format/Format.js');
 const monthDayYear = new Format({
 	/* prettier-ignore */
 	//           $1       $2      $3        $4
-	template: "^(_MONTH_)([\\/-])(_DAY_)\\2(_YEAR_)$",
+	template: "^(_MONTH_)(_GAP_)(_DAY_)\\2(_YEAR_)$",
 	units: ['month', null, 'day', 'year'],
 	// only certain locales use this date
 	// see https://en.wikipedia.org/wiki/Date_format_by_country
@@ -22,6 +22,7 @@ const monthDayYear = new Format({
 		'en-US', // United States
 		'en-VI', // US Virgin Islands
 		'en-WS', // Western Samoa
+		'jp-JP', // Japan
 		'sm-AS', // American Samoa (Samoan)
 		'sm-SM', // Samoa
 	],

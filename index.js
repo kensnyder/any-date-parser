@@ -12,6 +12,7 @@ const dayMonthname = require('./src/formats/dayMonthname/dayMonthname.js');
 const dayMonthnameYear = require('./src/formats/dayMonthnameYear/dayMonthnameYear.js');
 const dayMonthYear = require('./src/formats/dayMonthYear/dayMonthYear.js');
 const defaultLocale = require('./src/data/defaultLocale.js');
+const korean = require('./src/formats/korean/korean.js');
 const monthDay = require('./src/formats/monthDay/monthDay.js');
 const monthDayYear = require('./src/formats/monthDayYear/monthDayYear.js');
 const monthnameDay = require('./src/formats/monthnameDay/monthnameDay.js');
@@ -21,6 +22,7 @@ const time24Hours = require('./src/formats/time24Hours/time24Hours.js');
 const today = require('./src/formats/today/today.js');
 const twitter = require('./src/formats/twitter/twitter.js');
 const yearMonthDay = require('./src/formats/yearMonthDay/yearMonthDay.js');
+const yearMonthnameDay = require('./src/formats/yearMonthnameDay/yearMonthnameDay.js');
 
 // create a default parser instance and register all the default formats
 const parser = new Parser();
@@ -36,6 +38,7 @@ parser
 		monthDayYear,
 		dayMonthYear,
 		chinese,
+		korean,
 		twitter,
 		today,
 		ago,
@@ -45,12 +48,14 @@ parser
 		dayMonth,
 		atSeconds,
 		microsoftJson,
+		yearMonthnameDay,
 	]);
 
 // make it easy to consume our other main modules and functions
 parser.Parser = Parser;
 parser.Format = Format;
 parser.LocaleHelper = LocaleHelper;
+parser.defaultLocale = defaultLocale;
 
 // create functions on Date
 parser.fromString = Date.fromString = parser.exportAsFunction();

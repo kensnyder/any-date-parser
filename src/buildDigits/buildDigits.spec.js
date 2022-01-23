@@ -1,4 +1,4 @@
-const { buildDigits } = require('./numberingSystems.js');
+const buildDigits = require('./buildDigits.js');
 
 describe('unicode numbering systems', () => {
 	it('should build "arab"', () => {

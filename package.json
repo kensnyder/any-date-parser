@@ -21,7 +21,7 @@
 		"test": "sh ./scripts/test.sh",
 		"watch": "sh ./scripts/test.sh --watch",
 		"coverage": "sh ./scripts/test.sh --collectCoverage",
-		"generate-types": "tsc -p declaration.tsconfig.json"
+		"generate-types": "sh ./scripts/generate-types.sh"
 	},
 	"browserify": {
 		"transform": [

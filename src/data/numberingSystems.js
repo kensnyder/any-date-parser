@@ -21,7 +21,7 @@ const startCodes = {
 };
 
 // full-width numbers, hanidec numbers, latin numbers (\d)
-const chineseGroup = '[０１２３４５６７８９〇一二三四五六七八九\\d]';
+const chineseGroup = '[０-９〇-九\\d]';
 
 const defaultLookup = {
 	0: 0,
@@ -56,33 +56,4 @@ const defaultLookup = {
 	九: 9,
 };
 
-const cache = {};
-
-function buildDigits(nsName) {
-	if (cache[nsName]) {
-		return cache[nsName];
-	}
-	if (nsName === 'fullwide' || nsName === 'hanidec') {
-		return { group: chineseGroup, lookup: { ...defaultLookup } };
-	}
-	const startCode = startCodes[nsName];
-	/* istanbul ignore next */
-	if (!startCode) {
-		// unknown numbering system; treat like latn
-		return { group: '\\d', lookup: { ...defaultLookup } };
-	}
-	const start = String.fromCharCode(startCode);
-	const end = String.fromCharCode(startCode + 9);
-	const lookup = {};
-	for (let i = 0; i < 10; i++) {
-		lookup[String.fromCharCode(startCode + i)] = i;
-	}
-	// console.log({ nsName, start, end, lookup });
-	cache[nsName] = {
-		group: `[${start}-${end}]`,
-		lookup,
-	};
-	return cache[nsName];
-}
-
-module.exports = { chineseGroup, defaultLookup, startCodes, buildDigits };
+module.exports = { chineseGroup, defaultLookup, startCodes };
