@@ -17,6 +17,7 @@ const latn = {
 	H24: '[01]\\d|2[0-3]',
 	H12: '0?[1-9]|1[012]',
 	MIN: '[0-5]\\d',
+	// Leap seconds cause 60 seconds in a minute
 	SEC: '[0-5]\\d|60',
 	MS: '\\d{9}|\\d{6}|\\d{1,3}',
 	GAP: '[\\s/.,-]{1,}',

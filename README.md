@@ -126,6 +126,9 @@ included. For unit tests, this library uses the
 [full-icu](https://npmjs.com/package/full-icu) npm package to make all locales
 available. That package is heavy and is not included as a dependency.
 
+Support for parsing right-to-left languages like arabic and hebrew is limited
+due to my unfamiliarity with using RegExp with right-to-left text.
+
 ## Adding custom formats
 
 any-date-parser has an `addFormat()` function to add a custom parser.
