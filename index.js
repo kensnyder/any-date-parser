@@ -37,6 +37,7 @@ parser
 		monthnameDayYear,
 		monthDayYear,
 		dayMonthYear,
+		yearMonthnameDay,
 		chinese,
 		korean,
 		twitter,
@@ -48,7 +49,6 @@ parser
 		dayMonth,
 		atSeconds,
 		microsoftJson,
-		yearMonthnameDay,
 	]);
 
 // make it easy to consume our other main modules and functions

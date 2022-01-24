@@ -49,15 +49,15 @@
 	},
 	"homepage": "https://github.com/kensnyder/any-date-parser#readme",
 	"devDependencies": {
-		"@babel/core": "^7.15.5",
-		"@babel/preset-env": "^7.15.4",
-		"babelify": "^10.0.0",
-		"browserify": "^17.0.0",
-		"eslint": "^7.32.0",
-		"jest": "^27.1.0",
-		"luxon": "^1.26.0",
-		"prettier": "^2.3.2",
-		"serve": "^12.0.0",
-		"tinyify": "^3.0.0"
+		"@babel/core": "7.15.5",
+		"@babel/preset-env": "7.15.4",
+		"babelify": "10.0.0",
+		"browserify": "17.0.0",
+		"eslint": "7.32.0",
+		"jest": "27.1.0",
+		"luxon": "1.26.0",
+		"prettier": "2.3.2",
+		"serve": "12.0.0",
+		"tinyify": "3.0.0"
 	}
 }

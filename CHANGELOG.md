@@ -1,5 +1,11 @@
 ## Change Log
 
+### v1.6.0 on 2022-01-23
+
+- Support more i18n formats
+- Update dev dependencies
+- Pin dev dependencies
+
 ### v1.5.1 on 2021-09-06
 
 - Support dashes in day-month-year
@@ -12,12 +18,12 @@
 - In browsers, export to window
 - Fix for handling 12pm on 12-hour parser
 - Add demo page (npm run demo)
-- Update dependencies
+- Update dev dependencies
 
 ### v1.4.6 on 2021-07-28
 
 - Fix typo in readme
-- Update dependencies
+- Update dev dependencies
 
 ### v1.4.5 on 2021-05-25
 

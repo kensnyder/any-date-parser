@@ -12,6 +12,10 @@ const dayPeriods = ['narrow', 'short', 'long'];
 let i = 0;
 let found = 0;
 for (const locale of localeList) {
+	if (/^ar|he/.test(locale)) {
+		// skip right-to-left languages
+		continue;
+	}
 	const fmt = new Intl.NumberFormat(locale);
 	const numberSystem = fmt.resolvedOptions().numberingSystem;
 	for (const dateStyle of dateStyles) {
@@ -36,6 +40,7 @@ for (const locale of localeList) {
 					dateStyle,
 					/*timeStyle,*/ dayPeriod,
 					res,
+					// JSON.stringify(parsed),
 				].join(' > ')
 			);
 		}

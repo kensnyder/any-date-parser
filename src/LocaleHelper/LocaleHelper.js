@@ -47,13 +47,14 @@ class LocaleHelper {
 		 */
 		this.numberingSystem = fmt.resolvedOptions().numberingSystem;
 		this.build();
-		if (locale.startsWith('he')) {
+		if (locale.startsWith('bnz')) {
 			console.log({
 				locale,
 				vars: this.vars,
 				numberingSystem: this.numberingSystem,
 				month: this.lookups.month,
 				dayname: this.lookups.dayname,
+				digit: this.lookups.digit,
 				// MONTHNAME: this.vars.MONTHNAME,
 				// DAYNAME: this.vars.DAYNAME,
 			});
@@ -66,12 +67,15 @@ class LocaleHelper {
 	 * @returns {Number}
 	 */
 	toInt(digitString) {
+		// if (/^bn/.test(this.locale)) {
+		// 	console.log({ digitString });
+		// }
 		if (typeof digitString === 'number') {
 			return digitString;
 		}
 		if (this.numberingSystem === 'latn') {
-			let int = parseInt(digitString.replace(/\D/g, ''), 10);
-			// In Thai, Buddhist Calendar is 543 years ahead; assume earliest date of 1900
+			let int = parseInt(digitString, 10);
+			// In Thai, Buddhist Calendar is 543 years ahead; assume earliest date of 1900 aka 2443
 			if (/^th/i.test(this.locale) && int >= 2443) {
 				int -= 543;
 			}
@@ -81,6 +85,9 @@ class LocaleHelper {
 		for (let i = 0; i < digitString.length; i++) {
 			latnDigitString += String(this.lookups.digit[digitString[i]]);
 		}
+		// if (/^bn/.test(this.locale)) {
+		// 	console.log({ latnDigitString });
+		// }
 		return parseInt(latnDigitString, 10);
 	}
 
@@ -270,6 +277,9 @@ class LocaleHelper {
 	 * @returns {Object}  An object with same units but Numeric
 	 */
 	castObject(object) {
+		// if (/^bn/.test(this.locale)) {
+		// 	console.log({ casting: object });
+		// }
 		const casted = {};
 		units.forEach(unit => {
 			if (unit in object) {
@@ -313,6 +323,12 @@ class LocaleHelper {
 			}
 			return this.vars[$1];
 		});
+		// if (
+		// 	/^bnz/i.test(this.locale) ||
+		// 	template === '^(_DAY_)(_GAP_)(_MONTH_)\\2(_YEAR_)$'
+		// ) {
+		// 	console.log([this.locale, template, new RegExp(regexString, 'i')]);
+		// }
 		return new RegExp(regexString, 'i');
 	}
 }
