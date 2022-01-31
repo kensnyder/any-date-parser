@@ -1,5 +1,11 @@
 ## Change Log
 
+### v1.5.2 on 2022-01-31
+
+- Fixes GitHub issue #12
+- Avoid overflowing when month has too many days
+- When year, month or day are missing, default to 2000, Jan, 1 respectively
+
 ### v1.5.1 on 2021-09-06
 
 - Support dashes in day-month-year

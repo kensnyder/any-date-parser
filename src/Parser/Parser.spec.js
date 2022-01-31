@@ -49,4 +49,11 @@ describe('Parser', () => {
 		const result = parser.attempt('baddate', 'locale');
 		expect(result).toEqual({ invalid: 'Unable to parse baddate' });
 	});
+	it('should return invalid on empty string', () => {
+		const format = { attempt: jest.fn(() => null) };
+		const parser = new Parser();
+		parser.addFormat(format);
+		const result = parser.attempt('', 'locale');
+		expect(result).toEqual({ invalid: 'Unable to parse empty string' });
+	});
 });

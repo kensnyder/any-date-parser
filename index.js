@@ -51,12 +51,14 @@ parser
 parser.Parser = Parser;
 parser.Format = Format;
 parser.LocaleHelper = LocaleHelper;
+parser.defaultLocale = defaultLocale;
 
 // create functions on Date
 parser.fromString = Date.fromString = parser.exportAsFunction();
 parser.fromAny = Date.fromAny = parser.exportAsFunctionAny();
 
 if (typeof window !== 'undefined') {
+	/* istanbul ignore next */
 	window.anyDateParser = parser;
 }
 
