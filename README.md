@@ -5,6 +5,7 @@
 [![Build Status](https://travis-ci.org/kensnyder/any-date-parser.svg?branch=master&v=1.5.1)](https://travis-ci.org/kensnyder/any-date-parser)
 [![Code Coverage](https://codecov.io/gh/kensnyder/any-date-parser/branch/master/graph/badge.svg?v=1.5.1)](https://codecov.io/gh/kensnyder/any-date-parser)
 [![ISC License](https://img.shields.io/npm/l/any-date-parser.svg?v=1.5.1)](https://opensource.org/licenses/ISC)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fkensnyder%2Fany-date-parser.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fkensnyder%2Fany-date-parser?ref=badge_shield)
 
 Parse a wide range of date formats including human-input dates.
 
@@ -394,3 +395,7 @@ chinese
 - `2020年9月26日`
 - `2020 年 9 月 26 日`
 - `２０１７年０８月３１日`
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fkensnyder%2Fany-date-parser.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fkensnyder%2Fany-date-parser?ref=badge_large)
