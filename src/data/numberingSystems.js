@@ -21,7 +21,7 @@ const startCodes = {
 };
 
 // full-width numbers, hanidec numbers, latin numbers (\d)
-const chineseGroup = '[０-９〇-九\\d]';
+const chineseGroup = '[１２３４５６７８９０一二三四五六七八九〇\\d]';
 
 const defaultLookup = {
 	0: 0,

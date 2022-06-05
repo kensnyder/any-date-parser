@@ -120,15 +120,44 @@ class Format {
 	 * @returns {Object|null}  Null if format can't handle this string, Object for result or error
 	 */
 	attempt(string, locale = defaultLocale) {
+		let effectiveLocale = locale;
+		const bounds = {
+			lower: '0001-01-01T00:00:00',
+			upper: '9999-12-31T23:59:59',
+			inclusive: true,
+			strict: false,
+		};
+		if (typeof locale === 'object') {
+			effectiveLocale = locale.locale || defaultLocale;
+			Object.assign(bounds, locale.bounds || {});
+		}
 		string = removeFillerWords(String(string), locale).trim();
 		const matches = this.getMatches(string, locale);
 		if (matches) {
 			const dt = this.toDateTime(matches, locale);
-			if (dt && !dt.invalid) {
-				return dt;
+			const dtDate = this.dt;
+			if (
+				dtDate instanceof Date &&
+				!this.isInRange(dtDate, bounds) &&
+				bounds.strict
+			) {
+				const inclusive = bounds.inclusive ? 'inclusive' : 'not inclusive';
+				return {
+					invalid: `Date not in range ${bounds.lower} to ${bounds.upper} ${inclusive}`,
+					bounds,
+				};
 			}
+			return dt || null;
 		}
 		return null;
+	}
+
+	isInRange(date, bounds) {
+		const dateStr = date.toJSON();
+		if (bounds.inclusive) {
+			return dateStr >= bounds.lower && dateStr <= bounds.upper;
+		}
+		return dateStr > bounds.lower && dateStr < bounds.upper;
 	}
 
 	/**

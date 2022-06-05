@@ -5,7 +5,7 @@ const Format = require('../../Format/Format.js');
 const time12Hours = new Format({
 	/* prettier-ignore */
 	//           $1                               $2                 $3           $4                 $5
-	template: '^(.*?)(?:_GAP_)(?:at|on|T|)(?:_GAP_)(_H12_|_H24_)(?:\\:(_MIN_)(?:\\:(_SEC_))?)?(?:_GAP_)(_MERIDIEM_)$',
+	template: '^(.*?)(?:_GAP_)?(?:at|on|T|)(?:_GAP_)?(_H12_|_H24_)(?:\\:(_MIN_)(?:\\:(_SEC_))?)?(?:_GAP_)?(_MERIDIEM_)$',
 	handler: function (matches, locale) {
 		let [, dateExpr, hour, minute, second, ampm] = matches;
 		let result = {};
@@ -18,7 +18,7 @@ const time12Hours = new Format({
 		}
 		const tpl = LocaleHelper.factory(locale);
 		if (ampm) {
-			const offset = tpl.lookups.meridiem[ampm.toLowerCase()] || 0;
+			const offset = tpl.lookups.meridiem[ampm.toLocaleLowerCase(locale)] || 0;
 			hour = parseFloat(hour);
 			if (hour === 12) {
 				hour = offset;

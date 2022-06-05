@@ -40,7 +40,7 @@ for (const locale of localeList) {
 					dateStyle,
 					/*timeStyle,*/ dayPeriod,
 					res,
-					// JSON.stringify(parsed),
+					JSON.stringify(parsed),
 				].join(' > ')
 			);
 		}
@@ -57,6 +57,9 @@ fs.writeFileSync(
 function toMDY(d) {
 	if (d instanceof Date) {
 		return [d.getFullYear(), pad(d.getMonth() + 1), pad(d.getDate())].join('-');
+	}
+	if (d.year < 100) {
+		d.year += 2000;
 	}
 	return [d.year, pad(d.month), pad(d.day)].join('-');
 }

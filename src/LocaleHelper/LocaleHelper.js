@@ -67,27 +67,16 @@ class LocaleHelper {
 	 * @returns {Number}
 	 */
 	toInt(digitString) {
-		// if (/^bn/.test(this.locale)) {
-		// 	console.log({ digitString });
-		// }
 		if (typeof digitString === 'number') {
 			return digitString;
 		}
 		if (this.numberingSystem === 'latn') {
-			let int = parseInt(digitString, 10);
-			// In Thai, Buddhist Calendar is 543 years ahead; assume earliest date of 1900 aka 2443
-			if (/^th/i.test(this.locale) && int >= 2443) {
-				int -= 543;
-			}
-			return int;
+			return parseInt(digitString, 10);
 		}
 		let latnDigitString = '';
 		for (let i = 0; i < digitString.length; i++) {
 			latnDigitString += String(this.lookups.digit[digitString[i]]);
 		}
-		// if (/^bn/.test(this.locale)) {
-		// 	console.log({ latnDigitString });
-		// }
 		return parseInt(latnDigitString, 10);
 	}
 
@@ -148,7 +137,7 @@ class LocaleHelper {
 				const format = Intl.DateTimeFormat(this.locale, { dateStyle });
 				for (let monthIdx = 0; monthIdx < 12; monthIdx++) {
 					const parts = format.formatToParts(dates[monthIdx]);
-					let text = parts.find(findMonth).value.toLocaleLowerCase();
+					let text = parts.find(findMonth).value.toLocaleLowerCase(this.locale);
 					if (/^ko/i.test(this.locale)) {
 						// Korean word for month is sometimes used
 						text += '월';
@@ -169,7 +158,7 @@ class LocaleHelper {
 			const format = Intl.DateTimeFormat(this.locale, { month: 'short' });
 			for (let monthIdx = 0; monthIdx < 12; monthIdx++) {
 				const parts = format.formatToParts(dates[monthIdx]);
-				let text = parts.find(findMonth).value.toLocaleLowerCase();
+				let text = parts.find(findMonth).value.toLocaleLowerCase(this.locale);
 				text = text.replace(/\.$/, '');
 				vars[`${text}\\.?`] = true;
 				lookup[text] = monthIdx + 1;
@@ -196,7 +185,7 @@ class LocaleHelper {
 			const format = Intl.DateTimeFormat(this.locale, { weekday });
 			for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
 				const parts = format.formatToParts(dates[dayIndex]);
-				let text = parts.find(findDay).value.toLocaleLowerCase();
+				let text = parts.find(findDay).value.toLocaleLowerCase(this.locale);
 				if (weekday === 'short') {
 					text = text.replace(/\.$/, '');
 					list.push(`${text}\\.?`);
@@ -205,17 +194,6 @@ class LocaleHelper {
 				}
 				lookup[text] = dayIndex;
 			}
-		}
-		if (this.locale.startsWith('th')) {
-			Object.assign(lookup, {
-				วันอาทิตย์: 0,
-				วันจันทร์: 1,
-				วันอังคาร: 2,
-				วันพุธ: 3,
-				วันพฤหัส: 4,
-				วันศุกร์: 5,
-				วันเสาร์: 6,
-			});
 		}
 		this.vars.DAYNAME = list.join('|');
 		this.lookups.dayname = lookup;
@@ -237,7 +215,7 @@ class LocaleHelper {
 				// this locale does not use AM/PM
 				return;
 			}
-			const text = dayPeriod.value.toLocaleLowerCase();
+			const text = dayPeriod.value.toLocaleLowerCase(this.locale);
 			list.push(text);
 			lookup[text] = i * 12;
 		}
@@ -258,7 +236,7 @@ class LocaleHelper {
 				return;
 			}
 			let match = matches[i + 1];
-			match = match.toLocaleLowerCase();
+			match = match.toLocaleLowerCase(this.locale);
 			match = match.replace(/\.$/, '');
 			if (unit === 'offset') {
 				object.offset = this.offsetToMinutes(match);

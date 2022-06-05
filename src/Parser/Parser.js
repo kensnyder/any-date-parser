@@ -77,10 +77,7 @@ class Parser {
 		if (string === '') {
 			string = 'empty string';
 		}
-		return {
-			invalid: removeFillerWords(String(string), locale).trim(),
-		};
-		// return { invalid: `Unable to parse ${string}` };
+		return { invalid: `Unable to parse ${string}` };
 	}
 
 	/**

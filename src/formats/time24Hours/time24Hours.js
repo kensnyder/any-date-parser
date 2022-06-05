@@ -6,7 +6,7 @@ const timezoneNames = require('../../data/timezoneNames.js');
 const time24Hours = new Format({
 	/* prettier-ignore */
 	//           $1                               $2        $3           $4              $5                                $6                 $7
-	template: '^(.*?)(?:_GAP_)(?:at|on|T|)(?:_GAP_)(_H24_)\\:(_MIN_)(?:\\:(_SEC_)(?:[\\.,](_MS_))?)?(?:_GAP_)(?:GMT)?(?:_GAP_)(_OFFSET_)?(?:_GAP_)(_ZONE_)?$',
+	template: '^(.*?)(?:_GAP_)?(?:at|on|T|)(?:_GAP_)?(_H24_)\\:(_MIN_)(?:\\:(_SEC_)(?:[\\.,](_MS_))?)?(?:_GAP_)?(?:GMT)?(?:_GAP_)?(_OFFSET_)?(?:_GAP_)?(_ZONE_)?$',
 	handler: function (matches, locale) {
 		let [, dateExpr, hour, minute, second, millisecond, offset, zone] = matches;
 		let result = {};

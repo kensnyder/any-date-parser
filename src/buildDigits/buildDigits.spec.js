@@ -100,7 +100,7 @@ describe('unicode numbering systems', () => {
 		const actual = buildDigits('fullwide');
 		const hanidec = buildDigits('hanidec');
 		const expected = {
-			group: '[０１２３４５６７８９〇一二三四五六七八九\\d]',
+			group: '[１２３４５６７８９０一二三四五六七八九〇\\d]',
 			lookup: {
 				0: 0,
 				1: 1,

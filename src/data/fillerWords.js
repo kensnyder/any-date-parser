@@ -21,8 +21,25 @@ const fillerWords = {
 	th: [
 		// Thai "at/on"
 		[/ที่/g, ''],
-		// Thai Buddhist Calendar label
-		['พ.ศ. ', ''],
+		// Thai Buddhist Calendar is 543 years ahead
+		[
+			/พ.ศ.?(\d{4})/,
+			($0, year) => {
+				let intYear = parseInt(year);
+				intYear -= 543;
+				return String(intYear);
+			},
+		],
+		[
+			/\d{4}/,
+			year => {
+				let intYear = parseInt(year);
+				if (intYear >= 2443) {
+					intYear -= 543;
+				}
+				return String(intYear);
+			},
+		],
 	],
 };
 
