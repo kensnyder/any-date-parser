@@ -55,7 +55,7 @@
 		"browserify": "17.0.0",
 		"eslint": "8.16.0",
 		"jest": "28.1.0",
-		"luxon": "1.28.0",
+		"luxon": "2.5.2",
 		"prettier": "2.6.2",
 		"serve": "13.0.2",
 		"tinyify": "3.0.0"
