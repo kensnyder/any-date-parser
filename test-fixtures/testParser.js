@@ -1,4 +1,4 @@
-const parser = require('../index.js');
+const parser = require('../any-date-parser.js');
 
 function testParser({ name, expected, locales, dates }) {
 	describe(name, () => {

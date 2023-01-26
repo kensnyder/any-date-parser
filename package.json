@@ -11,9 +11,10 @@
 		"parse date",
 		"human"
 	],
-	"main": "index.js",
+	"main": "any-date-parser.js",
+	"types": "index.d.ts",
 	"scripts": {
-		"build": "npx browserify index.js -p tinyify -o dist/browser-bundle.js -t",
+		"build": "npx browserify any-date-parser.js -p tinyify -o dist/browser-bundle.js -t",
 		"bump-patch": "node scripts/bump-version.js patch",
 		"bump-minor": "node scripts/bump-version.js minor",
 		"bump-major": "node scripts/bump-version.js major",
@@ -51,6 +52,7 @@
 	"devDependencies": {
 		"@babel/core": "7.18.2",
 		"@babel/preset-env": "7.18.2",
+		"@types/node": "^18.11.18",
 		"babelify": "10.0.0",
 		"browserify": "17.0.0",
 		"eslint": "8.16.0",
@@ -58,6 +60,7 @@
 		"luxon": "1.28.0",
 		"prettier": "2.6.2",
 		"serve": "13.0.2",
-		"tinyify": "3.0.0"
+		"tinyify": "3.0.0",
+		"typescript": "^4.9.4"
 	}
 }

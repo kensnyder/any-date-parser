@@ -1,4 +1,4 @@
-const parser = require('../../../index.js');
+const parser = require('../../../any-date-parser.js');
 const testDates = require('../../../test-fixtures/testDates.js');
 
 testDates({

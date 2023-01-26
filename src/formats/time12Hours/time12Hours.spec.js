@@ -1,4 +1,4 @@
-const parser = require('../../../index.js');
+const parser = require('../../../any-date-parser.js');
 
 describe('12 hour time', () => {
 	it('should handle hours: "8pm"', () => {

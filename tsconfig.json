@@ -1,5 +1,3 @@
 {
-  "files": [
-    "index.js"
-  ]
+	"files": ["any-date-parser.js"]
 }

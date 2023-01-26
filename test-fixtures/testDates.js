@@ -1,5 +1,5 @@
 const { DateTime, FixedOffsetZone } = require('luxon');
-const parser = require('../index.js');
+const parser = require('../any-date-parser.js');
 
 function testDates({ name, formats, expected, locales }) {
 	for (const locale of locales) {

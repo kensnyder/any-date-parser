@@ -1,4 +1,4 @@
-const parser = require('../../../index.js');
+const parser = require('../../../any-date-parser.js');
 const Format = require('../../Format/Format.js');
 
 describe('(amount) (unit) ago', () => {
