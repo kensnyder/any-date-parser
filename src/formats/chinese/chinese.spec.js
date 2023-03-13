@@ -1,5 +1,5 @@
 const testDates = require('../../../test-fixtures/testDates.js');
-const parser = require('../../../index.js');
+const parser = require('../../../any-date-parser.js');
 
 // latn digits
 testDates({

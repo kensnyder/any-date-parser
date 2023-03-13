@@ -1,5 +1,5 @@
 const Format = require('../../Format/Format.js');
-const parser = require('../../../index.js');
+const parser = require('../../../any-date-parser.js');
 
 describe('now, today, yesterday and tomorrow', () => {
 	beforeAll(() => {

@@ -1,4 +1,4 @@
-const parser = require('../../../index.js');
+const parser = require('../../../any-date-parser.js');
 
 describe('twitter time', () => {
 	it('should handle "Fri Apr 09 12:53:54 +0000 2010"', () => {

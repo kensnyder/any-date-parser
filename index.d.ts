@@ -679,7 +679,7 @@ declare module "src/formats/yearMonthDay/yearMonthDay" {
     const yearMonthDay: Format;
     import Format = require("src/Format/Format");
 }
-declare module "index" {
+declare module "any-date-parser" {
     export = parser;
     const parser: Parser;
     import Parser = require("src/Parser/Parser");
