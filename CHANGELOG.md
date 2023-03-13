@@ -1,5 +1,13 @@
 ## Change Log
 
+### v1.5.4 on 2023-03-13
+
+- #30 - Fix TypeScript imports
+
+### v1.5.3 on 2023-03-13
+
+- Update dependencies to address npm audit findings
+
 ### v1.5.2 on 2022-01-31
 
 - Fixes GitHub issue #12
