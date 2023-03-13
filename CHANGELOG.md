@@ -4,7 +4,7 @@
 
 - #30 - Fix TypeScript imports
 
-### v1.5.3 on 2023-03-13
+### v1.5.3 on 2022-06-01
 
 - Update dependencies to address npm audit findings
 
