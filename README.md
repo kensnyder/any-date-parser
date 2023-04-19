@@ -1,6 +1,6 @@
 # any-date-parser
 
-[![NPM Link](https://img.shields.io/npm/v/any-date-parser?v=1.5.4)](https://npm.com/package/any-date-parser)
+[![NPM Link](https://img.shields.io/npm/v/any-date-parser?v=1.5.4)](https://npmjs.com/package/any-date-parser)
 [![Minified Size](https://badgen.net/bundlephobia/min/react)](https://bundlephobia.com/package/any-date-parser@1.5.4)
 [![Build Status](https://travis-ci.org/kensnyder/any-date-parser.svg?branch=master&v=1.5.4)](https://travis-ci.org/kensnyder/any-date-parser)
 [![Code Coverage](https://codecov.io/gh/kensnyder/any-date-parser/branch/master/graph/badge.svg?v=1.5.4)](https://codecov.io/gh/kensnyder/any-date-parser)
