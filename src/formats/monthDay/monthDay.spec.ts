@@ -1,8 +1,8 @@
-const testDates = require('../../../test-fixtures/testDates.js');
+import testDates from '../../../test-fixtures/testDates';
 
 testDates({
-	name: 'month day',
-	expected: { month: 3, day: 14 },
-	locales: ['en-US'],
-	formats: ['MM/dd', 'MM-dd', 'M/dd', 'M-dd'],
+  name: 'month day',
+  expected: { month: 3, day: 14 },
+  locales: ['en-US'],
+  formats: ['MM/dd', 'MM-dd', 'M/dd', 'M-dd'],
 });

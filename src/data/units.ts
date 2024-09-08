@@ -1,11 +1,11 @@
 const units = [
-	'year',
-	'month',
-	'day',
-	'hour',
-	'minute',
-	'second',
-	'millisecond',
+  'year',
+  'month',
+  'day',
+  'hour',
+  'minute',
+  'second',
+  'millisecond',
 ];
 
-module.exports = units;
+export default units;

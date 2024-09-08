@@ -4,16 +4,14 @@
  * @returns {String}
  * @see https://github.com/sindresorhus/os-locale/blob/main/index.js for similar code
  */
-function normalizeLocale(name) {
-	// some systems use underscores
-	name = name.replace(/_/g, '-');
-	// some systems append strings like .UTF-8
-	name = name.replace(/[.:][\w-]*$/, '');
-	try {
-		return new Intl.Locale(name).baseName;
-	} catch (e) {
-		return 'en-US';
-	}
+export default function normalizeLocale(name) {
+  // some systems use underscores
+  name = name.replace(/_/g, '-');
+  // some systems append strings like .UTF-8
+  name = name.replace(/[.:][\w-]*$/, '');
+  try {
+    return new Intl.Locale(name).baseName;
+  } catch (e) {
+    return 'en-US';
+  }
 }
-
-module.exports = normalizeLocale;

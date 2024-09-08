@@ -1,10 +1,10 @@
-const Format = require('../../Format/Format.js');
+import Format from '../../Format/Format';
 
 const monthDay = new Format({
-	/* prettier-ignore */
-	//           $1                 $2
-	template: "^(_MONTH_)(?:[\\/-])(_DAY_)$",
-	units: ['month', 'day'],
+  /* prettier-ignore */
+  //           $1                 $2
+  template: "^(_MONTH_)(?:[\\/-])(_DAY_)$",
+  units: ['month', 'day'],
 });
 
-module.exports = monthDay;
+export default monthDay;
