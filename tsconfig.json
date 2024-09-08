@@ -1,5 +1,22 @@
 {
-  "files": [
-    "index.js"
-  ]
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ESNext",
+    "outDir": "./dist",
+    "declaration": true,
+    "removeComments": false,
+    "noEmit": false,
+    "pretty": true,
+    "isolatedModules": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "sourceMap": false,
+    "skipLibCheck": true,
+    "moduleResolution": "Bundler",
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "src/*.ts"
+  ],
+  "files": ["index.ts"]
 }

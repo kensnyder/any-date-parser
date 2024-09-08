@@ -1,5 +1,5 @@
-const Format = require('../../Format/Format.js');
-const unitShortcuts = require('../../data/unitShortcuts.js');
+import Format from '../../Format/Format.js';
+import unitShortcuts from '../../data/unitShortcuts.js';
 
 const ago = new Format({
 	/* prettier-ignore */
