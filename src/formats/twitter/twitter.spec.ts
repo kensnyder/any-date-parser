@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import parser from '../../../index';
 
 describe('twitter time', () => {

@@ -1,6 +1,6 @@
 import normalizeLocale from '../normalizeLocale/normalizeLocale';
 
-let defaultLocale;
+let defaultLocale: string;
 /* istanbul ignore next */
 if (typeof navigator !== 'undefined') {
   // browser: locale is on navigator object
@@ -13,11 +13,7 @@ if (typeof navigator !== 'undefined') {
   const env = process.env;
   defaultLocale = env.LC_ALL || env.LC_MESSAGES || env.LANG || env.LANGUAGE;
 }
-/* istanbul ignore next */
-if (!defaultLocale) {
-  defaultLocale = 'en-US';
-}
 
-defaultLocale = normalizeLocale(defaultLocale);
+defaultLocale = normalizeLocale(defaultLocale || 'en-US');
 
 export default defaultLocale;

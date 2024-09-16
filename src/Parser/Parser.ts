@@ -1,16 +1,27 @@
 import defaultLocale from '../data/defaultLocale';
-import Format from '../Format/Format';
+import twoDigitYears from '../data/twoDigitYears';
+import Format, { type HandlerResult } from '../Format/Format';
 import fromAny from '../fromAny/fromAny';
 import fromString from '../fromString/fromString';
+import LocaleHelper from '../LocaleHelper/LocaleHelper';
 
 export default class Parser {
+  Parser: Parser;
+  Format = Format;
+  LocaleHelper = LocaleHelper;
+  defaultLocale = defaultLocale;
+  fromString: ReturnType<typeof fromString>;
+  fromAny: ReturnType<typeof fromAny>;
   formats: Format[];
 
   /**
    * Initialize an object with an empty array of registered formats
    */
   constructor() {
+    this.Parser = this;
     this.formats = [];
+    this.fromString = this.exportAsFunction();
+    this.fromAny = this.exportAsFunctionAny();
   }
 
   /**
@@ -19,7 +30,7 @@ export default class Parser {
    * @returns {Parser}
    * @chainable
    */
-  addFormat(format) {
+  addFormat(format: Format): this {
     this.formats.push(format);
     format.parser = this;
     return this;
@@ -27,21 +38,21 @@ export default class Parser {
 
   /**
    * Register multiple formats
-   * @param {Format[]} formats  The array of Formats to add
+   * @param formats  The array of Formats to add
    * @returns {Parser}
    * @chainable
    */
-  addFormats(formats) {
+  addFormats(formats: Format[]): this {
     formats.forEach(format => this.addFormat(format));
     return this;
   }
 
   /**
    * Unregister a format
-   * @param {Format} format  The Format to remove
-   * @returns {Boolean}  true if format was found and removed, false if it wasn't registered
+   * @param format  The Format to remove
+   * @returns  true if format was found and removed, false if it wasn't registered
    */
-  removeFormat(format) {
+  removeFormat(format: Format): boolean {
     const idx = this.formats.indexOf(format);
     if (idx > -1) {
       const old = this.formats[idx];
@@ -54,11 +65,11 @@ export default class Parser {
 
   /**
    * Attempt to parse a date string
-   * @param {String} date  A parseable date string
-   * @param {String} locale  The name of the locale
-   * @returns {Object}
+   * @param dateStr  A parseable date string
+   * @param locale  The name of the locale
+   * @returns
    */
-  attempt(date, locale = defaultLocale) {
+  attempt(dateStr: string, locale: string = defaultLocale): HandlerResult {
     for (const format of this.formats) {
       if (
         Array.isArray(format.locales) &&
@@ -68,22 +79,28 @@ export default class Parser {
         // some formats only make sense for certain locales, e.g. month/day/year
         continue;
       }
-      const dt = format.attempt(date, locale);
-      if (dt) {
-        return dt;
+      const result = format.attempt(dateStr, locale);
+      if (result && result.month > 12) {
+        continue;
+      }
+      if (result) {
+        if (result.year < 100) {
+          result.year = twoDigitYears[result.year];
+        }
+        return result;
       }
     }
     // Uh Oh! We don't know that one
-    let string = String(date).slice(0, 200);
+    let string = String(dateStr).slice(0, 200);
     if (string === '') {
-      string = 'empty string';
+      string = '(empty string)';
     }
-    return { invalid: `Unable to parse ${string}` };
+    return { invalid: `Unable to parse "${string}"` };
   }
 
   /**
    * Export this parser as a single function that takes a string
-   * @param {String} locale  The default locale it should use
+   * @param locale  The default locale it should use
    * @returns {Function}
    */
   exportAsFunction(locale = defaultLocale) {

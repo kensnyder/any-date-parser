@@ -1,50 +1,51 @@
 import { describe, expect, it, vi } from 'vitest';
+import type Parser from '../Parser/Parser';
 import fromString from './fromString';
 
 const now = new Date();
 describe('fromString', () => {
   it('should return invalid dates', () => {
     const invalid = { invalid: 'foo' };
-    const parser = { attempt: vi.fn(() => invalid) };
+    const parser = { attempt: vi.fn(() => invalid) } as unknown as Parser;
     const fromFn = fromString(parser);
-    expect(fromFn()).toBe(invalid);
+    expect(fromFn('')).toEqual(invalid);
   });
   it('should use current month and day', () => {
     const result = { year: 2020 };
-    const parser = { attempt: vi.fn(() => result) };
+    const parser = { attempt: vi.fn(() => result) } as unknown as Parser;
     const fromFn = fromString(parser);
     const jan1 = new Date(
       Date.UTC(2020, now.getUTCMonth(), now.getUTCDate(), 0, 0, 0, 0)
     );
-    expect(fromFn()).toEqual(jan1);
+    expect(fromFn('')).toEqual(jan1);
   });
   it('should use current month', () => {
     const result = { year: 2020, month: 5 };
-    const parser = { attempt: jest.fn(() => result) };
+    const parser = { attempt: vi.fn(() => result) } as unknown as Parser;
     const fromFn = fromString(parser);
     const may1 = new Date(Date.UTC(2020, 4, now.getUTCDate(), 0, 0, 0, 0));
-    expect(fromFn()).toEqual(may1);
+    expect(fromFn('')).toEqual(may1);
   });
   it('should reset all but day', () => {
     const result = { year: 2020, month: 4, day: 15 };
-    const parser = { attempt: jest.fn(() => result) };
+    const parser = { attempt: vi.fn(() => result) } as unknown as Parser;
     const fromFn = fromString(parser);
     const apr15 = new Date(Date.UTC(2020, 3, 15, 0, 0, 0, 0));
-    expect(fromFn()).toEqual(apr15);
+    expect(fromFn('')).toEqual(apr15);
   });
   it('should reset all but hour', () => {
     const result = { year: 2020, month: 2, day: 28, hour: 23 };
-    const parser = { attempt: jest.fn(() => result) };
+    const parser = { attempt: vi.fn(() => result) } as unknown as Parser;
     const fromFn = fromString(parser);
     const feb28 = new Date(Date.UTC(2020, 1, 28, 23, 0, 0, 0));
-    expect(fromFn()).toEqual(feb28);
+    expect(fromFn('')).toEqual(feb28);
   });
   it('should reset all but minute', () => {
     const result = { year: 2020, month: 12, day: 4, hour: 23, minute: 14 };
-    const parser = { attempt: jest.fn(() => result) };
+    const parser = { attempt: vi.fn(() => result) } as unknown as Parser;
     const fromFn = fromString(parser);
     const dec4 = new Date(Date.UTC(2020, 11, 4, 23, 14, 0, 0));
-    expect(fromFn()).toEqual(dec4);
+    expect(fromFn('')).toEqual(dec4);
   });
   it('should reset all but second', () => {
     const result = {
@@ -55,10 +56,10 @@ describe('fromString', () => {
       minute: 14,
       second: 59,
     };
-    const parser = { attempt: jest.fn(() => result) };
+    const parser = { attempt: vi.fn(() => result) } as unknown as Parser;
     const fromFn = fromString(parser);
     const sep8 = new Date(Date.UTC(2020, 8, 8, 23, 14, 59, 0));
-    expect(fromFn()).toEqual(sep8);
+    expect(fromFn('')).toEqual(sep8);
   });
   it('should reset all but millisecond', () => {
     const result = {
@@ -70,10 +71,10 @@ describe('fromString', () => {
       second: 59,
       millisecond: 101,
     };
-    const parser = { attempt: jest.fn(() => result) };
+    const parser = { attempt: vi.fn(() => result) } as unknown as Parser;
     const fromFn = fromString(parser);
     const jul4 = new Date(Date.UTC(2020, 6, 4, 23, 14, 59, 101));
-    expect(fromFn()).toEqual(jul4);
+    expect(fromFn('')).toEqual(jul4);
   });
   it('should handle negative offset', () => {
     const result = {
@@ -86,10 +87,10 @@ describe('fromString', () => {
       millisecond: 101,
       offset: -60,
     };
-    const parser = { attempt: jest.fn(() => result) };
+    const parser = { attempt: vi.fn(() => result) } as unknown as Parser;
     const fromFn = fromString(parser);
     const jun6 = new Date(Date.UTC(2020, 5, 9, 20, 14, 59, 101));
-    expect(fromFn()).toEqual(jun6);
+    expect(fromFn('')).toEqual(jun6);
   });
   it('should handle positive offset', () => {
     const result = {
@@ -102,9 +103,9 @@ describe('fromString', () => {
       millisecond: 101,
       offset: 45,
     };
-    const parser = { attempt: jest.fn(() => result) };
+    const parser = { attempt: vi.fn(() => result) } as unknown as Parser;
     const fromFn = fromString(parser);
     const oct31 = new Date(Date.UTC(2020, 9, 31, 20, 14, 59, 101));
-    expect(fromFn()).toEqual(oct31);
+    expect(fromFn('')).toEqual(oct31);
   });
 });

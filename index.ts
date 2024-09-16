@@ -1,9 +1,5 @@
-// import our main modules
-import Format from './src/Format/Format';
-import LocaleHelper from './src/LocaleHelper/LocaleHelper.js';
 import Parser from './src/Parser/Parser';
 // import our formats
-import defaultLocale from './src/data/defaultLocale';
 import ago from './src/formats/ago/ago';
 import atSeconds from './src/formats/atSeconds/atSeconds';
 import chinese from './src/formats/chinese/chinese';
@@ -57,17 +53,13 @@ parser
     fuzzy,
   ]);
 
-// make it easy to consume our other main modules and functions
-parser.Parser = Parser;
-parser.Format = Format;
-parser.LocaleHelper = LocaleHelper;
-parser.defaultLocale = defaultLocale;
-
-// create functions on Date
-parser.fromString = Date.fromString = parser.exportAsFunction();
-parser.fromAny = Date.fromAny = parser.exportAsFunctionAny();
-
+// create functions on Date and window
+// @ts-expect-error  Yes, we are extending the global Date object
+Date.fromString = parser.fromString;
+// @ts-expect-error  Yes, we are extending the global Date object
+Date.fromAny = parser.fromAny;
 if (typeof window !== 'undefined') {
+  // @ts-expect-error  Yes, we are extending the global window object
   window.anyDateParser = parser;
 }
 

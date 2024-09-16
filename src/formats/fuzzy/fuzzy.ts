@@ -1,11 +1,11 @@
-import Format from '../../Format/Format';
+import Format, { HandlerResult } from '../../Format/Format';
 import LocaleHelper from '../../LocaleHelper/LocaleHelper';
 
 const extractorsByLocale = {};
 
-function getExtractors(locale) {
+export function getExtractors(locale: string) {
   if (!extractorsByLocale[locale]) {
-    const helper = new LocaleHelper(locale);
+    const helper = LocaleHelper.factory(locale);
     extractorsByLocale[locale] = [
       {
         name: 'zonename',
@@ -22,8 +22,26 @@ function getExtractors(locale) {
         },
       },
       {
+        name: 'time12',
+        regex: helper.compile(
+          '\\b(_H12_)(?::(_MIN_))?(?::(_SEC_))?(_MERIDIEM_)\\b'
+        ),
+        handler: ([, h12, min, second, ampm]) => {
+          const meridiemOffset =
+            helper.lookups.meridiem[ampm?.toLowerCase()] || 0;
+          let hourInt = helper.toInt(h12) + meridiemOffset;
+          return {
+            hour: hourInt,
+            minute: min ? helper.toInt(min) : 0,
+            second: second ? helper.toInt(second) : 0,
+          };
+        },
+      },
+      {
         name: 'time24',
-        regex: helper.compile('\\b(_H24_):(_MIN_)(:(_SEC_))?(\\.(_MS_))?\\b'),
+        regex: helper.compile(
+          '\\b(_H24_):(_MIN_)(?::(_SEC_))?(?:\\.(_MS_))?\\b'
+        ),
         handler: ([, hour, min, seconds, ms]) => {
           const result = {
             hour: helper.toInt(hour),
@@ -36,28 +54,6 @@ function getExtractors(locale) {
           }
           if (ms) {
             result.millisecond = helper.toInt(ms);
-          }
-          return result;
-        },
-      },
-      {
-        name: 'time12',
-        regex: helper.compile(
-          '\\b(_H12_)(:(_MIN_))?(:(_SEC_))?(_MERIDIEM_)\\b'
-        ),
-        handler: ([, h12, min, second, ampm]) => {
-          const offset = helper.lookups.meridiem[ampm.locale] || 0;
-          let hourInt = helper.toInt(h12);
-          if (hourInt < 12 && offset !== 12) {
-            hourInt += offset;
-          }
-          const result = {
-            hour: hourInt,
-            minute: helper.toInt(min),
-            second: undefined,
-          };
-          if (second) {
-            result.second = helper.toInt(second);
           }
           return result;
         },
@@ -105,9 +101,9 @@ function getExtractors(locale) {
 
 const fuzzy = new Format({
   matcher: /^.+$/,
-  handler: function ([fullString], locale) {
+  handler: function ([fullString], locale: string) {
     let workingString = fullString;
-    const result = {};
+    const result: HandlerResult = {};
     let hasMatch = false;
     for (const extractor of getExtractors(locale)) {
       const match = workingString.match(extractor.regex);
@@ -120,17 +116,10 @@ const fuzzy = new Format({
         workingString = workingString.replace(extractor.regex, '');
         hasMatch = true;
       }
-      // console.log({ name: extractor.name, workingString, result });
     }
     if (!hasMatch) {
       return null;
     }
-    // if (result.month && result.day && result.year === undefined) {
-    // 	result.year = new Date().getFullYear();
-    // }
-    // if (result.month && result.day && result.year) {
-    // 	return result;
-    // }
     return result;
     //
     // const yearExtractor = /(\d+\D+)?(\d{4})(\D+\d+)?/i;

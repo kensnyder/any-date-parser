@@ -6,7 +6,7 @@ export const latn = {
   DAYNAME:
     'sunday|monday|tuesday|wednesday|thursday|friday|saturday|sun\\.?|mon\\.?|tue\\.?|wed\\.?|thu\\.?|fri\\.?|sat\\.?',
   ZONE: '\\(?(' + Object.keys(timezoneNames).join('|') + ')\\)?',
-  MERIDIEM: '[ap]\\.?m?\\.?',
+  MERIDIEM: '(am|pm|a.m.|p.m.)',
   ORDINAL: 'st|nd|rd|th|\\.',
   YEAR: '\\d{4}|\\d{2}',
   YEAR4: '\\d{4}',

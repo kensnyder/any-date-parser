@@ -1,5 +1,13 @@
-export default function fromAny(fromString) {
-  return function fromAny(any, locale) {
+import type { DateOrInvalid } from '../fromString/fromString';
+
+export default function fromAny(
+  fromString: (str: string, locale?: string) => DateOrInvalid,
+  defaultLocale?: string
+) {
+  return function fromAnyFunction(
+    any: string | number | Date,
+    locale = defaultLocale
+  ): DateOrInvalid {
     if (any instanceof Date) {
       return any;
     }

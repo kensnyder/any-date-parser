@@ -56,7 +56,7 @@ There are three ways to use any-date-parser:
 
 Example:
 
-```js
+```ts
 require('any-date-parser');
 Date.fromString('2020-10-15');
 // same as new Date(2020, 9, 15, 0, 0, 0, 0)
@@ -71,7 +71,7 @@ Date.fromString('2020-10-15');
 
 Example:
 
-```js
+```ts
 const parser = require('any-date-parser');
 parser.fromString('2020-10-15');
 // same as new Date(2020, 9, 15, 0, 0, 0, 0)
@@ -81,16 +81,17 @@ parser.fromString('2020-10-15');
 returns an object with one or more integer values for the following keys: year,
 month, day, hour, minute, second, millisecond, offset. Example:
 
-```js
+```ts
 const parser = require('any-date-parser');
 parser.attempt('15 Oct 2020 at 6pm');
-// returns:
+/* returns:
 {
   year: 2020,
   month: 10,
   day: 15,
   hour: 18,
 }
+*/
 ```
 
 4.) There are npm packages that integrate any-date-parser directly into popular
@@ -154,15 +155,15 @@ Second, parsers must have `units` or `handler`.
 
 ### Example 1: matcher + units
 
-```js
+```ts
 const parser,
-	{ Format } = require('any-date-parser');
+  { Format } = require('any-date-parser');
 
 parser.addFormat(
-	new Format({
-		matcher: /^(\d+) days? into month (\d+) in year (\d{4})$/,
-		units: ['day', 'month', 'year'],
-	})
+  new Format({
+    matcher: /^(\d+) days? into month (\d+) in year (\d{4})$/,
+    units: ['day', 'month', 'year'],
+  })
 );
 ```
 
@@ -173,51 +174,51 @@ or Bengali. To support those you can use the `template` option given in
 
 ### Example 2: matcher + handler
 
-```js
+```ts
 const parser,
-	{ Format } = require('any-date-parser');
+  { Format } = require('any-date-parser');
 
 parser.addFormat(
-	new Format({
-		matcher: /^Q([1-4]) (\d{4})$/,
-		handler: function ([, quarter, year]) {
-			const monthByQuarter = { 1: 1, 2: 4, 3: 7, 4: 10 };
-			const month = monthByQuarter[quarter];
-			return { year, month };
-		},
-	})
+  new Format({
+    matcher: /^Q([1-4]) (\d{4})$/,
+    handler: function ([, quarter, year]) {
+      const monthByQuarter = { 1: 1, 2: 4, 3: 7, 4: 10 };
+      const month = monthByQuarter[quarter];
+      return { year, month };
+    },
+  })
 );
 ```
 
 ### Example 3: template + units
 
-```js
+```ts
 const parser,
-	{ Format } = require('any-date-parser');
+  { Format } = require('any-date-parser');
 
 parser.addFormat(
-	new Format({
-		template: 'The (_DAY_)(?:_ORDINAL_) day of (_MONTH_), (_YEAR_)',
-		units: ['day', 'month', 'year'],
-	})
+  new Format({
+    template: 'The (_DAY_)(?:_ORDINAL_) day of (_MONTH_), (_YEAR_)',
+    units: ['day', 'month', 'year'],
+  })
 );
 ```
 
 ### Example 4: template + handler
 
-```js
+```ts
 const parser,
-	{ Format } = require('any-date-parser');
+  { Format } = require('any-date-parser');
 
 parser.addFormat(
-	new Format({
-		template: '^Q([1-4]) (_YEAR_)$',
-		handler: function ([, quarter, year]) {
-			const monthByQuarter = { 1: 1, 2: 4, 3: 7, 4: 10 };
-			const month = monthByQuarter[quarter];
-			return { year, month };
-		},
-	})
+  new Format({
+    template: '^Q([1-4]) (_YEAR_)$',
+    handler: function ([, quarter, year]) {
+      const monthByQuarter = { 1: 1, 2: 4, 3: 7, 4: 10 };
+      const month = monthByQuarter[quarter];
+      return { year, month };
+    },
+  })
 );
 ```
 
@@ -225,7 +226,7 @@ parser.addFormat(
 
 To remove support for a certain format, use `removeFormat()`
 
-```js
+```ts
 const parser = require('any-date-parser');
 const dayMonth = require('any-date-parser/src/formats/dayMonth/dayMonth.js');
 
@@ -237,7 +238,7 @@ parser.removeFormat(dayMonth);
 To create a new parser with a limited list of formats or your own custom
 formats, use `new Parser`
 
-```js
+```ts
 const { Parser } = require('any-date-parser');
 const time24Hours = require('any-date-parser/src/formats/time24Hours/time24Hours.js');
 const yearMonthDay = require('any-date-parser/src/formats/yearMonthDay/yearMonthDay.js');
@@ -249,7 +250,7 @@ parser.addFormats([time24Hours, yearMonthDay, ago]);
 
 You can convert your custom parser to a function. For example:
 
-```js
+```ts
 const { Parser } = require('any-date-parser');
 const parser = new Parser();
 // ....

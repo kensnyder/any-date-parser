@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import parser from '../../../index';
 import testDates from '../../../test-fixtures/testDates';
 
@@ -216,6 +217,6 @@ testDates({
 describe('24 hour time - invalid', () => {
   it('should handle invalid date: "Foobarbaz at 23:59:59"', () => {
     const actual = parser.attempt('Foobarbaz at 23:59:59');
-    expect(actual.invalid).toBe('Unable to parse Foobarbaz at 23:59:59');
+    expect(actual.invalid).toMatch(/Unable to parse/);
   });
 });

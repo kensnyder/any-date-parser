@@ -40,6 +40,7 @@ describe('month day year for other locales', () => {
   it('should not support month day year with dashes', () => {
     const actual = parser.attempt('5-31-2021', 'FR');
     expect(actual.invalid).toMatch(/^Unable to parse/);
+    expect(actual.year).toBe(2021);
   });
   it('should recognize day month year with slashes instead', () => {
     const actual = parser.attempt('5/3/2021', 'FR');

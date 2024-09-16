@@ -43,7 +43,7 @@ testDates({
 
 describe('dayMonthnameYear', () => {
   it('should handle GitHub issue #11', () => {
-    function dateAsISO(dateValue) {
+    function dateAsISO(dateValue: string | Date) {
       if (!dateValue) {
         return null;
       }
@@ -55,11 +55,9 @@ describe('dayMonthnameYear', () => {
         date = dateValue;
       } else if (typeof dateValue === 'string') {
         date = parser.fromString(dateValue);
-      }
-
-      // when the date is invalid, it will give you a isNaN true
-      if (Number.isNaN(date)) {
-        return null;
+        if (date.invalid) {
+          return null;
+        }
       }
 
       try {

@@ -1,5 +1,12 @@
-export default function fromString(parser, defaultLocale?: string) {
-  return function fromStringFunction(string, locale = defaultLocale) {
+import type Parser from '../Parser/Parser';
+
+export type DateOrInvalid = Date | { invalid: string };
+
+export default function fromString(parser: Parser, defaultLocale?: string) {
+  return function fromStringFunction(
+    dateStr: string,
+    locale = defaultLocale
+  ): DateOrInvalid {
     // let effectiveLocale = locale;
     // const bounds = {
     // 	lower: '0001-01-01T00:00:00',
@@ -24,21 +31,20 @@ export default function fromString(parser, defaultLocale?: string) {
     // }
     // return null;
 
-    const parsed = parser.attempt(string, locale);
+    const parsed = parser.attempt(dateStr, locale);
     if (parsed.invalid) {
-      return parsed;
+      return { invalid: parsed.invalid };
     }
-    const date = new Date();
-    // default to current year, month and day
-    if (typeof parsed.year === 'number') {
-      date.setUTCFullYear(parsed.year);
+    if (parsed.month && parsed.day && parsed.year === undefined) {
+      parsed.year = new Date().getFullYear();
     }
-    if (typeof parsed.month === 'number') {
-      date.setUTCMonth(parsed.month - 1);
+    if (!(parsed.month && parsed.day && parsed.year)) {
+      parsed.invalid = `Unable to parse date "${dateStr}"`;
     }
-    if (typeof parsed.day === 'number') {
-      date.setUTCDate(parsed.day);
+    if (parsed.invalid) {
+      return { invalid: parsed.invalid };
     }
+    const date = new Date(parsed.year, parsed.month - 1, parsed.day);
     // default to first unit for time components
     date.setUTCHours(parsed.hour || 0);
     date.setUTCMinutes(parsed.minute || 0);

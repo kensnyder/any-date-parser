@@ -32,4 +32,9 @@ describe('fuzzy', () => {
     const expected = { day: 5 };
     expect(actual).toEqual(expected);
   });
+  it('should get timezone alone', () => {
+    const actual = parser.attempt('Eastern Daylight Time');
+    const expected = { offset: -240 };
+    expect(actual).toEqual(expected);
+  });
 });

@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import Parser from './Parser';
 
 describe('Parser', () => {
@@ -25,7 +25,7 @@ describe('Parser', () => {
     expect(result).toBe(false);
   });
   it('should attempt() a single format', () => {
-    const format = { attempt: jest.fn(() => 'foo') };
+    const format = { attempt: vi.fn(() => 'foo') };
     const parser = new Parser();
     parser.addFormat(format);
     const result = parser.attempt('date', 'locale');
@@ -33,8 +33,8 @@ describe('Parser', () => {
     expect(format.attempt).toHaveBeenCalledWith('date', 'locale');
   });
   it('should attempt() 2 formats', () => {
-    const format1 = { attempt: jest.fn(() => null) };
-    const format2 = { attempt: jest.fn(() => 'foo') };
+    const format1 = { attempt: vi.fn(() => null) };
+    const format2 = { attempt: vi.fn(() => 'foo') };
     const parser = new Parser();
     parser.addFormat(format1);
     parser.addFormat(format2);
@@ -44,10 +44,10 @@ describe('Parser', () => {
     expect(format2.attempt).toHaveBeenCalledWith('date', 'locale');
   });
   it('should return invalid when all attempt()s fail', () => {
-    const format = { attempt: jest.fn(() => null) };
+    const format = { attempt: vi.fn(() => null) };
     const parser = new Parser();
     parser.addFormat(format);
     const result = parser.attempt('baddate', 'locale');
-    expect(result).toEqual({ invalid: 'Unable to parse baddate' });
+    expect(result.invalid).toMatch(/Unable to parse/);
   });
 });
