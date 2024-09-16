@@ -6,9 +6,9 @@ const date = new Date();
 const results = [date.toJSON()];
 const today = toMDY(date);
 console.log({ today });
-const dateStyles = ['full', 'long', 'medium', 'short'];
-const timeStyles = ['full', 'long', 'medium', 'short'];
-const dayPeriods = ['narrow', 'short', 'long'];
+const dateStyles = ['full', 'long', 'medium', 'short'] as const;
+const timeStyles = ['full', 'long', 'medium', 'short'] as const;
+const dayPeriods = ['narrow', 'short', 'long'] as const;
 let i = 0;
 let found = 0;
 for (const locale of localeList) {

@@ -17,7 +17,7 @@ describe('Format', () => {
   it('should build RegExp from template', () => {
     const format = new Format({ handler: () => {}, template: 'year:_YEAR_' });
     const regex = format.getRegExp();
-    expect(regex).toEqual(/year:\d{4}|\d{2}/i);
+    expect(regex).toEqual(/year:\d{4}|\d{2}|-\d{6}|\+?\d{5,6}/i);
   });
   it('should getMatches()', () => {
     const format = new Format({ handler: () => {}, matcher: /foo:(\d)(\d)/ });

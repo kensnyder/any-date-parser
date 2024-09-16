@@ -1,3 +1,5 @@
+import { expect, it } from 'vitest';
+import parser from '../../../index';
 import localeList from '../../../test-fixtures/localeList';
 import testDates from '../../../test-fixtures/testDates';
 
@@ -39,34 +41,8 @@ testDates({
   formats: ["dd'th' MMM yy", "d'th' MMM yy", "dd'th'-MMM-yy", "d'th'-MMM-yy"],
 });
 
-// describe('dayMonthnameYear', () => {
-//   it('should handle GitHub issue #11', () => {
-//     function dateAsISO(dateValue: string | Date) {
-//       if (!dateValue) {
-//         return null;
-//       }
-//
-//       let date = null;
-//
-//       // if it's already a date, just use that.
-//       if (dateValue instanceof Date) {
-//         date = dateValue;
-//       } else if (typeof dateValue === 'string') {
-//         date = parser.fromString(dateValue);
-//         if (date.invalid) {
-//           return null;
-//         }
-//       }
-//
-//       try {
-//         return date.toISOString();
-//       } catch (error) {
-//         // maybe RangeError
-//         return null;
-//       }
-//     }
-//     expect(dateAsISO('Fri, 19 Nov 2021 02:07:18 +0000')).toBe(
-//       '2021-11-19T02:07:18.000Z'
-//     );
-//   });
-// });
+it('should handle GitHub issue #11', () => {
+  const nov19 = parser.fromString('Fri, 19 Nov 2021 02:07:18 +0000');
+  const nov19ISO = nov19 instanceof Date ? nov19.toISOString() : nov19.invalid;
+  expect(nov19ISO).toEqual('2021-11-19T02:07:18.000Z');
+});

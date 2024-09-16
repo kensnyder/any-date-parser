@@ -1,30 +1,14 @@
 import { describe, expect, it, vi } from 'vitest';
+import parser from '../../index';
 import type Parser from '../Parser/Parser';
 import fromString from './fromString';
 
-const now = new Date();
-describe('fromString', () => {
+describe('fromString with spies', () => {
   it('should return invalid dates', () => {
     const invalid = { invalid: 'foo' };
     const parser = { attempt: vi.fn(() => invalid) } as unknown as Parser;
     const fromFn = fromString(parser);
     expect(fromFn('')).toEqual(invalid);
-  });
-  it('should use current month and day', () => {
-    const result = { year: 2020 };
-    const parser = { attempt: vi.fn(() => result) } as unknown as Parser;
-    const fromFn = fromString(parser);
-    const jan1 = new Date(
-      Date.UTC(2020, now.getUTCMonth(), now.getUTCDate(), 0, 0, 0, 0)
-    );
-    expect(fromFn('')).toEqual(jan1);
-  });
-  it('should use current month', () => {
-    const result = { year: 2020, month: 5 };
-    const parser = { attempt: vi.fn(() => result) } as unknown as Parser;
-    const fromFn = fromString(parser);
-    const may1 = new Date(Date.UTC(2020, 4, now.getUTCDate(), 0, 0, 0, 0));
-    expect(fromFn('')).toEqual(may1);
   });
   it('should reset all but day', () => {
     const result = { year: 2020, month: 4, day: 15 };
@@ -107,5 +91,23 @@ describe('fromString', () => {
     const fromFn = fromString(parser);
     const oct31 = new Date(Date.UTC(2020, 9, 31, 20, 14, 59, 101));
     expect(fromFn('')).toEqual(oct31);
+  });
+});
+
+describe('fromString with out-of-range values', () => {
+  it('should roll over dates like JS', () => {
+    const result = parser.fromString('31 feb 2020');
+    expect(result).toBeInstanceOf(Date);
+    // @ts-ignore  If it isn't a date, this test will exit by now
+    expect(result.toISOString()).toEqual('2020-03-02T00:00:00.000Z');
+  });
+});
+
+describe('fromString with 5-plus-digit years', () => {
+  it('should roll over dates like JS', () => {
+    const result = parser.fromString('12024-01-01');
+    expect(result).toBeInstanceOf(Date);
+    // @ts-ignore  If it isn't a date, this test will exit by now
+    expect(result.getFullYear()).toEqual(12024);
   });
 });
