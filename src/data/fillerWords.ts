@@ -25,7 +25,7 @@ const fillerWords = {
     [
       /พ.ศ.?(\d{4})/,
       ($0, year) => {
-        let intYear = parseInt(year);
+        let intYear = parseInt(year, 10);
         intYear -= 543;
         return String(intYear);
       },
@@ -33,7 +33,7 @@ const fillerWords = {
     [
       /\d{4}/,
       year => {
-        let intYear = parseInt(year);
+        let intYear = parseInt(year, 10);
         if (intYear >= 2443) {
           intYear -= 543;
         }

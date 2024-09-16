@@ -100,8 +100,7 @@ export default class Parser {
 
   /**
    * Export this parser as a single function that takes a string
-   * @param locale  The default locale it should use
-   * @returns {Function}
+   * @param locale The default locale it should use
    */
   exportAsFunction(locale = defaultLocale) {
     return fromString(this, locale);
@@ -109,8 +108,7 @@ export default class Parser {
 
   /**
    * Export this parser as a single function that takes a string or Date
-   * @param {String} locale  The default locale it should use
-   * @returns {Function}
+   * @param locale  The default locale it should use
    */
   exportAsFunctionAny(locale = defaultLocale) {
     return fromAny(fromString(this, locale));

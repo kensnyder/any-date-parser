@@ -121,56 +121,6 @@ const fuzzy = new Format({
       return null;
     }
     return result;
-    //
-    // const yearExtractor = /(\d+\D+)?(\d{4})(\D+\d+)?/i;
-    // const yearMatch = fullString.match(yearExtractor);
-    // if (!yearMatch) {
-    // 	// no 4-digit year
-    // 	return null;
-    // }
-    // const [, day1String, yearString, day2String] = yearMatch;
-    // const year = parseInt(yearString, 10);
-    // const day1 = day1String ? parseInt(day1String, 10) : null;
-    // const day2 = day2String ? parseInt(day1String, 10) : null;
-    // const day = day1 || day2;
-    // if (!day) {
-    // 	// no day number
-    // 	return null;
-    // }
-    // if (!monthLookups[locale]) {
-    // 	const helper = new LocaleHelper(locale);
-    // 	monthLookups[locale] = {
-    // 		lookup: helper.lookups.month,
-    // 		regex: new RegExp(`(${helper.vars.MONTHNAME})`, 'i'),
-    // 	};
-    // }
-    // const monthMatch = fullString.match(monthLookups[locale].regex);
-    // if (monthMatch) {
-    // 	// full month name
-    // 	const month =
-    // 		monthLookups[locale].lookup[monthMatch[1].toLocaleLowerCase(locale)];
-    // 	if (month) {
-    // 		// hey we got a month number!
-    // 		return {
-    // 			year,
-    // 			month,
-    // 			day,
-    // 		};
-    // 	} else {
-    // 		// unknown month name
-    // 		return null;
-    // 	}
-    // }
-    // // try looking for month number
-    // if (day1 >= 1 && day1 <= 12 && day2 >= 1 && day2 <= 31) {
-    // 	// day1 appears to be month and day2 appears to be day
-    // 	return { year, month: day1, day: day2 };
-    // } else if (day2 >= 1 && day2 <= 12 && day1 >= 1 && day1 <= 31) {
-    // 	// day2 appears to be month and day1 appears to be day
-    // 	return { year, month: day2, day: day1 };
-    // }
-    // // we don't seem to have valid numbers
-    // return null;
   },
 });
 

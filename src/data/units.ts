@@ -9,3 +9,5 @@ const units = [
 ];
 
 export default units;
+
+export type UnitStrings = (typeof units)[number];

@@ -1,4 +1,5 @@
 import Format from '../../Format/Format';
+import LocaleHelper from '../../LocaleHelper/LocaleHelper';
 
 const limitToLocales: string[] = [
   'ee-TG', // Togo (Ewe)
@@ -22,16 +23,16 @@ const limitToLocales: string[] = [
 const monthDayYear = new Format({
   //           $1       $2      $3        $4
   template: '^(_MONTH_)(_GAP_)(_DAY_)\\2(_YEAR_)$',
-  // units: ['month', null, 'day', 'year'],
   handler: ([, month, , day, year]: string[], locale: string) => {
-    console.log('monthDayYear handler', { month, day, year, locale });
     if (!limitToLocales.includes(locale)) {
+      // not a wacky m/d/y locale; disallow it
       return null;
     }
+    const helper = LocaleHelper.factory(locale);
     return {
-      month: parseInt(month),
-      day: parseInt(day),
-      year: parseInt(year),
+      month: helper.toInt(month),
+      day: helper.toInt(day),
+      year: helper.toInt(year),
     };
   },
   locales: limitToLocales,

@@ -2,23 +2,36 @@ import buildDigits from '../buildDigits/buildDigits';
 import baseLookups from '../data/baseLookups';
 import defaultLocale from '../data/defaultLocale';
 import { latn, other } from '../data/templates.js';
-import units from '../data/units';
+import units, { UnitStrings } from '../data/units';
+import { type HandlerResult } from '../Format/Format';
 
 // keep track of singletons by locale name
 const cache = {};
 
 export default class LocaleHelper {
+  /**
+   * The locale string
+   */
   locale: string;
+  /**
+   * Lookups for zone, year, meridiem, month, dayname, digit
+   */
   lookups: Record<string, any>;
+  /**
+   * Template variables including MONTHNAME, MONTH, ZONE, etc.
+   */
   vars: Record<string, any>;
+  /**
+   * The numbering system to use (latn=standard arabic digits)
+   */
   numberingSystem: string;
 
   /**
    * Get a singleton instance with the given locale
-   * @param {String} locale such as en, en-US, es, fr-FR, etc.
-   * @returns {LocaleHelper}
+   * @param locale such as en, en-US, es, fr-FR, etc.
+   * @returns
    */
-  static factory(locale = defaultLocale) {
+  static factory(locale = defaultLocale): LocaleHelper {
     if (!cache[locale.toLowerCase()]) {
       cache[locale.toLowerCase()] = new LocaleHelper(locale);
     }
@@ -27,29 +40,13 @@ export default class LocaleHelper {
 
   /**
    * Create a new instance with the given locale
-   * @param {String} locale such as en, en-US, es, fr-FR, etc.
+   * @param locale such as en, en-US, es, fr-FR, etc.
    */
   constructor(locale = defaultLocale) {
-    /**
-     * The locale string
-     * @type {String}
-     */
     this.locale = locale;
-    /**
-     * Lookups for zone, year, meridiem, month, dayname, digit
-     * @type {Object} lookups
-     */
     this.lookups = { ...baseLookups };
-    /**
-     * Template variables including MONTHNAME, MONTH, ZONE, etc.
-     * @type {Object} vars
-     */
     this.vars = { ...latn };
     const fmt = new Intl.NumberFormat(this.locale);
-    /**
-     * The numbering system to use (latn=standard arabic digits)
-     * @type {String} numberingSystem
-     */
     this.numberingSystem = fmt.resolvedOptions().numberingSystem;
     this.build();
     if (locale.startsWith('bnz')) {
@@ -60,18 +57,16 @@ export default class LocaleHelper {
         month: this.lookups.month,
         dayname: this.lookups.dayname,
         digit: this.lookups.digit,
-        // MONTHNAME: this.vars.MONTHNAME,
-        // DAYNAME: this.vars.DAYNAME,
       });
     }
   }
 
   /**
    * Cast a string to an integer, minding numbering system
-   * @param {String|Number} digitString  Such as "2020" or "二〇二〇"
-   * @returns {Number}
+   * @param digitString  Such as "2020" or "二〇二〇"
+   * @returns
    */
-  toInt(digitString) {
+  toInt(digitString: string | number): number {
     if (typeof digitString === 'number') {
       return digitString;
     }
@@ -100,7 +95,7 @@ export default class LocaleHelper {
   }
 
   /**
-   * Build lookups for digits
+   * Build lookups for non-arabic digits
    */
   buildNumbers() {
     const nsName = this.numberingSystem;
@@ -137,7 +132,7 @@ export default class LocaleHelper {
       for (let monthIdx = 0; monthIdx < 12; monthIdx++) {
         dates.push(new Date(2017, monthIdx, 1));
       }
-      const dateStyles = ['full', 'long', 'medium'];
+      const dateStyles = ['full', 'long', 'medium'] as const;
       for (const dateStyle of dateStyles) {
         const format = Intl.DateTimeFormat(this.locale, { dateStyle });
         for (let monthIdx = 0; monthIdx < 12; monthIdx++) {
@@ -183,7 +178,7 @@ export default class LocaleHelper {
       // Jan 2017 starts on a sunday
       dates.push(new Date(2017, 0, dayIndex + 1));
     }
-    const weekdays = ['long', 'short'];
+    const weekdays = ['long', 'short'] as const;
     const list = [];
     const lookup = {};
     for (const weekday of weekdays) {
@@ -205,7 +200,7 @@ export default class LocaleHelper {
   }
 
   /**
-   * Build lookup for meridiems (e.g. AM/PM)
+   * Build lookup for am/pm
    */
   buildMeridiems() {
     const dates = [new Date(2017, 0, 1), new Date(2017, 0, 1, 23, 0, 0)];
@@ -230,12 +225,12 @@ export default class LocaleHelper {
 
   /**
    * Given a list of unit names and matches, build result object
-   * @param {Array} units  Unit names such as "year", "month" and "millisecond"
-   * @param {Array} matches  The values matched by a Format's RegExp
-   * @returns {Object}
+   * @param units  Unit names such as "year", "month" and "millisecond"
+   * @param matches  The values matched by a Format's RegExp
+   * @returns  An object with the units as keys
    */
-  getObject(units, matches) {
-    const object = {};
+  getObject(units: UnitStrings[], matches: string[]): HandlerResult {
+    const object: HandlerResult = {};
     units.forEach((unit, i) => {
       if (!unit) {
         return;
@@ -255,15 +250,15 @@ export default class LocaleHelper {
   }
 
   /**
-   * Take a response object and cast each unit to Number
+   * Take a HandlerResult and cast each unit to Number
    * @param {Object} object  An object with one or more units
    * @returns {Object}  An object with same units but Numeric
    */
-  castObject(object) {
+  castObject(object: HandlerResult) {
     // if (/^bn/.test(this.locale)) {
     // 	console.log({ casting: object });
     // }
-    const casted = {};
+    const casted: HandlerResult = {};
     units.forEach(unit => {
       if (unit in object) {
         casted[unit] = this.toInt(object[unit]);
@@ -279,10 +274,9 @@ export default class LocaleHelper {
 
   /**
    * Convert an offset string to Numeric minutes (e.g. "-0500", "+5", "+03:30")
-   * @param {String} offsetString
-   * @returns {Number}
+   * @param offsetString
    */
-  offsetToMinutes(offsetString) {
+  offsetToMinutes(offsetString: string): number {
     const captured = offsetString.match(/^([+-])(..?):?(..)?$/);
     if (captured) {
       const [, sign, hours, minutes] = captured;
@@ -296,10 +290,9 @@ export default class LocaleHelper {
 
   /**
    * Compile template into a RegExp and return it
-   * @param {String} template  The template string
-   * @returns {RegExp}
+   * @param template  The template string such as (_YEAR_)-(_MONTH_)-(_DAY_)
    */
-  compile(template) {
+  compile(template: string) {
     const regexString = template.replace(/_([A-Z0-9]+)_/g, ($0, $1) => {
       if (!this.vars[$1]) {
         throw new Error(`Template string contains invalid variable _${$1}_`);

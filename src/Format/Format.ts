@@ -157,7 +157,7 @@ export default class Format {
     strDate: string,
     locale: LocaleOrBounds = defaultLocale
   ): HandlerResult {
-    let effectiveLocale = locale;
+    let effectiveLocale: string;
     const bounds = {
       lower: '0001-01-01T00:00:00',
       upper: '9999-12-31T23:59:59',
@@ -167,6 +167,8 @@ export default class Format {
     if (typeof locale === 'object') {
       effectiveLocale = locale.locale || defaultLocale;
       Object.assign(bounds, locale.bounds || {});
+    } else {
+      effectiveLocale = locale;
     }
     strDate = removeFillerWords(String(strDate), locale).trim();
     const matches = this.getMatches(strDate, effectiveLocale);
@@ -193,7 +195,6 @@ export default class Format {
 
   /**
    * Return the current date (used to support unit testing)
-   * @returns {Date}
    */
   now() {
     return new Date();
