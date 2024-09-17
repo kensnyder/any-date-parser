@@ -8,7 +8,7 @@ export const latn = {
   ZONE: '\\(?(' + Object.keys(timezoneNames).join('|') + ')\\)?',
   MERIDIEM: '(am|pm|a.m.|p.m.)',
   ORDINAL: 'st|nd|rd|th|\\.',
-  YEAR: '\\d{4}|\\d{2}|-\\d{6}|\\+?\\d{5,6}',
+  YEAR: '\\d{4}|\\d{2}',
   YEAR4: '\\d{4}',
   YEAR6: '-\\d{6}|\\+?\\d{5,6}',
   MONTH: '1[0-2]|0?[1-9]',
@@ -27,7 +27,7 @@ export const latn = {
 
 export const other = {
   ...latn,
-  YEAR: '*{4}|*{2}|-*{6}|\\+?*{5,6}',
+  YEAR: '*{4}|*{2}',
   YEAR4: '*{4}',
   YEAR6: '-*{6}|\\+?*{5,6}',
   MONTH: '*{1,2}',

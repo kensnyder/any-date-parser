@@ -1,8 +1,3 @@
-// const fillerWords = [
-// 	{ locales: [/^de/], replacements:  },
-// 	{ locales: [/^zh/], replacements: [[/下午([\d:]+)/, '$1pm']] },
-// ];
-
 const fillerWords = {
   zh: [
     // in Chinese, "PM" comes before the digits

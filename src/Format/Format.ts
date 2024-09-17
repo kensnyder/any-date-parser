@@ -170,7 +170,7 @@ export default class Format {
     } else {
       effectiveLocale = locale;
     }
-    strDate = removeFillerWords(String(strDate), locale).trim();
+    strDate = removeFillerWords(String(strDate), effectiveLocale).trim();
     const matches = this.getMatches(strDate, effectiveLocale);
     if (matches) {
       const dt = this.toDateTime(matches, effectiveLocale);

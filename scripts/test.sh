@@ -26,8 +26,8 @@ then
   if ! npm list -g | grep -q 'luxon'
   then
     echo "${GREEN}Attempting to globally install luxon with npm for unit tests...${WHITE}"
-    echo "npm install -g luxon@1"
-    npm install -g luxon@1
+    echo "npm install -g luxon@3"
+    npm install -g luxon@3
   fi
   # make global luxon available to our specs
   export NODE_PATH=$modulesPath

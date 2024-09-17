@@ -102,12 +102,3 @@ describe('fromString with out-of-range values', () => {
     expect(result.toISOString()).toEqual('2020-03-02T00:00:00.000Z');
   });
 });
-
-describe('fromString with 5-plus-digit years', () => {
-  it('should roll over dates like JS', () => {
-    const result = parser.fromString('12024-01-01');
-    expect(result).toBeInstanceOf(Date);
-    // @ts-ignore  If it isn't a date, this test will exit by now
-    expect(result.getFullYear()).toEqual(12024);
-  });
-});
