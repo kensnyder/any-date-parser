@@ -15,20 +15,6 @@ export type HandlerResult = {
   invalid?: string;
 };
 
-export type Bounds = {
-  lower: string;
-  upper: string;
-  inclusive: boolean;
-  strict: boolean;
-};
-
-export type LocaleOrBounds =
-  | string
-  | {
-      locale?: string;
-      bounds?: Bounds;
-    };
-
 /**
  * Represents a parsable date format
  */
@@ -153,44 +139,14 @@ export default class Format {
    * @param locale  The language locale such as en-US, pt-BR, zh, es, etc.
    * @returns {Object|null}  Null if format can't handle this string, Object for result or error
    */
-  attempt(
-    strDate: string,
-    locale: LocaleOrBounds = defaultLocale
-  ): HandlerResult {
-    let effectiveLocale: string;
-    const bounds = {
-      lower: '0001-01-01T00:00:00',
-      upper: '9999-12-31T23:59:59',
-      inclusive: true,
-      strict: false,
-    };
-    if (typeof locale === 'object') {
-      effectiveLocale = locale.locale || defaultLocale;
-      Object.assign(bounds, locale.bounds || {});
-    } else {
-      effectiveLocale = locale;
-    }
-    strDate = removeFillerWords(String(strDate), effectiveLocale).trim();
-    const matches = this.getMatches(strDate, effectiveLocale);
+  attempt(strDate: string, locale = defaultLocale): HandlerResult {
+    strDate = removeFillerWords(String(strDate), locale).trim();
+    const matches = this.getMatches(strDate, locale);
     if (matches) {
-      const dt = this.toDateTime(matches, effectiveLocale);
-      if (dt instanceof Date && !this.isInRange(dt, bounds) && bounds.strict) {
-        const inclusive = bounds.inclusive ? 'inclusive' : 'not inclusive';
-        return {
-          invalid: `Date not in range ${bounds.lower} to ${bounds.upper} ${inclusive}`,
-        };
-      }
+      const dt = this.toDateTime(matches, locale);
       return dt || null;
     }
     return null;
-  }
-
-  isInRange(date: Date, bounds: Bounds) {
-    const dateStr = date.toJSON();
-    if (bounds.inclusive) {
-      return dateStr >= bounds.lower && dateStr <= bounds.upper;
-    }
-    return dateStr > bounds.lower && dateStr < bounds.upper;
   }
 
   /**

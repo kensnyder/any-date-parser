@@ -58,6 +58,7 @@ parser
 Date.fromString = parser.fromString;
 // @ts-expect-error  Yes, we are extending the global Date object
 Date.fromAny = parser.fromAny;
+/* v8 ignore next 4 */
 if (typeof window !== 'undefined') {
   // @ts-expect-error  Yes, we are extending the global window object
   window.anyDateParser = parser;

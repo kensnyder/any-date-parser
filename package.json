@@ -35,8 +35,8 @@
     "build": "npm run build:clean && npm run build:dts && npm run build:esm && npm run build:cjs",
     "build:clean": "rimraf dist/ && mkdir dist",
     "build:dts": "yes | npx dts-bundle-generator -o dist/index.d.ts src/main.ts",
-    "build:esm": "yes | npx esbuild src/main.ts --bundle --platform=node --format=esm --outfile=dist/index.mjs",
-    "build:cjs": "yes | npx esbuild src/main.ts --bundle --platform=node --format=cjs --outfile=dist/index.cjs",
+    "build:esm": "yes | npx esbuild src/main.ts --minify --bundle --platform=node --format=esm --outfile=dist/index.mjs",
+    "build:cjs": "yes | npx esbuild src/main.ts --minify --bundle --platform=node --format=cjs --outfile=dist/index.cjs",
     "coverage": "./scripts/test.sh run --coverage",
     "view-coverage": "open ./coverage/lcov-report/index.html"
   },
@@ -55,7 +55,6 @@
   "homepage": "https://github.com/kensnyder/any-date-parser#readme",
   "devDependencies": {
     "@types/node": "22.5.5",
-    "@vitest/coverage-istanbul": "2.1.1",
     "@vitest/coverage-v8": "2.1.1",
     "eslint": "8.16.0",
     "luxon": "3.5.0",
