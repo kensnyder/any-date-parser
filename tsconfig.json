@@ -18,5 +18,7 @@
   "include": [
     "src/*.ts"
   ],
-  "files": ["index.ts"]
+  "files": [
+    "src/main.ts"
+  ]
 }

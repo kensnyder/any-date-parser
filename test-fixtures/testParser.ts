@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import parser from '../index';
+import parser from '../src/main';
 
 export default function testParser({ name, expected, locales, dates }) {
   describe(name, () => {

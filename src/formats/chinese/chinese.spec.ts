@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import parser from '../../../index';
 import testDates from '../../../test-fixtures/testDates';
+import parser from '../../main';
 
 // latn digits
 testDates({

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import parser from '../../../index';
+import parser from '../../main';
 
 describe('fuzzy', () => {
   it('should handle ignore filler text 1', () => {

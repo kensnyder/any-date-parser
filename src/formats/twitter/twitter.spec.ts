@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import parser from '../../../index';
+import parser from '../../main';
 
 describe('twitter time', () => {
   it('should handle "Fri Apr 09 12:53:54 +0000 2010"', () => {

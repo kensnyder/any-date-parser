@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, it } from 'vitest';
-import parser from '../../../index';
 import Format from '../../Format/Format';
+import parser from '../../main';
 
 describe('now, today, yesterday and tomorrow', () => {
   beforeAll(() => {

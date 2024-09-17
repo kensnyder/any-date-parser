@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import parser from '../../index';
+import parser from '../main';
 import type Parser from '../Parser/Parser';
 import fromString from './fromString';
 

@@ -1,5 +1,5 @@
 import fs from 'fs';
-import parser from '../index';
+import parser from '../src/main';
 import localeList from './localeList';
 
 const date = new Date();

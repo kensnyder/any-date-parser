@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest';
-import parser from '../../../index';
 import localeList from '../../../test-fixtures/localeList';
 import testDates from '../../../test-fixtures/testDates';
+import parser from '../../main';
 
 testDates({
   name: 'day monthname year',

@@ -34,9 +34,9 @@
     "test-watch": "./scripts/test.sh",
     "build": "npm run build:clean && npm run build:dts && npm run build:esm && npm run build:cjs",
     "build:clean": "rimraf dist/ && mkdir dist",
-    "build:dts": "yes | npx dts-bundle-generator -o dist/index.d.ts index.ts",
-    "build:esm": "yes | npx esbuild index.ts --bundle --platform=node --format=esm --outfile=dist/index.mjs",
-    "build:cjs": "yes | npx esbuild index.ts --bundle --platform=node --format=cjs --outfile=dist/index.cjs",
+    "build:dts": "yes | npx dts-bundle-generator -o dist/index.d.ts src/main.ts",
+    "build:esm": "yes | npx esbuild src/main.ts --bundle --platform=node --format=esm --outfile=dist/index.mjs",
+    "build:cjs": "yes | npx esbuild src/main.ts --bundle --platform=node --format=cjs --outfile=dist/index.cjs",
     "coverage": "./scripts/test.sh run --coverage",
     "view-coverage": "open ./coverage/lcov-report/index.html"
   },

@@ -1,6 +1,6 @@
 import { DateTime, FixedOffsetZone, VERSION } from 'luxon';
 import { describe, expect, it } from 'vitest';
-import parser from '../index';
+import parser from '../src/main';
 
 export default function testDates({ name, formats, expected, locales }) {
   for (const locale of locales) {

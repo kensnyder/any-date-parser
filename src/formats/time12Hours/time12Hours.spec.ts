@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import parser from '../../../index';
+import parser from '../../main';
 
 describe('12 hour time', () => {
   it('should handle hours: "8pm"', () => {
