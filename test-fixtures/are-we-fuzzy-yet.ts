@@ -5,7 +5,7 @@ import localeList from './localeList';
 
 const parser = new Parser();
 parser.addFormat(fuzzy);
-const date = new Date(2020, 0, 31, 12, 34, 56, 789);
+const date = new Date(2020, 0, 31, 1, 31, 20, 789);
 const results = [`Using date ${date.toJSON()}`];
 const today = toMDY(date);
 console.log({ today });
@@ -44,9 +44,9 @@ for (const locale of localeList) {
         year: 2020,
         month: 1,
         day: 31,
-        hour: 12,
-        minute: 34,
-        second: 56,
+        hour: 1,
+        minute: 31,
+        second: 20,
       }
     );
     testIt(
@@ -57,8 +57,8 @@ for (const locale of localeList) {
         year: 2020,
         month: 1,
         day: 31,
-        hour: 12,
-        minute: 34,
+        hour: 1,
+        minute: 31,
       }
     );
     testIt(
@@ -69,7 +69,7 @@ for (const locale of localeList) {
         year: 2020,
         month: 1,
         day: 31,
-        hour: 12,
+        hour: 1,
       }
     );
   }

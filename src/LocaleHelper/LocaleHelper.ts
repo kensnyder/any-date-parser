@@ -82,9 +82,9 @@ export default class LocaleHelper {
       this.buildDaynames();
       this.buildMeridiems();
     }
-    if (this.locale === 'bn-IN') {
-      console.log('lookups=====>', this);
-    }
+    // if (this.locale === 'bn-IN') {
+    //   console.log('lookups=====>', this);
+    // }
   }
 
   /**

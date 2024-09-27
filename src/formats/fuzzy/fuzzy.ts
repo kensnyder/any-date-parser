@@ -9,7 +9,7 @@ export function getExtractors(locale: string) {
     extractorsByLocale[locale] = [
       {
         name: 'zonename',
-        regex: helper.compile('\\b(_ZONE_)\\b'),
+        regex: helper.compile('(_ZONE_)'),
         handler: ([zoneName]) => {
           return { offset: helper.lookups.zone[zoneName] };
         },
@@ -54,6 +54,17 @@ export function getExtractors(locale: string) {
             result.millisecond = helper.toInt(ms);
           }
           return result;
+        },
+      },
+      {
+        name: 'time12noMeridiem',
+        regex: helper.compile('(_H12_):(_MIN_)(?::(_SEC_))?'),
+        handler: ([, hour, min, second]) => {
+          return {
+            hour: helper.toInt(hour),
+            minute: min ? helper.toInt(min) : 0,
+            second: second ? helper.toInt(second) : 0,
+          };
         },
       },
       {
@@ -122,6 +133,10 @@ export function getExtractors(locale: string) {
       //   },
       // },
     ];
+    // if (locale === 'es-ES') {
+    //   console.log(extractorsByLocale[locale][1]);
+    //   console.log(extractorsByLocale[locale][2]);
+    // }
   }
   return extractorsByLocale[locale];
 }
@@ -135,28 +150,26 @@ const fuzzy = new Format({
     for (const extractor of getExtractors(locale)) {
       const match = workingString.match(extractor.regex);
       if (!match) {
-        if (
-          locale === 'bn-IN' &&
-          fullString === 'শুক্রবার, ৩১ জানুয়ারী, ২০২০ এ ১২:৩৪:৫৬ PM'
-        ) {
-          console.log({
-            workingString,
-            name: extractor.name,
-            regex: extractor.regex,
-            result,
-          });
-        }
+        // if (
+        //   locale === 'bn-IN' &&
+        //   fullString === 'শুক্রবার, ৩১ জানুয়ারী, ২০২০ এ ১২:৩৪:৫৬ PM'
+        // ) {
+        //   console.log({
+        //     workingString,
+        //     name: extractor.name,
+        //     regex: extractor.regex,
+        //     result,
+        //   });
+        // }
         continue;
       }
       const handled = extractor.handler(match, result);
       if (typeof handled === 'object') {
         Object.assign(result, handled);
         workingString = workingString.replace(match[0], '');
-        if (
-          locale === 'bn-IN' &&
-          fullString === 'শুক্রবার, ৩১ জানুয়ারী, ২০২০ এ ১২:৩৪:৫৬ PM'
-        ) {
+        if (locale === 'ko-KR' && !fullString.includes('UTC')) {
           console.log({
+            fullString,
             workingString,
             name: extractor.name,
             regex: extractor.regex,
@@ -171,6 +184,7 @@ const fuzzy = new Format({
     if (!hasMatch) {
       return null;
     }
+    if (locale === 'ko-KR') console.log('-----');
     return result;
   },
 });
