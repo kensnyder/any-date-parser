@@ -4,12 +4,6 @@ import type Parser from '../Parser/Parser';
 import fromString from './fromString';
 
 describe('fromString with spies', () => {
-  it('should return invalid dates', () => {
-    const invalid = { invalid: 'foo' };
-    const parser = { attempt: vi.fn(() => invalid) } as unknown as Parser;
-    const fromFn = fromString(parser);
-    expect(fromFn('')).toEqual(invalid);
-  });
   it('should reset all but day', () => {
     const result = { year: 2020, month: 4, day: 15 };
     const parser = { attempt: vi.fn(() => result) } as unknown as Parser;
@@ -100,5 +94,41 @@ describe('fromString with out-of-range values', () => {
     expect(result).toBeInstanceOf(Date);
     // @ts-ignore  If it isn't a date, this test will exit by now
     expect(result.toISOString()).toEqual('2020-03-02T00:00:00.000Z');
+  });
+});
+
+describe('fromString with invalid date', () => {
+  it('should handle invalid string', () => {
+    const result = parser.fromString('moo 4 internet');
+    expect(result.isValid()).toBe(false);
+    expect(result.invalid).toContain('parse');
+  });
+  it('should handle empty string', () => {
+    const result = parser.fromString('');
+    expect(result.isValid()).toBe(false);
+    expect(result.invalid).toContain('parse');
+  });
+  it('should consider NaN invalid', () => {
+    // @ts-expect-error  Invalid args for test
+    const result = parser.fromString(NaN);
+    expect(result.isValid()).toBe(false);
+    expect(result.invalid).toContain('parse');
+  });
+  it('should consider a Number invalid', () => {
+    // @ts-expect-error  Invalid args for test
+    const result = parser.fromString(5);
+    expect(result.isValid()).toBe(false);
+    expect(result.invalid).toContain('parse');
+  });
+  it('should consider undefined invalid', () => {
+    const result = parser.fromString(undefined);
+    expect(result.isValid()).toBe(false);
+    expect(result.invalid).toContain('parse');
+  });
+  it('should consider an object invalid', () => {
+    // @ts-expect-error  Invalid args for test
+    const result = parser.fromString({});
+    expect(result.isValid()).toBe(false);
+    expect(result.invalid).toContain('parse');
   });
 });

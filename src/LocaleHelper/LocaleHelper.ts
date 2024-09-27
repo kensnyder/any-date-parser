@@ -49,16 +49,6 @@ export default class LocaleHelper {
     const fmt = new Intl.NumberFormat(this.locale);
     this.numberingSystem = fmt.resolvedOptions().numberingSystem;
     this.build();
-    if (locale.startsWith('bnz')) {
-      console.log({
-        locale,
-        vars: this.vars,
-        numberingSystem: this.numberingSystem,
-        month: this.lookups.month,
-        dayname: this.lookups.dayname,
-        digit: this.lookups.digit,
-      });
-    }
   }
 
   /**
@@ -91,6 +81,9 @@ export default class LocaleHelper {
       this.buildMonthNames();
       this.buildDaynames();
       this.buildMeridiems();
+    }
+    if (this.locale === 'bn-IN') {
+      console.log('lookups=====>', this);
     }
   }
 
@@ -138,6 +131,10 @@ export default class LocaleHelper {
         for (let monthIdx = 0; monthIdx < 12; monthIdx++) {
           const parts = format.formatToParts(dates[monthIdx]);
           let text = parts.find(findMonth).value.toLocaleLowerCase(this.locale);
+          if (/^\d+$/.test(text)) {
+            // don't consider digits as month names
+            continue;
+          }
           if (/^ko/i.test(this.locale)) {
             // Korean word for month is sometimes used
             text += '월';
@@ -251,13 +248,10 @@ export default class LocaleHelper {
 
   /**
    * Take a HandlerResult and cast each unit to Number
-   * @param {Object} object  An object with one or more units
-   * @returns {Object}  An object with same units but Numeric
+   * @param object  An object with one or more units
+   * @returns  An object with same units but Numeric
    */
-  castObject(object: HandlerResult) {
-    // if (/^bn/.test(this.locale)) {
-    // 	console.log({ casting: object });
-    // }
+  castObject(object: HandlerResult): HandlerResult {
     const casted: HandlerResult = {};
     units.forEach(unit => {
       if (unit in object) {
@@ -299,12 +293,6 @@ export default class LocaleHelper {
       }
       return this.vars[$1];
     });
-    // if (
-    // 	/^bnz/i.test(this.locale) ||
-    // 	template === '^(_DAY_)(_GAP_)(_MONTH_)\\2(_YEAR_)$'
-    // ) {
-    // 	console.log([this.locale, template, new RegExp(regexString, 'i')]);
-    // }
     return new RegExp(regexString, 'i');
   }
 }

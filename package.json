@@ -32,6 +32,7 @@
     "demo": "npm run build && npx serve -p 5050 .",
     "test": "./scripts/test.sh run",
     "test-watch": "./scripts/test.sh",
+    "test-fuzzy": "bun ./test-fixtures/are-we-fuzzy-yet.ts",
     "build": "npm run build:clean && npm run build:dts && npm run build:esm && npm run build:cjs",
     "build:clean": "rimraf dist/ && mkdir dist",
     "build:dts": "yes | npx dts-bundle-generator -o dist/index.d.ts src/main.ts",

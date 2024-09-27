@@ -6,7 +6,8 @@ describe('fromAny', () => {
     const spy = vi.fn();
     const fromFn = fromAny(spy);
     const now = new Date();
-    expect(fromFn(now)).toBe(now);
+    const actual = fromFn(now);
+    expect(+actual).toBe(+now);
     expect(spy).not.toHaveBeenCalled();
   });
   it('should return milliseconds as Date object', () => {

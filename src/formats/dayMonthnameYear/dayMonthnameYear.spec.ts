@@ -6,7 +6,7 @@ import parser from '../../main';
 testDates({
   name: 'day monthname year',
   expected: { year: 2020, month: 1, day: 1 },
-  // ar and zh do not have a monthname
+  // ar,zh,he do not have a monthname
   locales: localeList.filter(l => !/^ar|zh|he/.test(l)),
   formats: [
     'cccc, dd MMMM yyyy',

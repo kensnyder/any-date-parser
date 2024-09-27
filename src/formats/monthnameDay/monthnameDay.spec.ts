@@ -4,6 +4,7 @@ import testDates from '../../../test-fixtures/testDates';
 testDates({
   name: 'monthname day',
   expected: { month: 6, day: 28 },
+  // ar,zh do not have a monthname
   locales: localeList.filter(l => !/^ar|zh/.test(l)),
   formats: [
     'cccc, MMMM dd',

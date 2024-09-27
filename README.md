@@ -1,17 +1,18 @@
 # any-date-parser
 
-[![NPM Link](https://badgen.net/npm/v/any-date-parser?v=1.6.0)](https://npmjs.com/package/any-date-parser)
-[![Language](https://badgen.net/static/language/TS?v=1.6.0)](https://github.com/search?q=repo:kensnyder/any-date-parser++language:TypeScript&type=code)
-[![Build Status](https://github.com/kensnyder/any-date-parser/actions/workflows/workflow.yml/badge.svg?v=1.6.0)](https://github.com/kensnyder/any-date-parser/actions)
-[![Code Coverage](https://codecov.io/gh/kensnyder/any-date-parser/branch/main/graph/badge.svg?v=1.6.0)](https://codecov.io/gh/kensnyder/any-date-parser)
-[![Gzipped Size](https://badgen.net/bundlephobia/minzip/any-date-parser?label=minzipped&v=1.6.0)](https://bundlephobia.com/package/any-date-parser@1.6.0)
-[![Dependency details](https://badgen.net/bundlephobia/dependency-count/any-date-parser?v=1.6.0)](https://www.npmjs.com/package/any-date-parser?activeTab=dependencies)
-[![Tree shakeable](https://badgen.net/bundlephobia/tree-shaking/any-date-parser?v=1.6.0)](https://www.npmjs.com/package/any-date-parser)
-[![ISC License](https://badgen.net/github/license/kensnyder/any-date-parser?v=1.6.0)](https://opensource.org/licenses/ISC)
+[![NPM Link](https://badgen.net/npm/v/any-date-parser?v=2.0.0)](https://npmjs.com/package/any-date-parser)
+[![Language](https://badgen.net/static/language/TS?v=2.0.0)](https://github.com/search?q=repo:kensnyder/any-date-parser++language:TypeScript&type=code)
+[![Build Status](https://github.com/kensnyder/any-date-parser/actions/workflows/workflow.yml/badge.svg?v=2.0.0)](https://github.com/kensnyder/any-date-parser/actions)
+[![Code Coverage](https://codecov.io/gh/kensnyder/any-date-parser/branch/main/graph/badge.svg?v=2.0.0)](https://codecov.io/gh/kensnyder/any-date-parser)
+[![Gzipped Size](https://badgen.net/bundlephobia/minzip/any-date-parser?label=minzipped&v=2.0.0)](https://bundlephobia.com/package/any-date-parser@2.0.0)
+[![Dependency details](https://badgen.net/bundlephobia/dependency-count/any-date-parser?v=2.0.0)](https://www.npmjs.com/package/any-date-parser?activeTab=dependencies)
+[![Tree shakeable](https://badgen.net/bundlephobia/tree-shaking/any-date-parser?v=2.0.0)](https://www.npmjs.com/package/any-date-parser)
+[![ISC License](https://badgen.net/github/license/kensnyder/any-date-parser?v=2.0.0)](https://opensource.org/licenses/ISC)
 
 Parse a wide range of date formats including human-input dates.
 
-Supports Node and browsers. Uses `Intl` to provide parsing support for all installed locales.
+Supports Node and browsers. Uses `Intl` to provide parsing support for all
+installed locales.
 
 ## Installation
 
@@ -20,11 +21,12 @@ Supports Node and browsers. Uses `Intl` to provide parsing support for all insta
 OR
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/any-date-parser@1.6.0/dist/browser-bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/any-date-parser@2.0.0/dist/browser-bundle.js"></script>
 ```
 
 ## Table of Contents
 
+1. [Breaking changes](#breaking-changes)
 1. [Motivation](#motivation)
 1. [Usage](#usage)
 1. [Supported formats](#supported-formats)
@@ -34,6 +36,20 @@ OR
 1. [Creating a custom parser](#creating-a-custom-parser)
 1. [Unit tests](#unit-tests)
 1. [Contributing](#contributing)
+
+## Breaking changes
+
+### Upgrading from v1 => v2
+
+- `fromString` and `fromAny` now return a `MaybeValidDate` instance that is a
+  subclass of `Date`. Previously, they returned `Date | { invalid: string; }`.
+  `MaybeValidDate` has an `invalid` property if invalid, and an `isValid()`
+  function whether valid or not. If in v1 you simply checked for an `invalid`
+  property, v2 will behave the same.
+- If an input string does not match any known format, it will use the current
+  locale and `Intl.DateTimeFormat` to attempt a fuzzy match. This allows
+  matching on every locale, i.e. for every date format known to the JavaScript
+  engine.
 
 ## Motivation
 
@@ -57,7 +73,7 @@ There are three ways to use any-date-parser:
 Example:
 
 ```ts
-require('any-date-parser');
+import 'any-date-parser';
 Date.fromString('2020-10-15');
 // same as new Date(2020, 9, 15, 0, 0, 0, 0)
 ```
@@ -72,17 +88,21 @@ Date.fromString('2020-10-15');
 Example:
 
 ```ts
-const parser = require('any-date-parser');
+import parser from 'any-date-parser';
 parser.fromString('2020-10-15');
 // same as new Date(2020, 9, 15, 0, 0, 0, 0)
 ```
 
-3.) It also exports `parser` with function `parser.attempt(string, locale)` that
+3.) `parser` also has a function `parser.attempt(string, locale)` that
 returns an object with one or more integer values for the following keys: year,
-month, day, hour, minute, second, millisecond, offset. Example:
+month, day, hour, minute, second, millisecond, offset. _Note_ month is returned
+as a normal 1-based integer, not the 0-based integer the `Date()` constructor
+uses.
+
+Examples:
 
 ```ts
-const parser = require('any-date-parser');
+import parser from 'any-date-parser';
 parser.attempt('15 Oct 2020 at 6pm');
 /* returns:
 {
@@ -91,6 +111,24 @@ parser.attempt('15 Oct 2020 at 6pm');
   day: 15,
   hour: 18,
 }
+*/
+
+parser.attempt('Oct 15');
+/* returns:
+{
+  month: 10,
+  day: 15,
+}
+*/
+
+parser.attempt('Hello world');
+/* returns:
+{ invalid: 'Unable to parse "Hello World"' }
+*/
+
+parser.attempt('');
+/* returns:
+{ invalid: 'Unable to parse "(empty string)"' }
 */
 ```
 
@@ -118,24 +156,44 @@ Summary:
 - +/-/ago periods
 - now/today/yesterday/tomorrow
 - Twitter
+- Fuzzy
 
 [Exhaustive list of date formats](#exhaustive-list-of-date-formats)
 
 ## Locale Support
 
-any-date-parser supports any locale that your runtime's `Intl` (ECMAScript
-Internationalization API) supports. In browsers that usually means the operating
-system language. In Node, that means the compiled language or the icu modules
-included. For unit tests, this library uses the
-[full-icu](https://npmjs.com/package/full-icu) npm package to make all locales
-available. That package is heavy and is not included as a dependency.
+any-date-parser supports any locale that your runtime's
+[Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat)
+supports. In browsers that usually means the operating system language. In Node,
+that means the compiled language or the icu modules included. For unit tests,
+this library uses the [full-icu](https://npmjs.com/package/full-icu) npm package
+to make all locales available. That package is heavy and is not included as a
+dependency.
+
+This means support for international formats such as:
+
+- `es-MX` - `viernes, 27 de septiembre de 2024, 10:39:50 a.m. GMT-6`
+- `bn-BD` - `শুক্রবার, ২৭ সেপ্টেম্বর, ২০২৪ এ ১০:৩৬:১০ AM GMT -৬`
+- `ar-SA` - `الجمعة، ٢٤ ربيع الأول ١٤٤٦ هـ في ١٠:٣٧:٢٧ ص غرينتش-٦`
+- `el-GR` - `Παρασκευή 27 Σεπτεμβρίου 2024 στις 10:38:16 π.μ. GMT-6`
+- `he-IL` - `יום שישי, 27 בספטמבר 2024 בשעה 10:38:53 GMT-6`
+- `hi-IN` - `शुक्रवार, 27 सितंबर 2024 को 10:39:13 am GMT-6 बजे`
+- `th-TH` - `วันศุกร์ที่ 27 กันยายน พ.ศ. 2567 เวลา 10 นาฬิกา 40 นาที 28 วินาที GMT-6`
+- `ta-IN` - `வெள்ளி, 27 செப்டம்பர், 2024 அன்று 10:43:05 AM GMT-6`
+- `hu-HU` - `2024. szeptember 27., péntek 10:44:41 GMT-6`
+
+_Note_: For locales that use the Buddhist year (such as `th-TH`),
+any-date-parser automatically subtracts 543 years to normalize it to the
+Gregorian Calendar year.
 
 ## Limitations
 
-Support for parsing right-to-left languages like arabic and hebrew is limited
-due to my unfamiliarity with using RegExp with right-to-left text.
-
-Dates with years before 1000 must have 4 digits, i.e. leading zeros.
+- Dates with years before 1000 must have 4 digits, i.e. leading zeros.
+- any-date-parser cannot parse Dates before 1000 or after 9999 though JavaScript
+  support is only limited where milliseconds is between
+  `-8640000000000000 through 8640000000000000`, which allows a range of
+  `-271821-04-20T00:00:00.000Z through +275760-09-13T00:00:00.000Z`.
+- Only English timezone names are supported
 
 ## Adding custom formats
 
@@ -156,8 +214,7 @@ Second, parsers must have `units` or `handler`.
 ### Example 1: matcher + units
 
 ```ts
-const parser,
-  { Format } = require('any-date-parser');
+import parser, { Format } from 'any-date-parser';
 
 parser.addFormat(
   new Format({
@@ -175,12 +232,11 @@ or Bengali. To support those you can use the `template` option given in
 ### Example 2: matcher + handler
 
 ```ts
-const parser,
-  { Format } = require('any-date-parser');
+import parser, { Format } from 'any-date-parser';
 
 parser.addFormat(
   new Format({
-    matcher: /^Q([1-4]) (\d{4})$/,
+    matcher: /^Q([1-4]) (\d{4})$/, // String such as "Q4 2004"
     handler: function ([, quarter, year]) {
       const monthByQuarter = { 1: 1, 2: 4, 3: 7, 4: 10 };
       const month = monthByQuarter[quarter];
@@ -193,8 +249,7 @@ parser.addFormat(
 ### Example 3: template + units
 
 ```ts
-const parser,
-  { Format } = require('any-date-parser');
+import parser, { Format } from 'any-date-parser';
 
 parser.addFormat(
   new Format({
@@ -207,12 +262,11 @@ parser.addFormat(
 ### Example 4: template + handler
 
 ```ts
-const parser,
-  { Format } = require('any-date-parser');
+import parser, { Format } from 'any-date-parser';
 
 parser.addFormat(
   new Format({
-    template: '^Q([1-4]) (_YEAR_)$',
+    template: '^Q([1-4]) (_YEAR_)$', // String such as "Q4 2004"
     handler: function ([, quarter, year]) {
       const monthByQuarter = { 1: 1, 2: 4, 3: 7, 4: 10 };
       const month = monthByQuarter[quarter];
@@ -227,11 +281,37 @@ parser.addFormat(
 To remove support for a certain format, use `removeFormat()`
 
 ```ts
-const parser = require('any-date-parser');
-const dayMonth = require('any-date-parser/src/formats/dayMonth/dayMonth.js');
+import parser, { dayMonth, fuzzy } from 'any-date-parser';
+import dayMonth from 'any-date-parser';
 
 parser.removeFormat(dayMonth);
+parser.removeFormat(fuzzy);
 ```
+
+All formats names:
+
+- `time24Hours`
+- `time12Hours`
+- `yearMonthDayWithDots`
+- `yearMonthDay`
+- `dayMonthnameYear`
+- `monthnameDayYear`
+- `monthDayYear`
+- `dayMonthYear`
+- `chinese`
+- `korean`
+- `twitter`
+- `today`
+- `ago`
+- `monthnameDay`
+- `dayMonthname`
+- `monthDay`
+- `dayMonth`
+- `yearMonthnameDay`
+- `yearMonthDayWithSlashes`
+- `atSeconds`
+- `microsoftJson`
+- `fuzzy`
 
 ### Creating a custom parser
 
@@ -239,36 +319,31 @@ To create a new parser with a limited list of formats or your own custom
 formats, use `new Parser`
 
 ```ts
-const { Parser } = require('any-date-parser');
-const time24Hours = require('any-date-parser/src/formats/time24Hours/time24Hours.js');
-const yearMonthDay = require('any-date-parser/src/formats/yearMonthDay/yearMonthDay.js');
-const ago = require('any-date-parser/src/formats/ago/ago.js');
+import { Parser, time24Hours, yearMonthDay, ago } from 'any-date-parser';
 
-const parser = new Parser();
-parser.addFormats([time24Hours, yearMonthDay, ago]);
+const myParser = new Parser();
+myParser.addFormats([time24Hours, yearMonthDay, ago]);
 ```
 
 You can convert your custom parser to a function. For example:
 
 ```ts
-const { Parser } = require('any-date-parser');
-const parser = new Parser();
+import { Parser, time24Hours, yearMonthDay, ago } from 'any-date-parser';
+const myParser = new Parser();
 // ....
-parser.addFormats(/*...*/);
+myParser.addFormats(/*...*/);
 // Pass locale if you want to override the detected default
-Date.fromString = parser.exportAsFunction();
-Date.fromAny = parser.exportAsFunctionAny();
+Date.fromString = myParser.exportAsFunction();
+Date.fromAny = myParser.exportAsFunctionAny();
 ```
 
 ## Unit tests
 
 `any-date-parser` has 100% code coverage.
 
-### Testing
-
 - To run tests, run `npm test`
 - To check coverage, run `npm run coverage`
-- _Note_ - npm test will attempt to install full-icu and luxon globally if not
+- _Note_ - `npm test` will attempt to install full-icu and luxon globally if not
   present
 
 ## Contributing
@@ -405,3 +480,8 @@ chinese
 - `2020年9月26日`
 - `2020 年 9 月 26 日`
 - `２０１７年０８月３１日`
+
+fuzzy (some examples)
+
+- `On Wed 8 March in the year 2020`
+- `In 1929, the stock market crashed on October 29`

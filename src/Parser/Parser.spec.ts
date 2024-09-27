@@ -19,7 +19,7 @@ describe('Parser', () => {
     expect(format.parser).toBe(null);
     expect(parser.formats).toEqual([]);
   });
-  it('should fail to remove unadded format', () => {
+  it('should fail to remove unknown format', () => {
     const format = {} as Format;
     const parser = new Parser();
     const result = parser.removeFormat(format);

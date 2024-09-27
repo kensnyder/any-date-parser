@@ -1,18 +1,18 @@
-import type { DateOrInvalid } from '../fromString/fromString';
+import { MaybeValidDate } from '../MaybeValidDate/MaybeValidDate';
 
 export default function fromAny(
-  fromString: (str: string, locale?: string) => DateOrInvalid,
+  fromString: (str: string, locale?: string) => MaybeValidDate,
   defaultLocale?: string
 ) {
   return function fromAnyFunction(
     any: string | number | Date,
     locale = defaultLocale
-  ): DateOrInvalid {
+  ): MaybeValidDate {
     if (any instanceof Date) {
-      return any;
+      return new MaybeValidDate(any.valueOf());
     }
     if (typeof any === 'number') {
-      return new Date(any);
+      return new MaybeValidDate(any);
     }
     return fromString(any, locale);
   };

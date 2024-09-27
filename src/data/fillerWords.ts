@@ -1,25 +1,25 @@
 const fillerWords = {
   zh: [
     // in Chinese, "PM" comes before the digits
-    [/下午([\d:]+)/, '$1pm'],
+    [/下午([\d:]+)/, '$1下午'],
     // Chinese "time"
     [/\[.+?時間]/, ''],
   ],
-  he: [[/ב/g, '']],
+  he: [[/ב/gi, '']],
   // "of" in various languages
-  de: [[/ um /, '']],
-  pt: [[/de /g, '']],
-  es: [[/de /g, '']],
-  da: [[/den /g, '']],
+  // de: [[/ um /g, '']],
+  // pt: [[/de /gi, '']],
+  // es: [[/de /gi, '']],
+  // da: [[/den /gi, '']],
   // Russian symbol after years
   ru: [[/ г\./g, '']],
   th: [
     // Thai "at/on"
-    [/ที่/g, ''],
+    [/ที่/gi, ''],
     // Thai Buddhist Calendar is 543 years ahead
     [
-      /พ.ศ.?(\d{4})/,
-      ($0, year) => {
+      /พ.ศ.?(\d{4})/i,
+      (_, year) => {
         let intYear = parseInt(year, 10);
         intYear -= 543;
         return String(intYear);
@@ -35,6 +35,14 @@ const fillerWords = {
         return String(intYear);
       },
     ],
+    [/\s*นาฬิกา\s*/i, ':'], // "hour"
+    [/\s*นาที\s*/i, ':'], // "minute"
+    [/\s*วินาที\s*/i, ':'], // "second"
+  ],
+  ko: [
+    [/\s*시\s*/, ':'], // "hour"
+    [/\s*분\s*/, ':'], // "minute"
+    [/\s*초\s*/, ':'], // "second"
   ],
 };
 

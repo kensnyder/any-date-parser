@@ -1,3 +1,5 @@
+import timezoneNames from './data/timezoneNames';
+import { MaybeValidDate } from './MaybeValidDate/MaybeValidDate';
 import Parser from './Parser/Parser';
 // import our formats
 import ago from './formats/ago/ago';
@@ -55,9 +57,9 @@ parser
 
 // create functions on Date and window
 // @ts-expect-error  Yes, we are extending the global Date object
-Date.fromString = parser.fromString;
+Date.fromString = MaybeValidDate.fromString = parser.fromString;
 // @ts-expect-error  Yes, we are extending the global Date object
-Date.fromAny = parser.fromAny;
+Date.fromAny = MaybeValidDate.fromAny = parser.fromAny;
 /* v8 ignore next 4 */
 if (typeof window !== 'undefined') {
   // @ts-expect-error  Yes, we are extending the global window object
@@ -66,3 +68,31 @@ if (typeof window !== 'undefined') {
 
 // export our default parser
 export default parser;
+
+export {
+  ago,
+  atSeconds,
+  chinese,
+  dayMonth,
+  dayMonthname,
+  dayMonthnameYear,
+  dayMonthYear,
+  fuzzy,
+  korean,
+  MaybeValidDate,
+  microsoftJson,
+  monthDay,
+  monthDayYear,
+  monthnameDay,
+  monthnameDayYear,
+  Parser,
+  time12Hours,
+  time24Hours,
+  timezoneNames,
+  today,
+  twitter,
+  yearMonthDay,
+  yearMonthDayWithDots,
+  yearMonthDayWithSlashes,
+  yearMonthnameDay,
+};

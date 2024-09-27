@@ -70,6 +70,7 @@ export default class Parser {
    * @returns
    */
   attempt(dateStr: string, locale = defaultLocale): HandlerResult {
+    dateStr = dateStr.trim();
     for (const format of this.formats) {
       if (
         Array.isArray(format.locales) &&

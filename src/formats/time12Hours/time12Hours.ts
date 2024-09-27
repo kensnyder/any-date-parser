@@ -4,7 +4,10 @@ import LocaleHelper from '../../LocaleHelper/LocaleHelper';
 function getTime({ hour, minute, second, ampm, locale }) {
   const helper = LocaleHelper.factory(locale);
   const meridiemOffset = helper.lookups.meridiem[ampm?.toLowerCase()] || 0;
-  let hourInt = helper.toInt(hour) + meridiemOffset;
+  let hourInt = helper.toInt(hour);
+  if (hourInt < 12 && meridiemOffset === 12) {
+    hourInt += 12;
+  }
   return {
     hour: hourInt,
     minute: minute ? helper.toInt(minute) : 0,
