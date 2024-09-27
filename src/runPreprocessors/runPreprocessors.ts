@@ -1,9 +1,9 @@
-import fillerWords from '../data/fillerWords';
+import preprocessors from '../data/preprocessors';
 
-export default function removeFillerWords(dateString: string, locale: string) {
+export default function runPreprocessors(dateString: string, locale: string) {
   // dateString = dateString.replace(/\. /g, ' ');
   const twoLetterLocale = locale.slice(0, 2).toLowerCase();
-  const replacers = fillerWords[twoLetterLocale];
+  const replacers = preprocessors[twoLetterLocale];
   if (!replacers) {
     return dateString;
   }

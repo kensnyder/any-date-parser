@@ -4,7 +4,7 @@ const periodsInsteadOfColons = [
   [/(\d{1,2})\.(\d{2})(\D|$)/, '$1:$2$3'],
 ];
 
-const fillerWords = {
+const preprocessors = {
   zh: [
     // in Chinese, "PM" comes before the digits
     [/下午([\d:]+)/, '$1下午'],
@@ -57,4 +57,4 @@ const fillerWords = {
   da: periodsInsteadOfColons,
 };
 
-export default fillerWords;
+export default preprocessors;

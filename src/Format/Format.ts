@@ -1,7 +1,7 @@
 import LocaleHelper from '../LocaleHelper/LocaleHelper';
 import Parser from '../Parser/Parser';
 import defaultLocale from '../data/defaultLocale';
-import removeFillerWords from '../removeFillerWords/removeFillerWords';
+import runPreprocessors from '../runPreprocessors/runPreprocessors';
 
 export type HandlerResult = {
   year?: number;
@@ -140,7 +140,7 @@ export default class Format {
    * @returns {Object|null}  Null if format can't handle this string, Object for result or error
    */
   attempt(strDate: string, locale = defaultLocale): HandlerResult {
-    strDate = removeFillerWords(String(strDate), locale).trim();
+    strDate = runPreprocessors(String(strDate), locale).trim();
     const matches = this.getMatches(strDate, locale);
     if (matches) {
       const dt = this.toDateTime(matches, locale);
