@@ -10,40 +10,32 @@ const results = [`Using date ${date.toJSON()}`];
 const today = toMDY(date);
 console.log({ today });
 const dateStyles = ['full', 'long', 'medium'] as const;
-const timeStyles = ['long', 'medium', 'short'] as const;
-const dayPeriods = ['narrow', 'short', 'long'] as const;
 let i = 0;
 let found = 0;
 for (const locale of localeList) {
-  // if (/^ar|he/.test(locale)) {
-  //   // skip right-to-left languages
-  //   continue;
-  // }
-  if (/^ar/.test(locale)) {
-    // skip arabic for now
-    continue;
-  }
-  const fmt = new Intl.NumberFormat(locale);
-  const numberSystem = fmt.resolvedOptions().numberingSystem;
-  for (const dateStyle of dateStyles) {
-    testIt(
-      locale,
-      numberSystem,
-      { dateStyle },
+  const ymd = /^ar/.test(locale)
+    ? // hijri calendar
+      {
+        year: 1441,
+        month: 3,
+        day: 6,
+      }
+    : // gregorian calendar
       {
         year: 2020,
         month: 1,
         day: 31,
-      }
-    );
+      };
+  const fmt = new Intl.NumberFormat(locale);
+  const numberSystem = fmt.resolvedOptions().numberingSystem;
+  for (const dateStyle of dateStyles) {
+    testIt(locale, numberSystem, { dateStyle }, ymd);
     testIt(
       locale,
       numberSystem,
       { dateStyle, timeStyle: 'long', timeZone: 'UTC' },
       {
-        year: 2020,
-        month: 1,
-        day: 31,
+        ...ymd,
         hour: 1,
         minute: 31,
         second: 20,
@@ -54,9 +46,7 @@ for (const locale of localeList) {
       numberSystem,
       { dateStyle, timeStyle: 'medium', timeZone: 'UTC' },
       {
-        year: 2020,
-        month: 1,
-        day: 31,
+        ...ymd,
         hour: 1,
         minute: 31,
       }
@@ -66,9 +56,7 @@ for (const locale of localeList) {
       numberSystem,
       { dateStyle, timeStyle: 'short', timeZone: 'UTC' },
       {
-        year: 2020,
-        month: 1,
-        day: 31,
+        ...ymd,
         hour: 1,
       }
     );
@@ -113,7 +101,7 @@ function doesOverlap(
   return true;
 }
 
-function toMDY(d) {
+function toMDY(d: Date | { year: number; month: number; day: number }) {
   if (d instanceof Date) {
     return [d.getFullYear(), pad(d.getMonth() + 1), pad(d.getDate())].join('-');
   }
@@ -123,18 +111,8 @@ function toMDY(d) {
   return [d.year, pad(d.month), pad(d.day)].join('-');
 }
 
-function pad(n) {
+function pad(n: number) {
   return (n > 9 ? '' : '0') + n;
 }
 
 console.log(`Parsed ${found}/${i} dates ok`);
-//
-// function log(locale, dateString) {
-// 	i++;
-// 	const result = parser.attempt(dateString, locale);
-// 	if (result.invalid) {
-// 		// console.log(`${i} [${locale}]  ${dateString} - ${result.invalid}`);
-// 	} else {
-// 		found++;
-// 	}
-// }

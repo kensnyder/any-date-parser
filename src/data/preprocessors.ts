@@ -5,9 +5,12 @@ const periodsInsteadOfColons = [
 ];
 
 const preprocessors = {
+  ar: [[/ /g, ' ']], // RegExp contains non-breaking space
   zh: [
-    // in Chinese, "PM" comes before the digits
-    [/下午([\d:]+)/, '$1下午'],
+    // in Chinese, am/pm comes before the digits
+    [/早上\s*([\d:]+)/, '$1am'],
+    [/上午\s*([\d:]+)/, '$1am'],
+    [/下午\s*([\d:]+)/, '$1pm'],
     // Chinese "time"
     // [/\[.+?時間]/, ''],
   ],
@@ -49,7 +52,7 @@ const preprocessors = {
     [/\s*시\s*/, ':'], // "hour"
     [/\s*분\s*/, ':'], // "minute"
     [/\s*초\s*/, ''], // "second"
-    [/오전\s*([\d:]+)/, '$1오전'], // move AM/PM to the end
+    [/(오전|오후)\s*([\d:]+)/, '$2$1'], // move AM/PM to the end
     [/(\d{4})\. (\d{1,2})\. (\d{1,2})\./, '$1-$2-$3'],
   ],
   fi: periodsInsteadOfColons,

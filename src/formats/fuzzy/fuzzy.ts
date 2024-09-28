@@ -167,24 +167,24 @@ const fuzzy = new Format({
       if (typeof handled === 'object') {
         Object.assign(result, handled);
         workingString = workingString.replace(match[0], '');
-        if (locale === 'ko-KR' && !fullString.includes('UTC')) {
-          console.log({
-            fullString,
-            workingString,
-            name: extractor.name,
-            regex: extractor.regex,
-            result,
-            match,
-            handled,
-          });
-        }
+        // if (locale === 'ar-SA') {
+        //   console.log({
+        //     fullString,
+        //     workingString,
+        //     name: extractor.name,
+        //     regex: extractor.regex,
+        //     result,
+        //     match,
+        //     handled,
+        //   });
+        // }
         hasMatch = true;
       }
     }
     if (!hasMatch) {
       return null;
     }
-    if (locale === 'ko-KR') console.log('-----');
+    // if (locale === 'ar-SA') console.log('-----');
     return result;
   },
 });

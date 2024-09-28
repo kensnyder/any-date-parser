@@ -82,9 +82,9 @@ export default class LocaleHelper {
       this.buildDaynames();
       this.buildMeridiems();
     }
-    // if (this.locale === 'bn-IN') {
-    //   console.log('lookups=====>', this);
-    // }
+    if (this.locale === 'zh-CN' || this.locale === 'ko-KR') {
+      console.log('lookups=====>', this);
+    }
   }
 
   /**
@@ -140,10 +140,10 @@ export default class LocaleHelper {
             text += '월';
           }
           if (dateStyle === 'medium') {
-            // some languages (including arabic and chinese) don't have a 'medium' size
-            if (/^ar|zh/i.test(this.locale)) {
-              return;
-            }
+            // // some languages (including arabic and chinese) don't have a 'medium' size
+            // if (/^ar|zh/i.test(this.locale)) {
+            //   return;
+            // }
             text = text.replace(/\.$/, '');
             vars[`${text}\\.?`] = true;
           } else {
