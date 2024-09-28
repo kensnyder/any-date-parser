@@ -9,9 +9,13 @@ export function getExtractors(locale: string) {
     extractorsByLocale[locale] = [
       {
         name: 'zonename',
-        regex: helper.compile('(_ZONE_)'),
+        regex: helper.compile('\\b(_ZONE_)\\b'),
         handler: ([zoneName]) => {
-          return { offset: helper.lookups.zone[zoneName] };
+          const offset = helper.lookups.zone[zoneName];
+          if (!offset) {
+            return null;
+          }
+          return { offset };
         },
       },
       {
@@ -68,23 +72,11 @@ export function getExtractors(locale: string) {
         },
       },
       {
-        // offset must come after times because it can be confused for a time
-        name: 'offset',
-        regex: helper.compile('(_OFFSET_)\\b'),
-        handler: ([offsetString]) => {
-          return { offset: helper.offsetToMinutes(offsetString) };
-        },
-      },
-      {
         name: 'monthname',
-        regex: helper.compile('(_MONTHNAME_)'),
+        regex: helper.compile('\\b(_MONTHNAME_)\\b'),
         handler: ([, monthName]) => {
           const lower = monthName.toLocaleLowerCase(locale).replace(/\.$/, '');
           const monthNumber = helper.lookups.month[lower];
-          if (monthNumber === undefined) {
-            console.log('fuzzy monthname not found', monthName);
-            return null;
-          }
           return { month: monthNumber };
         },
       },
@@ -93,6 +85,14 @@ export function getExtractors(locale: string) {
         regex: helper.compile('(_YEAR4_)'),
         handler: ([, yearNumber]) => {
           return { year: helper.toInt(yearNumber) };
+        },
+      },
+      {
+        // offset must come after times and years to avoid confusion
+        name: 'offset',
+        regex: helper.compile('\\b(_OFFSET_)\\b'),
+        handler: ([offsetString]) => {
+          return { offset: helper.offsetToMinutes(offsetString) };
         },
       },
       {
@@ -123,6 +123,33 @@ export function getExtractors(locale: string) {
           return { day: helper.toInt(dayNumber) };
         },
       },
+      {
+        name: 'unboundMonthname',
+        regex: helper.compile('(_MONTHNAME_)'),
+        handler: ([, monthName], current) => {
+          if (current.month > 0) {
+            return null;
+          }
+          const lower = monthName.toLocaleLowerCase(locale).replace(/\.$/, '');
+          const monthNumber = helper.lookups.month[lower];
+          return { month: monthNumber };
+        },
+      },
+      // {
+      //   name: 'unboundMonthname',
+      //   regex: /^.{2,}$/,
+      //   handler: ([rest], current) => {
+      //     if (current.month > 0) {
+      //       return null;
+      //     }
+      //     for (const [name, month] of Object.entries(helper.lookups.month)) {
+      //       if (rest.includes(name)) {
+      //         return { month };
+      //       }
+      //     }
+      //     return null;
+      //   },
+      // },
       // {
       //   name: 'monthnumber',
       //   regex: helper.compile('\\b(_MONTH_)\\b'),
@@ -137,6 +164,9 @@ export function getExtractors(locale: string) {
     //   console.log(extractorsByLocale[locale][1]);
     //   console.log(extractorsByLocale[locale][2]);
     // }
+    // extractorsByLocale[locale].forEach(e =>
+    //   console.log({ name: e.name, regex: e.regex })
+    // );
   }
   return extractorsByLocale[locale];
 }
@@ -150,10 +180,7 @@ const fuzzy = new Format({
     for (const extractor of getExtractors(locale)) {
       const match = workingString.match(extractor.regex);
       if (!match) {
-        // if (
-        //   locale === 'bn-IN' &&
-        //   fullString === 'শুক্রবার, ৩১ জানুয়ারী, ২০২০ এ ১২:৩৪:৫৬ PM'
-        // ) {
+        // if (locale === 'ru-RU' && fullString === '31 января 2020 г.') {
         //   console.log({
         //     workingString,
         //     name: extractor.name,
@@ -167,9 +194,10 @@ const fuzzy = new Format({
       if (typeof handled === 'object') {
         Object.assign(result, handled);
         workingString = workingString.replace(match[0], '');
-        // if (locale === 'ar-SA') {
+        // if (fullString === 'In 1929, the stock market crashed on October 29') {
         //   console.log({
         //     fullString,
+        //     locale,
         //     workingString,
         //     name: extractor.name,
         //     regex: extractor.regex,

@@ -211,3 +211,33 @@ testDates({
   },
   formats: ["yyyy-MM-dd'T'HH:mm:ss'+0900'"],
 });
+
+testDates({
+  name: '24 hour time with zone and U+2212 minus sign',
+  locales: ['en-US'],
+  expected: {
+    year: 2020,
+    month: 10,
+    day: 6,
+    hour: 17,
+    minute: 41,
+    second: 28,
+    offset: -540,
+  },
+  formats: ["yyyy-MM-dd'T'HH:mm:ss'−09:00'"],
+});
+
+testDates({
+  name: '24 hour time with zone plus/minus sign',
+  locales: ['en-US'],
+  expected: {
+    year: 2020,
+    month: 10,
+    day: 6,
+    hour: 17,
+    minute: 41,
+    second: 28,
+    offset: 0,
+  },
+  formats: ["yyyy-MM-dd'T'HH:mm:ss'±00:00'"],
+});

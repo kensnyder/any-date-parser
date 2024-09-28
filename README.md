@@ -31,6 +31,7 @@ OR
 1. [Usage](#usage)
 1. [Supported formats](#supported-formats)
 1. [Locale support](#locale-support)
+1. [List of all supported locales](https://github.com/kensnyder/any-date-parser/blob/master/test-fixtures/localeList.ts)
 1. [Adding custom formats](#adding-custom-formats)
 1. [Removing parsing rules](#removing-parsing-rules)
 1. [Creating a custom parser](#creating-a-custom-parser)
@@ -174,7 +175,6 @@ This means support for international formats such as:
 
 - `es-MX` - `viernes, 27 de septiembre de 2024, 10:39:50 a.m. GMT-6`
 - `bn-BD` - `শুক্রবার, ২৭ সেপ্টেম্বর, ২০২৪ এ ১০:৩৬:১০ AM GMT -৬`
-- `ar-SA` - `الجمعة، ٢٤ ربيع الأول ١٤٤٦ هـ في ١٠:٣٧:٢٧ ص غرينتش-٦`
 - `el-GR` - `Παρασκευή 27 Σεπτεμβρίου 2024 στις 10:38:16 π.μ. GMT-6`
 - `he-IL` - `יום שישי, 27 בספטמבר 2024 בשעה 10:38:53 GMT-6`
 - `hi-IN` - `शुक्रवार, 27 सितंबर 2024 को 10:39:13 am GMT-6 बजे`
@@ -186,14 +186,19 @@ _Note_: For locales that use the Buddhist year (such as `th-TH`),
 any-date-parser automatically subtracts 543 years to normalize it to the
 Gregorian Calendar year.
 
+Check out the
+[list of all supported locales](https://github.com/kensnyder/any-date-parser/blob/master/test-fixtures/localeList.ts)
+
 ## Limitations
 
 - Dates with years before 1000 must have 4 digits, i.e. leading zeros.
-- any-date-parser cannot parse Dates before 1000 or after 9999 though JavaScript
+- any-date-parser cannot parse Dates before 0100 or after 9999 though JavaScript
   support is only limited where milliseconds is between
   `-8640000000000000 through 8640000000000000`, which allows a range of
   `-271821-04-20T00:00:00.000Z through +275760-09-13T00:00:00.000Z`.
 - Only English timezone names are supported
+- Does not support the Hijri calendar (`islamic-umalqura`)
+- Does not support `ar` (Arabic) locales
 
 ## Adding custom formats
 

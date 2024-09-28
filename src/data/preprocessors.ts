@@ -5,7 +5,7 @@ const periodsInsteadOfColons = [
 ];
 
 const preprocessors = {
-  ar: [[/ /g, ' ']], // RegExp contains non-breaking space
+  ar: [[/ /g, ' ']], // Some built-in formats contain non-breaking space
   zh: [
     // in Chinese, am/pm comes before the digits
     [/早上\s*([\d:]+)/, '$1am'],
@@ -25,25 +25,6 @@ const preprocessors = {
   th: [
     // Thai "at/on"
     // [/ที่/gi, ''],
-    // Thai Buddhist Calendar is 543 years ahead
-    [
-      /พ.ศ.?(\d{4})/i,
-      (_, year) => {
-        let intYear = parseInt(year, 10);
-        intYear -= 543;
-        return String(intYear);
-      },
-    ],
-    [
-      /\d{4}/,
-      year => {
-        let intYear = parseInt(year, 10);
-        if (intYear >= 2443) {
-          intYear -= 543;
-        }
-        return String(intYear);
-      },
-    ],
     [/\s*นาฬิกา\s*/i, ':'], // "hour"
     [/\s*นาที\s*/i, ':'], // "minute"
     [/\s*วินาที\s*/i, ''], // "second"

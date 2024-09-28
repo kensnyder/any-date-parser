@@ -1,7 +1,7 @@
 import buildDigits from '../buildDigits/buildDigits';
 import baseLookups from '../data/baseLookups';
 import defaultLocale from '../data/defaultLocale';
-import { latn, other } from '../data/templates.js';
+import { latn, other } from '../data/templates';
 import units, { UnitStrings } from '../data/units';
 import { type HandlerResult } from '../Format/Format';
 
@@ -25,6 +25,15 @@ export default class LocaleHelper {
    * The numbering system to use (latn=standard arabic digits)
    */
   numberingSystem: string;
+  /**
+   * The base name of the locale (e.g. en-US)
+   */
+  baseName: string;
+
+  /**
+   * Date options for the locale
+   */
+  dateOptions: Intl.ResolvedDateTimeFormatOptions;
 
   /**
    * Get a singleton instance with the given locale
@@ -48,6 +57,8 @@ export default class LocaleHelper {
     this.vars = { ...latn };
     const fmt = new Intl.NumberFormat(this.locale);
     this.numberingSystem = fmt.resolvedOptions().numberingSystem;
+    this.dateOptions = new Intl.DateTimeFormat(this.locale).resolvedOptions();
+    this.baseName = new Intl.Locale(this.locale).baseName;
     this.build();
   }
 
@@ -82,9 +93,9 @@ export default class LocaleHelper {
       this.buildDaynames();
       this.buildMeridiems();
     }
-    if (this.locale === 'zh-CN' || this.locale === 'ko-KR') {
-      console.log('lookups=====>', this);
-    }
+    // if (this.locale === 'ar-SA') {
+    //   console.log('lookups=====>', this);
+    // }
   }
 
   /**
@@ -271,11 +282,11 @@ export default class LocaleHelper {
    * @param offsetString
    */
   offsetToMinutes(offsetString: string): number {
-    const captured = offsetString.match(/^([+-])(..?):?(..)?$/);
+    const captured = offsetString.match(/^(?:GMT)?([±−+-])(..?):?(..)?$/);
     if (captured) {
       const [, sign, hours, minutes] = captured;
       return (
-        (sign === '-' ? -1 : 1) *
+        (sign === '-' || sign === '−' ? -1 : 1) *
         (this.toInt(hours) * 60 + this.toInt(minutes || 0))
       );
     }

@@ -4,6 +4,7 @@ import parser from '../src/main';
 
 export default function testDates({ name, formats, expected, locales }) {
   for (const locale of locales) {
+    const calendar = Intl.DateTimeFormat(locale).resolvedOptions().calendar;
     describe(`${name} (${locale}) [luxon v${VERSION}]`, () => {
       for (const format of formats) {
         const { offset, ...forLuxon } = expected;
@@ -15,6 +16,9 @@ export default function testDates({ name, formats, expected, locales }) {
         const formatted = date.toFormat(format, { locale });
         it(`${formatted} (${format})`, () => {
           const actual = parser.attempt(formatted, locale);
+          if (calendar === 'buddhist') {
+            actual.year += 543;
+          }
           expect(actual).toMatchObject(expected);
         });
       }

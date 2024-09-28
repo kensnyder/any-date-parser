@@ -70,12 +70,16 @@ export default class Parser {
    * @returns
    */
   attempt(dateStr: string, locale = defaultLocale): HandlerResult {
+    if (typeof dateStr !== 'string') {
+      return { invalid: `Unable to parse "${String(dateStr).slice(0, 50)}"` };
+    }
     dateStr = dateStr.trim();
+    const helper = LocaleHelper.factory(locale);
     for (const format of this.formats) {
       if (
         Array.isArray(format.locales) &&
         format.locales.length > 0 &&
-        !format.locales.includes(new Intl.Locale(locale).baseName)
+        !format.locales.includes(helper.baseName)
       ) {
         // some formats only make sense for certain locales, e.g. month/day/year
         continue;
@@ -88,11 +92,14 @@ export default class Parser {
         if (result.year < 100) {
           result.year = twoDigitYears[result.year];
         }
+        if (result.year > 0 && helper.dateOptions.calendar === 'buddhist') {
+          result.year -= 543;
+        }
         return result;
       }
     }
     // Uh Oh! We don't know that one
-    let string = String(dateStr).slice(0, 200);
+    let string = String(dateStr).slice(0, 50);
     if (string === '') {
       string = '(empty string)';
     }

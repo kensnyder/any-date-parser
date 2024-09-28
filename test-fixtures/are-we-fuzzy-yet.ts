@@ -13,26 +13,17 @@ const dateStyles = ['full', 'long', 'medium'] as const;
 let i = 0;
 let found = 0;
 for (const locale of localeList) {
-  const ymd = /^ar/.test(locale)
-    ? // hijri calendar
-      {
-        year: 1441,
-        month: 3,
-        day: 6,
-      }
-    : // gregorian calendar
-      {
-        year: 2020,
-        month: 1,
-        day: 31,
-      };
-  const fmt = new Intl.NumberFormat(locale);
-  const numberSystem = fmt.resolvedOptions().numberingSystem;
+  const ymd = {
+    year: 2020,
+    month: 1,
+    day: 31,
+  };
+  // const fmt = new Intl.NumberFormat(locale);
+  // const numberSystem = fmt.resolvedOptions().numberingSystem;
   for (const dateStyle of dateStyles) {
-    testIt(locale, numberSystem, { dateStyle }, ymd);
+    testIt(locale, { dateStyle }, ymd);
     testIt(
       locale,
-      numberSystem,
       { dateStyle, timeStyle: 'long', timeZone: 'UTC' },
       {
         ...ymd,
@@ -43,7 +34,6 @@ for (const locale of localeList) {
     );
     testIt(
       locale,
-      numberSystem,
       { dateStyle, timeStyle: 'medium', timeZone: 'UTC' },
       {
         ...ymd,
@@ -53,7 +43,6 @@ for (const locale of localeList) {
     );
     testIt(
       locale,
-      numberSystem,
       { dateStyle, timeStyle: 'short', timeZone: 'UTC' },
       {
         ...ymd,
@@ -72,16 +61,22 @@ fs.writeFileSync(
   'utf-8'
 );
 
-function testIt(locale: string, numberSystem: string, options, expected) {
+function testIt(locale: string, options, expected) {
   i++;
-  const formatted = new Intl.DateTimeFormat(locale, options).format(date);
+  if (locale.startsWith('ar')) {
+    options.calendar = 'gregory';
+  }
+  const formatter = new Intl.DateTimeFormat(locale, options);
+  const { numberingSystem, calendar } = formatter.resolvedOptions();
+  const formatted = formatter.format(date);
   const parsed = parser.attempt(formatted, locale);
   const ok = doesOverlap(parsed, expected);
   found += ok ? 1 : 0;
   results.push(
     [
       ok ? '✅' : '❌',
-      numberSystem,
+      numberingSystem,
+      calendar,
       locale,
       formatted,
       JSON.stringify(parsed),

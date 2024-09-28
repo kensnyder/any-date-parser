@@ -1,7 +1,7 @@
 // locale list used for unit tests
 // from https://www.techonthenet.com/js/language_tags.php
 const localeList = [
-  'ar-SA', // Arabic (Saudi Arabia)
+  // 'ar-SA', // Arabic (Saudi Arabia) - Not Supported
   'bn-BD', // Bangla (Bangladesh)
   'bn-IN', // Bangla (India)
   'cs-CZ', // Czech (Czech Republic)
