@@ -60,9 +60,14 @@ parser
 Date.fromString = MaybeValidDate.fromString = parser.fromString;
 // @ts-expect-error  Yes, we are extending the global Date object
 Date.fromAny = MaybeValidDate.fromAny = parser.fromAny;
-/* v8 ignore next 4 */
+
+declare global {
+  interface Window {
+    anyDateParser: Parser;
+  }
+}
+/* v8 ignore next 3 */
 if (typeof window !== 'undefined') {
-  // @ts-expect-error  Yes, we are extending the global window object
   window.anyDateParser = parser;
 }
 

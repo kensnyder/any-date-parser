@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import testBuiltInFormats from '../test-fixtures/testBuiltInFormats';
 import parser, { ago, MaybeValidDate, Parser } from './main';
 
 describe('Parser export', () => {
@@ -67,4 +68,14 @@ describe('MaybeValidDate', () => {
     expect(res.invalid).toMatch(/Unable to parse/);
     expect(res.isValid()).toBe(false);
   });
+});
+
+testBuiltInFormats(parser, new Date(2021, 0, 31, 1, 31, 21, 789), {
+  year: 2021,
+  month: 1,
+  day: 31,
+  hour: 1,
+  minute: 31,
+  second: 21,
+  millisecond: 789,
 });

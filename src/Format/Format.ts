@@ -86,10 +86,10 @@ export default class Format {
 
   /**
    * Build the RegExp from the template for a given locale
-   * @param {String} locale  The language locale such as en-US, pt-BR, zh, es, etc.
-   * @returns {RegExp}  A RegExp that matches when this format is recognized
+   * @param locale  The language locale such as en-US, pt-BR, zh, es, etc.
+   * @returns  A RegExp that matches when this format is recognized
    */
-  getRegExp(locale = defaultLocale) {
+  getRegExp(locale = defaultLocale): RegExp {
     if (this.template) {
       if (!this.regexByLocale[locale]) {
         this.regexByLocale[locale] = LocaleHelper.factory(locale).compile(
@@ -97,9 +97,9 @@ export default class Format {
         );
         //console.log([locale, this.regexByLocale[locale]]);
       }
-      // if (locale.slice(0, 2) === 'zh') {
-      // 	console.log(this.template, this.regexByLocale[locale]);
-      // }
+      if (locale.slice(0, 2) === 'zh') {
+        console.log(this.template, this.regexByLocale[locale]);
+      }
       return this.regexByLocale[locale];
     }
     return this.matcher;
@@ -140,8 +140,11 @@ export default class Format {
    * @returns {Object|null}  Null if format can't handle this string, Object for result or error
    */
   attempt(strDate: string, locale = defaultLocale): HandlerResult {
-    strDate = runPreprocessors(String(strDate), locale).trim();
-    const matches = this.getMatches(strDate, locale);
+    const processedDate = runPreprocessors(String(strDate), locale).trim();
+    if (strDate === '2021年10月15日 下午6:34:56 [UTC]') {
+      console.log('processedDate------------', processedDate);
+    }
+    const matches = this.getMatches(processedDate, locale);
     if (matches) {
       const dt = this.toDateTime(matches, locale);
       return dt || null;

@@ -187,7 +187,6 @@ const timezoneNames = {
   WST: 480, // Western Standard Time
   YAKT: 540, // Yakutsk Time
   YEKT: 300, // Yekaterinburg Time
-  Z: 0, // Zulu Time (Coordinated Universal Time)
 };
 
 export default timezoneNames;

@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-// import parser from '../src/main';
+//import parser from '../src/main';
 import { Parser, fuzzy } from '../src/main';
 import localeList from './localeList';
 
@@ -7,8 +7,6 @@ const parser = new Parser();
 parser.addFormat(fuzzy);
 const date = new Date(2020, 0, 31, 1, 31, 20, 789);
 const results = [`Using date ${date.toJSON()}`];
-const today = toMDY(date);
-console.log({ today });
 const dateStyles = ['full', 'long', 'medium'] as const;
 let i = 0;
 let found = 0;
@@ -18,8 +16,6 @@ for (const locale of localeList) {
     month: 1,
     day: 31,
   };
-  // const fmt = new Intl.NumberFormat(locale);
-  // const numberSystem = fmt.resolvedOptions().numberingSystem;
   for (const dateStyle of dateStyles) {
     testIt(locale, { dateStyle }, ymd);
     testIt(
@@ -94,20 +90,6 @@ function doesOverlap(
     }
   }
   return true;
-}
-
-function toMDY(d: Date | { year: number; month: number; day: number }) {
-  if (d instanceof Date) {
-    return [d.getFullYear(), pad(d.getMonth() + 1), pad(d.getDate())].join('-');
-  }
-  if (d.year < 100) {
-    d.year += 2000;
-  }
-  return [d.year, pad(d.month), pad(d.day)].join('-');
-}
-
-function pad(n: number) {
-  return (n > 9 ? '' : '0') + n;
 }
 
 console.log(`Parsed ${found}/${i} dates ok`);

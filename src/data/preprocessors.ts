@@ -6,28 +6,31 @@ const periodsInsteadOfColons = [
 
 const preprocessors = {
   ar: [[/ /g, ' ']], // Some built-in formats contain non-breaking space
+  bn: [[/,/g, '']],
   zh: [
     // in Chinese, am/pm comes before the digits
     [/早上\s*([\d:]+)/, '$1am'],
+    [/凌晨\s*([\d:]+)/, '$1am'],
     [/上午\s*([\d:]+)/, '$1am'],
     [/下午\s*([\d:]+)/, '$1pm'],
+    [/晚上\s*([\d:]+)/, '$1pm'],
     // Chinese "time"
     // [/\[.+?時間]/, ''],
   ],
-  // he: [[/ב/gi, '']],
+  he: [[/ב/gi, '']],
   // "of" in various languages
-  // de: [[/ um /g, '']],
-  // pt: [[/de /gi, '']],
-  // es: [[/de /gi, '']],
-  // da: [[/den /gi, '']],
+  de: [[/ um /g, '']],
+  pt: [[/de /gi, '']],
+  es: [[/de /gi, '']],
+  da: [[/den /gi, ''], ...periodsInsteadOfColons],
   // Russian symbol after years
-  // ru: [[/ г\./g, '']],
+  ru: [[/ г\./g, '']],
   th: [
     // Thai "at/on"
     // [/ที่/gi, ''],
     [/\s*นาฬิกา\s*/i, ':'], // "hour"
     [/\s*นาที\s*/i, ':'], // "minute"
-    [/\s*วินาที\s*/i, ''], // "second"
+    [/\s*วินาที\s*/i, ' '], // "second"
   ],
   ko: [
     [/\s*시\s*/, ':'], // "hour"
@@ -38,7 +41,7 @@ const preprocessors = {
   ],
   fi: periodsInsteadOfColons,
   id: periodsInsteadOfColons,
-  da: periodsInsteadOfColons,
+  // da: periodsInsteadOfColons,
 };
 
 export default preprocessors;

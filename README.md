@@ -4,15 +4,14 @@
 [![Language](https://badgen.net/static/language/TS?v=2.0.0)](https://github.com/search?q=repo:kensnyder/any-date-parser++language:TypeScript&type=code)
 [![Build Status](https://github.com/kensnyder/any-date-parser/actions/workflows/workflow.yml/badge.svg?v=2.0.0)](https://github.com/kensnyder/any-date-parser/actions)
 [![Code Coverage](https://codecov.io/gh/kensnyder/any-date-parser/branch/main/graph/badge.svg?v=2.0.0)](https://codecov.io/gh/kensnyder/any-date-parser)
+![2000+ Tests](https://badgen.net/static/tests/2000+/green)
 [![Gzipped Size](https://badgen.net/bundlephobia/minzip/any-date-parser?label=minzipped&v=2.0.0)](https://bundlephobia.com/package/any-date-parser@2.0.0)
 [![Dependency details](https://badgen.net/bundlephobia/dependency-count/any-date-parser?v=2.0.0)](https://www.npmjs.com/package/any-date-parser?activeTab=dependencies)
 [![Tree shakeable](https://badgen.net/bundlephobia/tree-shaking/any-date-parser?v=2.0.0)](https://www.npmjs.com/package/any-date-parser)
 [![ISC License](https://badgen.net/github/license/kensnyder/any-date-parser?v=2.0.0)](https://opensource.org/licenses/ISC)
 
-Parse a wide range of date formats including human-input dates.
-
-Supports Node and browsers. Uses `Intl` to provide parsing support for all
-installed locales.
+The most comprehensive and accurate date parser for Node and browsers. It uses
+`Intl` to provide parsing support for all installed locales.
 
 ## Installation
 
@@ -47,10 +46,8 @@ OR
   `MaybeValidDate` has an `invalid` property if invalid, and an `isValid()`
   function whether valid or not. If in v1 you simply checked for an `invalid`
   property, v2 will behave the same.
-- If an input string does not match any known format, it will use the current
-  locale and `Intl.DateTimeFormat` to attempt a fuzzy match. This allows
-  matching on every locale, i.e. for every date format known to the JavaScript
-  engine.
+- If an input string does not match any known format, it will attempt a fuzzy
+  match, looking for date parts individually.
 
 ## Motivation
 
@@ -64,22 +61,7 @@ OR
 
 There are three ways to use any-date-parser:
 
-1.) Use a new function directly on `Date`:
-
-- `Date.fromString(string, locale)` - Parses a string and returns a `Date`
-  object
-- `Date.fromAny(any, locale)` - Return a `Date` object given a `Date`, `Number`
-  or string to parse
-
-Example:
-
-```ts
-import 'any-date-parser';
-Date.fromString('2020-10-15');
-// same as new Date(2020, 9, 15, 0, 0, 0, 0)
-```
-
-2.) Use the parser object:
+1.) Use the parser object: (Recommended)
 
 - `parser.fromString(string, locale)` - Parses a string and returns a `Date`
   object. It is the same function as in option 1.
@@ -94,7 +76,7 @@ parser.fromString('2020-10-15');
 // same as new Date(2020, 9, 15, 0, 0, 0, 0)
 ```
 
-3.) `parser` also has a function `parser.attempt(string, locale)` that
+2.) `parser` also has a function `parser.attempt(string, locale)` that
 returns an object with one or more integer values for the following keys: year,
 month, day, hour, minute, second, millisecond, offset. _Note_ month is returned
 as a normal 1-based integer, not the 0-based integer the `Date()` constructor
@@ -133,6 +115,21 @@ parser.attempt('');
 */
 ```
 
+3.) Use a new function directly on `Date`:
+
+- `Date.fromString(string, locale)` - Parses a string and returns a `Date`
+  object
+- `Date.fromAny(any, locale)` - Return a `Date` object given a `Date`, `Number`
+  or string to parse
+
+Example:
+
+```ts
+import 'any-date-parser';
+Date.fromString('2020-10-15');
+// same as new Date(2020, 9, 15, 0, 0, 0, 0)
+```
+
 4.) There are npm packages that integrate any-date-parser directly into popular
 date libraries:
 
@@ -163,7 +160,7 @@ Summary:
 
 ## Locale Support
 
-any-date-parser supports any locale that your runtime's
+`any-date-parser` supports any locale that your runtime's
 [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat)
 supports. In browsers that usually means the operating system language. In Node,
 that means the compiled language or the icu modules included. For unit tests,
@@ -202,7 +199,7 @@ Check out the
 
 ## Adding custom formats
 
-any-date-parser has an `addFormat()` function to add a custom parser.
+`any-date-parser` has an `addFormat()` function to add a custom parser.
 
 First, parsers must have `matcher` or `template`.
 
@@ -241,9 +238,9 @@ import parser, { Format } from 'any-date-parser';
 
 parser.addFormat(
   new Format({
-    matcher: /^Q([1-4]) (\d{4})$/, // String such as "Q4 2004"
+    matcher: /^(Q[1-4]) (\d{4})$/, // String such as "Q4 2004"
     handler: function ([, quarter, year]) {
-      const monthByQuarter = { 1: 1, 2: 4, 3: 7, 4: 10 };
+      const monthByQuarter = { Q1: 1, Q2: 4, Q3: 7, Q4: 10 };
       const month = monthByQuarter[quarter];
       return { year, month };
     },
@@ -271,9 +268,9 @@ import parser, { Format } from 'any-date-parser';
 
 parser.addFormat(
   new Format({
-    template: '^Q([1-4]) (_YEAR_)$', // String such as "Q4 2004"
+    template: '^(Q[1-4]) (_YEAR_)$', // String such as "Q4 2004"
     handler: function ([, quarter, year]) {
-      const monthByQuarter = { 1: 1, 2: 4, 3: 7, 4: 10 };
+      const monthByQuarter = { Q1: 1, Q2: 4, Q3: 7, Q4: 10 };
       const month = monthByQuarter[quarter];
       return { year, month };
     },
@@ -293,7 +290,7 @@ parser.removeFormat(dayMonth);
 parser.removeFormat(fuzzy);
 ```
 
-All formats names:
+All exported formats:
 
 - `time24Hours`
 - `time12Hours`
@@ -330,6 +327,8 @@ const myParser = new Parser();
 myParser.addFormats([time24Hours, yearMonthDay, ago]);
 ```
 
+Note that formats will be attempted in the order they were added.
+
 You can convert your custom parser to a function. For example:
 
 ```ts
@@ -344,12 +343,12 @@ Date.fromAny = myParser.exportAsFunctionAny();
 
 ## Unit tests
 
-`any-date-parser` has 100% code coverage.
+You can git checkout `any-date-parser` and run its tests.
 
 - To run tests, run `npm test`
 - To check coverage, run `npm run coverage`
-- _Note_ - `npm test` will attempt to install full-icu and luxon globally if not
-  present
+- _Note_ - `npm test` will attempt to install `full-icu` and `luxon` globally if
+  not present
 
 ## Contributing
 

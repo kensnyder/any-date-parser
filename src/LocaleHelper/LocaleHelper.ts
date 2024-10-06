@@ -81,6 +81,21 @@ export default class LocaleHelper {
     return parseInt(latnDigitString, 10);
   }
 
+  monthNameToInt(monthName: string) {
+    const lower = monthName.toLocaleLowerCase(this.locale).replace(/\.$/, '');
+    return this.lookups.month[lower] || 12;
+  }
+  h12ToInt(digitString: string | number, ampm: string) {
+    const meridiemOffset = this.lookups.meridiem[ampm?.toLowerCase()] || 0;
+    let hourInt = this.toInt(digitString);
+    if (hourInt < 12 && meridiemOffset === 12) {
+      hourInt += 12;
+    }
+    return hourInt;
+  }
+  zoneToOffset(zoneName: string) {
+    return this.lookups.zone[zoneName];
+  }
   /**
    * Build lookups for digits, month names, day names, and meridiems based on the locale
    */
@@ -91,9 +106,11 @@ export default class LocaleHelper {
     if (!/^en/i.test(this.locale)) {
       this.buildMonthNames();
       this.buildDaynames();
-      this.buildMeridiems();
+      if (!/zh/i.test(this.locale)) {
+        this.buildMeridiems();
+      }
     }
-    // if (this.locale === 'ar-SA') {
+    // if (this.locale === 'zh-TW') {
     //   console.log('lookups=====>', this);
     // }
   }
