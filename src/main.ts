@@ -18,6 +18,7 @@ import monthnameDay from './formats/monthnameDay/monthnameDay';
 import monthnameDayYear from './formats/monthnameDayYear/monthnameDayYear';
 import time12Hours from './formats/time12Hours/time12Hours';
 import time24Hours from './formats/time24Hours/time24Hours';
+import timestamp from './formats/timestamp/timestamp';
 import today from './formats/today/today';
 import twitter from './formats/twitter/twitter';
 import yearMonthDay from './formats/yearMonthDay/yearMonthDay';
@@ -30,26 +31,27 @@ const parser = new Parser();
 parser
   // all formats can have time strings at the end
   .addFormats([
-    time24Hours,
-    time12Hours,
-    // from most unambiguous and popular to least
-    yearMonthDayWithDots,
-    yearMonthDay,
-    dayMonthnameYear,
-    monthnameDayYear,
+    timestamp,
+    // time24Hours,
+    // time12Hours,
+    // // from most unambiguous and popular to least
+    // yearMonthDayWithDots,
+    // yearMonthDay,
+    // dayMonthnameYear,
+    // monthnameDayYear,
     monthDayYear,
-    dayMonthYear,
+    // dayMonthYear,
     chinese,
     korean,
     twitter,
     today,
     ago,
-    monthnameDay,
-    dayMonthname,
-    monthDay,
-    dayMonth,
-    yearMonthnameDay,
-    yearMonthDayWithSlashes,
+    // monthnameDay,
+    // dayMonthname,
+    // monthDay,
+    // dayMonth,
+    // yearMonthnameDay,
+    // yearMonthDayWithSlashes,
     atSeconds,
     microsoftJson,
     fuzzy,

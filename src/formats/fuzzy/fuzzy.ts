@@ -289,7 +289,7 @@ const fuzzy = new Format({
         );
         workingString = workingString.trim();
       }
-      if (workingString === '' /* || /\w/.test(workingString) === false*/) {
+      if (workingString === '') {
         return extracted;
       }
     }
