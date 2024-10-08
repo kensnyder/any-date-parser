@@ -1,5 +1,6 @@
 import Format, { HandlerResult } from '../../Format/Format';
 import LocaleHelper from '../../LocaleHelper/LocaleHelper';
+import { mdyLocales } from '../../data/mdyLocales';
 
 const extractorsByLocale = {};
 
@@ -111,6 +112,15 @@ export function hmNoMeridiemExtractor(helper: LocaleHelper) {
   };
 }
 
+export function mdyExtractor(helper: LocaleHelper) {
+  return {
+    regex: helper.compile('\\b(_MONTH_)([/-])(_DAY_)\\2(_YEAR_)\\b'),
+    matches: ['', 'month', '', 'day', 'year'],
+    locales: mdyLocales,
+    replaceWith: '',
+  };
+}
+
 export function dmyExtractor(helper: LocaleHelper) {
   return {
     regex: helper.compile('\\b(_DAY_)[./\\s-]+(_MONTH_)[./\\s-]+(_YEAR4_)\\b'),
@@ -121,8 +131,8 @@ export function dmyExtractor(helper: LocaleHelper) {
 
 export function ymdExtractor(helper: LocaleHelper) {
   return {
-    regex: helper.compile('\\b(_YEAR4_)[./\\s-]+(_MONTH_)[./\\s-]+(_DAY_)\\b'),
-    matches: ['', 'year', 'month', 'day'],
+    regex: helper.compile('\\b(_YEAR4_)([.-])(_MONTH_)\\2+(_DAY_)\\b'),
+    matches: ['', 'year', '', 'month', 'day'],
     replaceWith: '',
   };
 }
@@ -187,6 +197,7 @@ export function getExtractors(locale: string) {
       yearExtractor(helper),
       dayMonthnameExtractor(helper),
       monthnameDayExtractor(helper),
+      mdyExtractor(helper),
       dmyExtractor(helper),
       ymdExtractor(helper),
       yearLooseExtractor(helper),
@@ -259,13 +270,16 @@ const fuzzy = new Format({
     let workingString = fullString;
     const extracted: Extracted = {};
     for (const extractor of getExtractors(locale)) {
-      if (
-        locale === 'bn-IN' &&
-        fullString === 'শুক্রবার ৩১ জানুয়ারী ২০২০ এ ১:৩১:২০ AM UTC'
-      ) {
-        console.log('---');
-        console.log(extractor.regex);
-        console.log(workingString);
+      // if (
+      //   locale === 'bn-IN' &&
+      //   fullString === 'শুক্রবার ৩১ জানুয়ারী ২০২০ এ ১:৩১:২০ AM UTC'
+      // ) {
+      //   console.log('---');
+      //   console.log(extractor.regex);
+      //   console.log(workingString);
+      // }
+      if (extractor.locales && !extractor.locales.includes(locale)) {
+        continue;
       }
       const match = fullString.match(extractor.regex);
       if (!match) {
