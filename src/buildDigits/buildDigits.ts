@@ -6,7 +6,7 @@ import {
 
 const cache = {};
 
-export default function buildDigits(nsName) {
+export default function buildDigits(nsName: string) {
   if (cache[nsName]) {
     return cache[nsName];
   }

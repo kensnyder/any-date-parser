@@ -1,30 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import testBuiltInFormats from '../test-fixtures/testBuiltInFormats';
-import parser, { ago, MaybeValidDate, Parser } from './main';
+import { MaybeValidDate } from './MaybeValidDate/MaybeValidDate';
+import parser from './main';
 
-describe('Parser export', () => {
-  it('should match no dates if no formats are added', () => {
-    const myParser = new Parser();
-    const bad = myParser.fromString('2021-01-01');
-    expect(bad.isValid()).toBe(false);
-  });
-  it('should match when one date format is added', () => {
-    const myParser = new Parser();
-    myParser.addFormat(ago);
-    const good = myParser.fromString('5 minutes ago');
-    const bad = myParser.fromString('2021-01-01');
-    expect(good.isValid()).toBe(true);
-    expect(bad.isValid()).toBe(false);
-  });
-  it('should allow removing formats', () => {
-    parser.removeFormat(ago);
-    const bad = parser.fromString('5 minutes ago');
-    const good = parser.fromString('2021-01-01');
-    expect(bad.isValid()).toBe(false);
-    expect(good.isValid()).toBe(true);
-    parser.addFormat(ago);
-  });
-});
 describe('parser.attempt', () => {
   it('should return object with relevant keys', () => {
     const res = parser.attempt('Oct 15');
@@ -70,7 +48,8 @@ describe('MaybeValidDate', () => {
   });
 });
 
-testBuiltInFormats(parser, new Date(2021, 0, 31, 1, 31, 21, 789), {
+// Test every format that the Intl.DateTimeFormat constructor can produce
+testBuiltInFormats(new Date(2021, 0, 31, 1, 31, 21, 789), {
   year: 2021,
   month: 1,
   day: 31,

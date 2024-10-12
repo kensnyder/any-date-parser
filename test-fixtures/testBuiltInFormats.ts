@@ -1,19 +1,17 @@
 import { describe, expect, it } from 'vitest';
-import { HandlerResult } from '../src/Format/Format';
-import Parser from '../src/Parser/Parser';
+import parser from '../src/main';
 import localeList from './localeList';
 
 const dateStyles = ['full', 'long', 'medium'] as const;
 export default function testBuiltInFormats(
-  parser: Parser,
   dateObj: Date,
-  parts: HandlerResult
+  parts: Record<string, any>
 ) {
   describe(`Built-in formats for ${dateObj.toJSON()}`, () => {
     function testIt(
       locale: string,
       options: Intl.DateTimeFormatOptions,
-      expectedSubset: HandlerResult
+      expectedSubset: Record<string, any>
     ) {
       if (locale.startsWith('ar')) {
         options.calendar = 'gregory';

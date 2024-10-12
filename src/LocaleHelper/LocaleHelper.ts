@@ -2,8 +2,7 @@ import buildDigits from '../buildDigits/buildDigits';
 import baseLookups from '../data/baseLookups';
 import defaultLocale from '../data/defaultLocale';
 import { latn, other } from '../data/templates';
-import units, { UnitStrings } from '../data/units';
-import { type HandlerResult } from '../Format/Format';
+// import units, { UnitStrings } from '../data/units';
 
 // keep track of singletons by locale name
 const cache = {};
@@ -60,6 +59,7 @@ export default class LocaleHelper {
     this.dateOptions = new Intl.DateTimeFormat(this.locale).resolvedOptions();
     this.baseName = new Intl.Locale(this.locale).baseName;
     this.build();
+    // console.log('lookups=====>', this.lookups.digit);
   }
 
   /**
@@ -71,8 +71,12 @@ export default class LocaleHelper {
     if (typeof digitString === 'number') {
       return digitString;
     }
-    if (this.numberingSystem === 'latn') {
-      return parseInt(digitString, 10);
+    if (this.numberingSystem === 'latn' && !this.baseName.startsWith('zh')) {
+      // latin digits can be parsed a tad quicker by using parseInt
+      const num = parseInt(digitString, 10);
+      if (!isNaN(num)) {
+        return num;
+      }
     }
     let latnDigitString = '';
     for (let i = 0; i < digitString.length; i++) {
@@ -100,9 +104,7 @@ export default class LocaleHelper {
    * Build lookups for digits, month names, day names, and meridiems based on the locale
    */
   build() {
-    if (this.numberingSystem !== 'latn') {
-      this.buildNumbers();
-    }
+    this.buildNumbers();
     if (!/^en/i.test(this.locale)) {
       this.buildMonthNames();
       this.buildDaynames();
@@ -119,8 +121,7 @@ export default class LocaleHelper {
    * Build lookups for non-arabic digits
    */
   buildNumbers() {
-    const nsName = this.numberingSystem;
-    const { group, lookup } = buildDigits(nsName);
+    const { group, lookup } = buildDigits(this.numberingSystem);
     this.lookups.digit = lookup;
     for (const name in other) {
       /* istanbul ignore next */
@@ -254,45 +255,45 @@ export default class LocaleHelper {
    * @param matches  The values matched by a Format's RegExp
    * @returns  An object with the units as keys
    */
-  getObject(units: UnitStrings[], matches: string[]): HandlerResult {
-    const object: HandlerResult = {};
-    units.forEach((unit, i) => {
-      if (!unit) {
-        return;
-      }
-      let match = matches[i + 1];
-      match = match.toLocaleLowerCase(this.locale);
-      match = match.replace(/\.$/, '');
-      if (unit === 'offset') {
-        object.offset = this.offsetToMinutes(match);
-      } else if (this.lookups[unit]) {
-        object[unit] = this.lookups[unit][match] || this.toInt(match);
-      } else {
-        object[unit] = this.toInt(match);
-      }
-    });
-    return object;
-  }
+  // getObject(units: UnitStrings[], matches: string[]): HandlerResult {
+  //   const object: HandlerResult = {};
+  //   units.forEach((unit, i) => {
+  //     if (!unit) {
+  //       return;
+  //     }
+  //     let match = matches[i + 1];
+  //     match = match.toLocaleLowerCase(this.locale);
+  //     match = match.replace(/\.$/, '');
+  //     if (unit === 'offset') {
+  //       object.offset = this.offsetToMinutes(match);
+  //     } else if (this.lookups[unit]) {
+  //       object[unit] = this.lookups[unit][match] || this.toInt(match);
+  //     } else {
+  //       object[unit] = this.toInt(match);
+  //     }
+  //   });
+  //   return object;
+  // }
 
   /**
    * Take a HandlerResult and cast each unit to Number
    * @param object  An object with one or more units
    * @returns  An object with same units but Numeric
    */
-  castObject(object: HandlerResult): HandlerResult {
-    const casted: HandlerResult = {};
-    units.forEach(unit => {
-      if (unit in object) {
-        casted[unit] = this.toInt(object[unit]);
-      }
-    });
-    if (typeof object.offset === 'string') {
-      casted.offset = this.offsetToMinutes(object.offset);
-    } else if (typeof object.offset === 'number') {
-      casted.offset = object.offset;
-    }
-    return casted;
-  }
+  // castObject(object: HandlerResult): HandlerResult {
+  //   const casted: HandlerResult = {};
+  //   units.forEach(unit => {
+  //     if (unit in object) {
+  //       casted[unit] = this.toInt(object[unit]);
+  //     }
+  //   });
+  //   if (typeof object.offset === 'string') {
+  //     casted.offset = this.offsetToMinutes(object.offset);
+  //   } else if (typeof object.offset === 'number') {
+  //     casted.offset = object.offset;
+  //   }
+  //   return casted;
+  // }
 
   /**
    * Convert an offset string to Numeric minutes (e.g. "-0500", "+5", "+03:30")
