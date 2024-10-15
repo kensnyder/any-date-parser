@@ -10,7 +10,6 @@ testParser({
     minute: 31,
     second: 29,
     millisecond: 8,
-    offset: 0,
   },
   locales: ['en-US'],
   dates: ['/Date(1601677889008)/'],

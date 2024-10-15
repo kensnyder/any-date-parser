@@ -21,20 +21,45 @@ export function handlerWith(units: string[]) {
 }
 
 export function compile(helper: LocaleHelper) {
-  function onlyLocales(locales: string[], handler: any) {
-    const twoLetterLocale = helper.baseName.slice(0, 2).toLowerCase();
-    return function (matches: string[]) {
-      if (locales.includes(twoLetterLocale)) {
-        return handler(matches);
-      }
-      return null;
-    };
-  }
-  return [
+  const patterns = [
     {
-      name: 'timestamp',
+      name: 'timestampWithOffset',
       regex: helper.compile(
-        '^(_YEAR4_)-(_MONTH_)-(_DAY_)[T ](_H24_):(_MIN_):(_SEC_)(:?.(_MS_))?(:? ?(_OFFSET_|Z))?$'
+        '^(_YEAR4_)-(_MONTH_)-(_DAY_)[T ](_H24_):(_MIN_):(_SEC_)(?:.(_MS_))? ?(_OFFSET_|Z)?$'
+      ),
+      handler: handlerWith([
+        '',
+        'year',
+        'month',
+        'day',
+        'hour',
+        'minute',
+        'second',
+        'millisecond',
+        'offset',
+      ]),
+    },
+    {
+      name: 'timestampWithZone',
+      regex: helper.compile(
+        '^(_YEAR4_)-(_MONTH_)-(_DAY_)[T ](_H24_):(_MIN_):(_SEC_)(?:.(_MS_))?\\s*(_ZONE_)$'
+      ),
+      handler: handlerWith([
+        '',
+        'year',
+        'month',
+        'day',
+        'hour',
+        'minute',
+        'second',
+        'millisecond',
+        'zone',
+      ]),
+    },
+    {
+      name: 'timestampWithOffsetAndZone',
+      regex: helper.compile(
+        '^(_YEAR4_)-(_MONTH_)-(_DAY_)[T ](_H24_):(_MIN_):(_SEC_)(?:.(_MS_))? (_OFFSET_|Z)\\s*(_ZONE_)$'
       ),
       handler: handlerWith([
         '',
@@ -78,7 +103,7 @@ export function compile(helper: LocaleHelper) {
     {
       name: 'today',
       regex: /^(now|today|tomorrow|yesterday)$/i,
-      handler: function (match) {
+      handler: function (match: string[]) {
         const now = nowGetter.now();
         const keyword = match[1].toLowerCase();
         switch (keyword) {
@@ -102,6 +127,7 @@ export function compile(helper: LocaleHelper) {
           result.second = now.getUTCSeconds();
           result.millisecond = now.getUTCMilliseconds();
         }
+        console.log('today=>', keyword, result);
         return result;
       },
     },
@@ -170,7 +196,7 @@ export function compile(helper: LocaleHelper) {
     {
       name: 'microsoftJson',
       regex: /^\/Date\((\d+)([+-]\d{4})?\)\/$/,
-      handler: function (matches) {
+      handler: function (matches: string[]) {
         const milliseconds = parseInt(matches[1], 10);
         const date = new Date(milliseconds);
         return {
@@ -181,11 +207,13 @@ export function compile(helper: LocaleHelper) {
           minute: date.getUTCMinutes(),
           second: date.getUTCSeconds(),
           millisecond: date.getUTCMilliseconds(),
-          offset: matches[2] || 0,
+          offset: matches[2],
         };
       },
     },
+    //
     // partial-matching formats
+    //
     {
       name: 'full24',
       regex: helper.compile(
@@ -215,19 +243,14 @@ export function compile(helper: LocaleHelper) {
       ]),
     },
     {
-      name: 'hms24',
-      regex: helper.compile('(_H24_):(_MIN_):(_SEC_)(?:\\.(_MS_))?'),
-      handler: handlerWith(['', 'hour', 'minute', 'second', 'millisecond']),
-    },
-    {
       name: 'hms12',
       regex: helper.compile('(_H12_):(_MIN_):(_SEC_)\\s*(_MERIDIEM_)'),
       handler: handlerWith(['', 'hour', 'minute', 'second', 'meridiem']),
     },
     {
-      name: 'hm24',
-      regex: helper.compile('(_H24_):(_MIN_)'),
-      handler: handlerWith(['', 'hour', 'minute']),
+      name: 'hms24',
+      regex: helper.compile('(_H24_):(_MIN_):(_SEC_)(?:\\.(_MS_))?'),
+      handler: handlerWith(['', 'hour', 'minute', 'second', 'millisecond']),
     },
     {
       name: 'hm12',
@@ -235,59 +258,72 @@ export function compile(helper: LocaleHelper) {
       handler: handlerWith(['', 'hour', 'minute', 'meridiem']),
     },
     {
+      name: 'hm24',
+      regex: helper.compile('(_H24_):(_MIN_)'),
+      handler: handlerWith(['', 'hour', 'minute']),
+    },
+    {
       name: 'h12',
       regex: helper.compile('(_H12_)\\s*(_MERIDIEM_)'),
       handler: handlerWith(['', 'hour', 'meridiem']),
     },
     {
-      name: 'onlyZone',
-      regex: helper.compile('_ZONE_'),
-      handler: handlerWith(['zone']),
+      name: 'yearMonthnameDay',
+      regex: helper.compile(
+        '(_YEAR4_)[\\s.-]+(_MONTHNAME_)[\\s,.-]+(_DAY_)(_ORDINAL_)?'
+      ),
+      handler: handlerWith(['', 'year', 'monthname', 'day']),
     },
     {
-      name: 'year',
-      regex: helper.compile('\\b_YEAR4_\\b'),
-      handler: handlerWith(['year']),
+      name: 'dayMonthnameYear',
+      regex: helper.compile(
+        '(_DAY_)(_ORDINAL_)?[\\s.-]*(_MONTHNAME_)[\\s,.-]+(_YEAR_)'
+      ),
+      handler: handlerWith(['', 'day', '', 'monthname', 'year']),
     },
     {
-      name: 'monthnameDay',
-      regex: helper.compile('\\b(_MONTHNAME_)[\\s.]*(_DAY_)\\b'),
-      handler: handlerWith(['', 'monthname', 'day']),
+      name: 'monthnameDayYear',
+      regex: helper.compile(
+        '(_MONTHNAME_)[\\s.-]*(_DAY_)(_ORDINAL_)?[\\s,.-]+(_YEAR_)'
+      ),
+      handler: handlerWith(['', 'monthname', 'day', '', 'year']),
     },
     {
       name: 'dayMonthname',
-      regex: helper.compile('\\b(_DAY_)[\\s.]*(_MONTHNAME_)\\b'),
-      handler: handlerWith(['', 'day', 'monthname']),
+      regex: helper.compile('\\b(_DAY_)(_ORDINAL_)?[\\s.-]*(_MONTHNAME_)\\b'),
+      handler: handlerWith(['', 'day', '', 'monthname']),
+    },
+    {
+      name: 'monthnameDay',
+      regex: helper.compile('\\b(_MONTHNAME_)[\\s.-]*(_DAY_)(_ORDINAL_)?\\b'),
+      handler: handlerWith(['', 'monthname', 'day']),
     },
     {
       name: 'hmsNoMeridiem',
-      regex: helper.compile('\\b(_H12_|_H24_)[:.](_MIN_)[:.](_SEC_)\\b'),
+      regex: helper.compile('\\b(_H12_|_H24_):(_MIN_):(_SEC_)\\b'),
       handler: handlerWith(['', 'hour', 'minute', 'second']),
     },
     {
       name: 'hmNoMeridiem',
-      regex: helper.compile('\\b(_H12_|_H24_)[:.](_MIN_)\\b'),
+      regex: helper.compile('\\b(_H12_|_H24_):(_MIN_)\\b'),
       handler: handlerWith(['', 'hour', 'minute']),
     },
     {
+      name: 'ymd',
+      regex: helper.compile('(_YEAR4_)([.-])(_MONTH_)\\2+(_DAY_)'),
+      handler: handlerWith(['', 'year', '', 'month', 'day']),
+    },
+    {
       name: 'mdy',
-      regex: helper.compile('\\b(_MONTH_)([/-])(_DAY_)\\2(_YEAR_)\\b'),
-      handler: onlyLocales(
-        mdyLocales,
-        handlerWith(['', 'month', '', 'day', 'year'])
-      ),
+      regex: helper.compile('(_MONTH_)([/-])(_DAY_)\\2(_YEAR_)'),
+      handler: handlerWith(['', 'month', '', 'day', 'year']),
     },
     {
       name: 'dmy',
       regex: helper.compile(
-        '\\b(_DAY_)[./\\s-]+(_MONTH_)[./\\s-]+(_YEAR4_)\\b'
+        '(_DAY_)(?:_ORDINAL_)?[./\\s-]+(_MONTH_)[./\\s-]+(_YEAR_)'
       ),
       handler: handlerWith(['', 'day', 'month', 'year']),
-    },
-    {
-      name: 'ymd',
-      regex: helper.compile('\\b(_YEAR4_)([.-])(_MONTH_)\\2+(_DAY_)\\b'),
-      handler: handlerWith(['', 'year', '', 'month', 'day']),
     },
     {
       name: 'yearLoose',
@@ -310,9 +346,44 @@ export function compile(helper: LocaleHelper) {
       handler: handlerWith(['monthname']),
     },
     {
+      name: 'year4',
+      regex: helper.compile('_YEAR4_'),
+      handler: handlerWith(['year']),
+    },
+    {
+      name: 'md',
+      regex: helper.compile('(_MONTH_)[/-](_DAY_)'),
+      handler: handlerWith(['', 'month', 'day']),
+    },
+    {
+      name: 'dm',
+      regex: helper.compile('(_DAY_)(?:_ORDINAL_)?[./\\s-]+(_MONTH_)'),
+      handler: handlerWith(['', 'day', 'month']),
+    },
+    {
       name: 'day',
       regex: helper.compile('_DAY_'),
       handler: handlerWith(['day']),
     },
+    {
+      name: 'year2',
+      regex: helper.compile('_YEAR2_'),
+      handler: handlerWith(['year']),
+    },
+    {
+      name: 'onlyZone',
+      regex: helper.compile('_ZONE_'),
+      handler: handlerWith(['zone']),
+    },
   ];
+  // console.log(
+  //   'patterns.ts',
+  //   patterns.filter(p => p.name.includes('timestampWithOffsetAndZone'))
+  // );
+  const twoLetterLocale = helper.baseName.slice(0, 5);
+  // remove mdy except for certain locales
+  if (mdyLocales.includes(twoLetterLocale)) {
+    return patterns;
+  }
+  return patterns.filter(p => !['mdy', 'md'].includes(p.name));
 }

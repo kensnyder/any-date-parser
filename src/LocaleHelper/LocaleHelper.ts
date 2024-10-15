@@ -1,6 +1,7 @@
 import buildDigits from '../buildDigits/buildDigits';
 import baseLookups from '../data/baseLookups';
 import defaultLocale from '../data/defaultLocale';
+import { defaultLookup } from '../data/numberingSystems';
 import { latn, other } from '../data/templates';
 // import units, { UnitStrings } from '../data/units';
 
@@ -28,9 +29,22 @@ export default class LocaleHelper {
    * The base name of the locale (e.g. en-US)
    */
   baseName: string;
-
   /**
    * Date options for the locale
+   * @property locale: string;
+   * @property calendar: string;
+   * @property numberingSystem: string;
+   * @property timeZone: string;
+   * @property hour12?: boolean;
+   * @property weekday?: string;
+   * @property era?: string;
+   * @property year?: string;
+   * @property month?: string;
+   * @property day?: string;
+   * @property hour?: string;
+   * @property minute?: string;
+   * @property second?: string;
+   * @property timeZoneName?: string;
    */
   dateOptions: Intl.ResolvedDateTimeFormatOptions;
 
@@ -71,6 +85,9 @@ export default class LocaleHelper {
     if (typeof digitString === 'number') {
       return digitString;
     }
+    if (typeof digitString !== 'string') {
+      return undefined;
+    }
     if (this.numberingSystem === 'latn' && !this.baseName.startsWith('zh')) {
       // latin digits can be parsed a tad quicker by using parseInt
       const num = parseInt(digitString, 10);
@@ -85,11 +102,34 @@ export default class LocaleHelper {
     return parseInt(latnDigitString, 10);
   }
 
+  millisecondToInt(msString: string | number) {
+    if (typeof msString === 'number') {
+      return msString;
+    }
+    if (typeof msString !== 'string') {
+      return undefined;
+    }
+    const digits = msString.slice(0, 3);
+    if (digits.length === 1) {
+      return this.toInt(digits) * 100;
+    } else if (digits.length === 2) {
+      return this.toInt(digits) * 10;
+    }
+    return this.toInt(digits);
+  }
+
   monthNameToInt(monthName: string) {
+    if (typeof monthName !== 'string') {
+      return undefined;
+    }
     const lower = monthName.toLocaleLowerCase(this.locale).replace(/\.$/, '');
     return this.lookups.month[lower] || 12;
   }
+
   h12ToInt(digitString: string | number, ampm: string) {
+    if (typeof digitString !== 'string') {
+      return undefined;
+    }
     const meridiemOffset = this.lookups.meridiem[ampm?.toLowerCase()] || 0;
     let hourInt = this.toInt(digitString);
     if (hourInt < 12 && meridiemOffset === 12) {
@@ -97,14 +137,44 @@ export default class LocaleHelper {
     }
     return hourInt;
   }
+
   zoneToOffset(zoneName: string) {
+    if (typeof zoneName !== 'string') {
+      return undefined;
+    }
+    // remove symbols and numbers (sometimes timezone is in parentheses)
+    zoneName = zoneName.replace(/[^a-z\s]/gi, '');
     return this.lookups.zone[zoneName];
   }
+
+  /**
+   * Convert an offset string to Numeric minutes (e.g. "-0500", "+5", "+03:30")
+   * @param offsetString
+   */
+  offsetToMinutes(offsetString: string): number {
+    if (typeof offsetString !== 'string') {
+      return undefined;
+    }
+    const captured = offsetString.match(/^(?:GMT)?([±−+-])(..?):?(..)?$/);
+    if (captured) {
+      const [, sign, hours, minutes] = captured;
+      return (
+        (sign === '-' || sign === '−' ? -1 : 1) *
+        (this.toInt(hours) * 60 + this.toInt(minutes || 0))
+      );
+    }
+    return 0;
+  }
+
   /**
    * Build lookups for digits, month names, day names, and meridiems based on the locale
    */
   build() {
-    this.buildNumbers();
+    if (this.dateOptions.numberingSystem === 'latn') {
+      this.lookups.digit = defaultLookup;
+    } else {
+      this.buildNumbers();
+    }
     if (!/^en/i.test(this.locale)) {
       this.buildMonthNames();
       this.buildDaynames();
@@ -112,7 +182,7 @@ export default class LocaleHelper {
         this.buildMeridiems();
       }
     }
-    // if (this.locale === 'zh-TW') {
+    // if (this.locale === 'en-US') {
     //   console.log('lookups=====>', this);
     // }
   }
@@ -247,68 +317,6 @@ export default class LocaleHelper {
     }
     this.vars.MERIDIEM = list.join('|');
     this.lookups.meridiem = lookup;
-  }
-
-  /**
-   * Given a list of unit names and matches, build result object
-   * @param units  Unit names such as "year", "month" and "millisecond"
-   * @param matches  The values matched by a Format's RegExp
-   * @returns  An object with the units as keys
-   */
-  // getObject(units: UnitStrings[], matches: string[]): HandlerResult {
-  //   const object: HandlerResult = {};
-  //   units.forEach((unit, i) => {
-  //     if (!unit) {
-  //       return;
-  //     }
-  //     let match = matches[i + 1];
-  //     match = match.toLocaleLowerCase(this.locale);
-  //     match = match.replace(/\.$/, '');
-  //     if (unit === 'offset') {
-  //       object.offset = this.offsetToMinutes(match);
-  //     } else if (this.lookups[unit]) {
-  //       object[unit] = this.lookups[unit][match] || this.toInt(match);
-  //     } else {
-  //       object[unit] = this.toInt(match);
-  //     }
-  //   });
-  //   return object;
-  // }
-
-  /**
-   * Take a HandlerResult and cast each unit to Number
-   * @param object  An object with one or more units
-   * @returns  An object with same units but Numeric
-   */
-  // castObject(object: HandlerResult): HandlerResult {
-  //   const casted: HandlerResult = {};
-  //   units.forEach(unit => {
-  //     if (unit in object) {
-  //       casted[unit] = this.toInt(object[unit]);
-  //     }
-  //   });
-  //   if (typeof object.offset === 'string') {
-  //     casted.offset = this.offsetToMinutes(object.offset);
-  //   } else if (typeof object.offset === 'number') {
-  //     casted.offset = object.offset;
-  //   }
-  //   return casted;
-  // }
-
-  /**
-   * Convert an offset string to Numeric minutes (e.g. "-0500", "+5", "+03:30")
-   * @param offsetString
-   */
-  offsetToMinutes(offsetString: string): number {
-    const captured = offsetString.match(/^(?:GMT)?([±−+-])(..?):?(..)?$/);
-    if (captured) {
-      const [, sign, hours, minutes] = captured;
-      return (
-        (sign === '-' || sign === '−' ? -1 : 1) *
-        (this.toInt(hours) * 60 + this.toInt(minutes || 0))
-      );
-    }
-    return 0;
   }
 
   /**

@@ -12,8 +12,14 @@ testDates({
     'ccc, MMMM dd',
     'ccc MMMM dd',
     'MMMM dd',
-    'MMM dd',
   ],
+});
+
+testDates({
+  name: 'short monthname day',
+  expected: { month: 6, day: 28 },
+  locales: ['en-US'],
+  formats: ['MMM dd'],
 });
 
 testDates({

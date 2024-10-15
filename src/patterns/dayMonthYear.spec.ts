@@ -3,7 +3,8 @@ import testDates from '../../test-fixtures/testDates';
 testDates({
   name: 'day month year',
   expected: { year: 2020, month: 3, day: 3 },
-  locales: ['en-US'],
+  // locales: localeList,
+  locales: ['da-DK'],
   formats: [
     'dd/MM/yyyy',
     'dd.MM.yyyy',

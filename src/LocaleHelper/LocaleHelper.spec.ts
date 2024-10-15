@@ -24,46 +24,6 @@ describe('LocaleHelper general', () => {
     const l = new LocaleHelper('en-GB');
     expect(l.locale).toBe('en-GB');
   });
-  it('should build objects from numbers', () => {
-    const l = new LocaleHelper('en');
-    const units = ['year', 'month', 'offset'];
-    const matches = [null, '2020', '10', '+07:30'];
-    const expected = { year: 2020, month: 10, offset: 450 };
-    expect(l.getObject(units, matches)).toEqual(expected);
-  });
-  it('should build objects from month name', () => {
-    const l = new LocaleHelper('en');
-    const units = ['month', 'minute'];
-    const matches = [null, 'september', '59'];
-    const expected = { month: 9, minute: 59 };
-    expect(l.getObject(units, matches)).toEqual(expected);
-  });
-  it('should build objects from short month name', () => {
-    const l = new LocaleHelper('en');
-    const units = ['month', 'hour'];
-    const matches = [null, 'sep', '23'];
-    const expected = { month: 9, hour: 23 };
-    expect(l.getObject(units, matches)).toEqual(expected);
-  });
-  it('should build objects from short month name with period', () => {
-    const l = new LocaleHelper('en');
-    const units = ['month', 'second'];
-    const matches = [null, 'sep.', '00'];
-    const expected = { month: 9, second: 0 };
-    expect(l.getObject(units, matches)).toEqual(expected);
-  });
-  it('should build objects from "deva" numbers', () => {
-    const l = new LocaleHelper('ar');
-    const units = ['year', 'month'];
-    const matches = [null, '٢٠١٧', '٦'];
-    const expected = { year: 2017, month: 6 };
-    expect(l.getObject(units, matches)).toEqual(expected);
-  });
-  it('should handle invalid offsets', () => {
-    const l = new LocaleHelper('en');
-    const actual = l.offsetToMinutes('foo');
-    expect(actual).toEqual(0);
-  });
   it('should error on bad templates', () => {
     const l = new LocaleHelper('ar');
     function invalidFoobar() {
@@ -72,6 +32,52 @@ describe('LocaleHelper general', () => {
     expect(invalidFoobar).toThrowError(
       'Template string contains invalid variable _FOOBAR_'
     );
+  });
+});
+
+describe('LocaleHelper zoneToOffset', () => {
+  it('should handle short name "AKDT"', () => {
+    const l = new LocaleHelper('en');
+    expect(l.zoneToOffset('AKDT')).toBe(-480);
+  });
+  it('should handle long name "Pacific Daylight Time"', () => {
+    const l = new LocaleHelper('en');
+    expect(l.zoneToOffset('Pacific Daylight Time')).toBe(-420);
+  });
+  it('should handle long name with parens "(Mountain Daylight Time)"', () => {
+    const l = new LocaleHelper('en');
+    expect(l.zoneToOffset('(Mountain Daylight Time)')).toBe(-360);
+  });
+});
+
+describe('LocaleHelper offsetToMinutes', () => {
+  it('should handle naked offsets', () => {
+    const l = new LocaleHelper('en');
+    expect(l.offsetToMinutes('+0500')).toBe(300);
+  });
+  it('should handle colon-separated offsets', () => {
+    const l = new LocaleHelper('en');
+    expect(l.offsetToMinutes('-04:00')).toBe(-240);
+  });
+  it('should handle U+2212 minus signs', () => {
+    const l = new LocaleHelper('en');
+    expect(l.offsetToMinutes('−03:00')).toBe(-180);
+  });
+  it('should handle U+00B1 plus/minus sign', () => {
+    const l = new LocaleHelper('en');
+    expect(l.offsetToMinutes('±02:00')).toBe(120);
+  });
+  it('should handle GMT shorthand', () => {
+    const l = new LocaleHelper('en');
+    expect(l.offsetToMinutes('GMT-5')).toBe(-300);
+  });
+  it('should handle GMT longhand', () => {
+    const l = new LocaleHelper('en');
+    expect(l.offsetToMinutes('GMT-01:00')).toBe(-60);
+  });
+  it('should handle invalid offsets', () => {
+    const l = new LocaleHelper('en');
+    expect(l.offsetToMinutes('foo')).toEqual(0);
   });
 });
 

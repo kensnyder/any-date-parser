@@ -1,10 +1,15 @@
 import defaultLocale from './data/defaultLocale';
 import { MaybeValidDate } from './MaybeValidDate/MaybeValidDate';
 import getMatcher from './PatternMatcher/getMatcher';
+import runPreprocessors from './runPreprocessors/runPreprocessors';
 
 export function attempt(dateStr: string, locale = defaultLocale) {
   const matcher = getMatcher(locale);
-  return matcher.attempt(dateStr);
+  const processed = runPreprocessors(dateStr, locale);
+  // if (dateStr === '03.03.20' && locale === 'da-DK') {
+  //   console.log(`attempt processing "${dateStr}" -> "${processed}"`);
+  // }
+  return matcher.attempt(processed);
 }
 
 export function fromObject(obj, defaults = {}): MaybeValidDate {

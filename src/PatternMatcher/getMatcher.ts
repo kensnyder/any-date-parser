@@ -1,3 +1,4 @@
+import twoDigitYears from '../data/twoDigitYears';
 import LocaleHelper from '../LocaleHelper/LocaleHelper';
 import { compile } from '../patterns/patterns';
 import PatternMatcher from './PatternMatcher';
@@ -27,6 +28,17 @@ type FinalResult = {
   millisecond: number;
   offset: number;
 };
+
+const finalFields = [
+  'year',
+  'month',
+  'day',
+  'hour',
+  'minute',
+  'second',
+  'millisecond',
+  'offset',
+];
 
 const matcherByLocale = {};
 
@@ -73,17 +85,57 @@ function getFormatter(helper: LocaleHelper) {
     const result = {} as FinalResult;
     for (const [name, value] of Object.entries(extracted)) {
       if (name === 'monthname') {
-        result.month = helper.monthNameToInt(value as string);
+        if (value) {
+          const month = helper.monthNameToInt(value as string);
+          if (month !== undefined) {
+            result.month = month;
+          }
+        }
       } else if (name === 'hour' && extracted.meridiem) {
-        result.hour = helper.h12ToInt(value, extracted.meridiem);
+        const hour = helper.h12ToInt(value, extracted.meridiem);
+        if (hour !== undefined) {
+          result.hour = hour;
+        }
       } else if (name === 'zone') {
-        result.offset = helper.zoneToOffset(value as string);
+        if (value) {
+          const offset = helper.zoneToOffset(value as string);
+          if (offset !== undefined) {
+            result.offset = offset;
+          }
+        }
       } else if (name === 'offset') {
-        result.offset = helper.offsetToMinutes(value as string);
-      } else {
-        result[name] = helper.toInt(value);
+        const offset = helper.offsetToMinutes(value as string);
+        if (offset !== undefined) {
+          result.offset = offset;
+        }
+      } else if (name === 'millisecond') {
+        const casted = helper.millisecondToInt(value);
+        if (typeof casted === 'number') {
+          result.millisecond = casted;
+        }
+      } else if (finalFields.includes(name)) {
+        const casted = helper.toInt(value);
+        if (typeof casted === 'number') {
+          result[name] = casted;
+        }
       }
+    }
+    if (result.year < 100) {
+      result.year = twoDigitYears[result.year];
+    }
+    if (result.year && helper.dateOptions.calendar === 'buddhist') {
+      result.year -= 543;
     }
     return result;
   };
 }
+
+// function toNumber(value, caster) {
+//   if (typeof value === 'number') {
+//     return value;
+//   }
+//   const casted = caster(value);
+//   if (typeof casted === 'number') {
+//     return casted;
+//   }
+// }

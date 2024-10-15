@@ -1,7 +1,7 @@
 // some locales use periods instead of colons in their times
 const periodsInsteadOfColons = [
-  [/(\d{1,2})\.(\d{2})\.(\d{2})(\D|$)/, '$1:$2:$3$4'],
-  [/(\d{1,2})\.(\d{2})(\D|$)/, '$1:$2$3'],
+  [/([^\d.]+)(\d{1,2})\.(\d{2})\.(\d{2})(\D|$)/, '$1$2:$3:$4$5'],
+  [/([^\d.]+)(\d{1,2})\.(\d{2})(\D|$)/, '$1$2:$3$4'],
 ];
 
 const preprocessors = {
@@ -41,7 +41,11 @@ const preprocessors = {
   ],
   fi: periodsInsteadOfColons,
   id: periodsInsteadOfColons,
-  // da: periodsInsteadOfColons,
+  fr: [
+    [/(\d{2}) h /, '$1:'],
+    [/(\d{2}) min /, '$1:'],
+    [/(\d{2}) s /, '$1'],
+  ],
 };
 
 export default preprocessors;

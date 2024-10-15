@@ -17,7 +17,7 @@ testDates({
   ],
 });
 testDates({
-  name: 'monthname day year',
+  name: 'monthname day year2',
   expected: { year: 2017, month: 2, day: 28 },
   locales: ['en', 'es', 'de', 'fi', 'fr', 'pt', 'no', 'nl', 'pl'],
   formats: ['MMM dd yy'],

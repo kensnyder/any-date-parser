@@ -1,3 +1,12 @@
+// import fs from 'node:fs';
+
+function log(str: string) {
+  if (str.includes('03/03')) {
+    console.log(str);
+  }
+  // fs.appendFileSync('workingString.txt', str + '\n', 'utf-8');
+}
+
 type Pattern<Result> = {
   name: string;
   regex: RegExp;
@@ -16,7 +25,7 @@ type Init<Result, FinalResult> = {
 
 export default class PatternMatcher<
   Result extends Record<string, any>,
-  FinalResult = any,
+  FinalResult extends Record<string, any>,
 > {
   doneChecker: DoneChecker<Result>;
   fallback: Fallback<Result>;
@@ -34,28 +43,48 @@ export default class PatternMatcher<
     this.formatter = formatter;
   }
   attempt(input: string) {
+    if (typeof input !== 'string') {
+      return this.fallback(input);
+    }
+    log(`\n---- attempt input "${input}" ----`);
     let workingString = input.trim();
-    const finalResult = {} as Result;
+    const rawResult = {} as Result;
     let hadMatch = false;
     for (const pattern of this.patterns) {
-      const matches = input.match(pattern.regex);
+      const matches = workingString.match(pattern.regex);
       if (!matches) {
+        // log(
+        //   `no match => "${input}" > "${workingString}" [${pattern.name}] ${pattern.regex}`
+        // );
         continue;
       }
       hadMatch = true;
       const result = pattern.handler(matches);
       if (result) {
-        Object.assign(finalResult, result);
+        for (const [key, value] of Object.entries(result)) {
+          if (!(key in rawResult) && value !== undefined) {
+            (rawResult as Record<string, any>)[key] = value;
+          }
+        }
+        log(
+          `yes match=> "${input}" > "${workingString}" [${pattern.name}] ${pattern.regex} > ${JSON.stringify(matches)}`
+        );
         workingString =
           workingString.slice(0, matches.index) +
-          workingString.slice(matches.index + matches[0].length);
+          workingString.slice(matches.index + matches[0].length + 1);
         workingString = workingString.trim();
-        if (this.doneChecker(finalResult, workingString)) {
+        log(`new strng=> "${input}" > "${workingString}"`);
+        if (this.doneChecker(rawResult, workingString)) {
+          log(`done here => "${input}" > ${JSON.stringify(rawResult)}`);
           break;
         }
+      } else {
+        log(
+          `no result=> "${input}" > "${workingString}" [${pattern.name}] ${pattern.regex}`
+        );
       }
     }
-    return hadMatch ? this.formatter(finalResult) : this.fallback(input);
+    return hadMatch ? this.formatter(rawResult) : this.fallback(input);
   }
   testOne(name: string, input: string) {
     const pattern = this.patterns.find(p => p.name === name);

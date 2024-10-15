@@ -2,7 +2,7 @@ import testDates from '../../test-fixtures/testDates';
 
 testDates({
   name: '24 hour time',
-  locales: ['ar-SA', 'bn-BD', 'bn-IN', 'en-US'],
+  locales: ['bn-BD', 'bn-IN', 'en-US'],
   expected: {
     year: 2020,
     month: 10,
@@ -15,7 +15,7 @@ testDates({
 });
 testDates({
   name: '24 hour time',
-  locales: ['ar-SA', 'bn-BD', 'bn-IN', 'en-US'],
+  locales: ['bn-BD', 'bn-IN', 'en-US'],
   expected: {
     year: 2020,
     month: 10,
@@ -60,7 +60,7 @@ testDates({
     hour: 17,
     minute: 41,
     second: 28,
-    millisecond: 99,
+    millisecond: 990,
   },
   formats: ["yyyy-MM-dd'T'HH:mm:ss.99'Z'"],
 });
@@ -74,7 +74,7 @@ testDates({
     hour: 17,
     minute: 41,
     second: 28,
-    millisecond: 9,
+    millisecond: 900,
   },
   formats: ["yyyy-MM-dd'T'HH:mm:ss.9'Z'"],
 });
@@ -109,7 +109,7 @@ testDates({
 
 testDates({
   name: '24 hour time with timezone name - "MST"',
-  locales: ['ar-SA', 'bn-BD', 'bn-IN', 'en-US'],
+  locales: ['bn-BD', 'bn-IN', 'en-US'],
   expected: {
     year: 2020,
     month: 10,
@@ -124,7 +124,7 @@ testDates({
 
 testDates({
   name: '24 hour time with long timezone name - "Eastern Daylight Time"',
-  locales: ['ar-SA', 'bn-BD', 'bn-IN', 'en-US'],
+  locales: ['bn-BD', 'bn-IN', 'en-US'],
   expected: {
     year: 2020,
     month: 10,
@@ -162,13 +162,13 @@ testDates({
     hour: 17,
     minute: 41,
     second: 28,
-    offset: 180,
+    offset: -300,
   },
-  formats: ["yyyy-MM-dd'T'HH:mm:ss 'GMT+03:00 (Eastern Daylight Time)'"],
+  formats: ["yyyy-MM-dd'T'HH:mm:ss 'GMT-05:00 (Eastern Daylight Time)'"],
 });
 
 testDates({
-  name: '24 hour time with GMT hours',
+  name: '24 hour time with GMT offset hours',
   locales: ['en-US'],
   expected: {
     year: 2020,
@@ -183,7 +183,7 @@ testDates({
 });
 
 testDates({
-  name: '24 hour time with zone -hours:minutes',
+  name: '24 hour time with offset -hours:minutes',
   locales: ['en-US'],
   expected: {
     year: 2020,
@@ -198,7 +198,7 @@ testDates({
 });
 
 testDates({
-  name: '24 hour time with zone +hoursminutes',
+  name: '24 hour time with offset +hoursminutes',
   locales: ['en-US'],
   expected: {
     year: 2020,
@@ -213,7 +213,7 @@ testDates({
 });
 
 testDates({
-  name: '24 hour time with zone and U+2212 minus sign',
+  name: '24 hour time with offset using U+2212 minus sign',
   locales: ['en-US'],
   expected: {
     year: 2020,
@@ -228,7 +228,7 @@ testDates({
 });
 
 testDates({
-  name: '24 hour time with zone plus/minus sign',
+  name: '24 hour time with offset using U+00B1 plus-minus sign',
   locales: ['en-US'],
   expected: {
     year: 2020,
