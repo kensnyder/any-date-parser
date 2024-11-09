@@ -1,33 +1,34 @@
 import defaultLocale from './data/defaultLocale';
 import { MaybeValidDate } from './MaybeValidDate/MaybeValidDate';
-import getMatcher from './PatternMatcher/getMatcher';
+import getMatcher, { type MatcherResult } from './PatternMatcher/getMatcher';
 import runPreprocessors from './runPreprocessors/runPreprocessors';
 
 export function attempt(dateStr: string, locale = defaultLocale) {
   const matcher = getMatcher(locale);
   const processed = runPreprocessors(dateStr, locale);
-  // if (dateStr === '03.03.20' && locale === 'da-DK') {
-  //   console.log(`attempt processing "${dateStr}" -> "${processed}"`);
-  // }
   return matcher.attempt(processed);
 }
 
-export function fromObject(obj, defaults = {}): MaybeValidDate {
-  const effective = { ...defaults, ...obj };
-  if (effective.month && effective.day && effective.year === undefined) {
-    effective.year = new Date().getFullYear();
+export function fromObject(parsed: MatcherResult): MaybeValidDate {
+  if (parsed.month && parsed.day && parsed.year === undefined) {
+    parsed.year = new Date().getFullYear();
+  }
+  if (parsed.second === 60) {
+    // move leap seconds to previous second
+    // see https://en.wikipedia.org/wiki/Leap_second#Implementation_differences
+    parsed.second = 59;
   }
   const date = new MaybeValidDate(
-    effective.year,
-    effective.month - 1,
-    effective.day,
-    effective.hour || 0,
-    effective.minute || 0,
-    effective.second || 0,
-    effective.millisecond || 0
+    parsed.year,
+    parsed.month - 1,
+    parsed.day,
+    parsed.hour || 0,
+    parsed.minute || 0,
+    parsed.second || 0,
+    parsed.millisecond || 0
   );
-  if (typeof effective.offset === 'number') {
-    return new MaybeValidDate(date.valueOf() - effective.offset * 60 * 1000);
+  if (typeof parsed.offset === 'number') {
+    return new MaybeValidDate(date.valueOf() - parsed.offset * 60 * 1000);
   }
   return date;
 }
@@ -70,14 +71,20 @@ const parser = {
   attempt,
 };
 
-declare global {
-  interface Window {
-    anyDateParser: typeof parser;
-  }
-}
 /* v8 ignore next 3 */
 if (typeof window !== 'undefined') {
   window.anyDateParser = parser;
 }
 
 export default parser;
+
+// type additions
+declare global {
+  interface Window {
+    anyDateParser: typeof parser;
+  }
+  interface Date {
+    fromString: typeof fromString;
+    fromAny: typeof fromAny;
+  }
+}

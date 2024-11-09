@@ -268,6 +268,11 @@ export function compile(helper: LocaleHelper) {
       handler: handlerWith(['', 'hour', 'meridiem']),
     },
     {
+      name: '8digit',
+      regex: /^((?:19|20)\d{2})(\d{2})(\d{2})$/,
+      handler: handlerWith(['', 'year', 'month', 'day']),
+    },
+    {
       name: 'yearMonthnameDay',
       regex: helper.compile(
         '(_YEAR4_)[\\s.-]+(_MONTHNAME_)[\\s,.-]+(_DAY_)(_ORDINAL_)?'

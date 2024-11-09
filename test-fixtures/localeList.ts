@@ -29,7 +29,7 @@ const localeList = [
   'fr-CA', // Canadian French
   'fr-CH', // "Swiss" French
   'fr-FR', // Standard French (especially in France)
-  'he-IL', // Hebrew (Israel)
+  // 'he-IL', // Hebrew (Israel) - Not Supported
   'hi-IN', // Hindi (India)
   'hu-HU', // Hungarian (Hungary)
   'id-ID', // Indonesian (Indonesia)

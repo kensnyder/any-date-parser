@@ -1,14 +1,14 @@
 # any-date-parser
 
-[![NPM Link](https://badgen.net/npm/v/any-date-parser?v=2.0.0)](https://npmjs.com/package/any-date-parser)
-[![Language](https://badgen.net/static/language/TS?v=2.0.0)](https://github.com/search?q=repo:kensnyder/any-date-parser++language:TypeScript&type=code)
-[![Build Status](https://github.com/kensnyder/any-date-parser/actions/workflows/workflow.yml/badge.svg?v=2.0.0)](https://github.com/kensnyder/any-date-parser/actions)
-[![Code Coverage](https://codecov.io/gh/kensnyder/any-date-parser/branch/main/graph/badge.svg?v=2.0.0)](https://codecov.io/gh/kensnyder/any-date-parser)
-![2000+ Tests](https://badgen.net/static/tests/2000+/green)
-[![Gzipped Size](https://badgen.net/bundlephobia/minzip/any-date-parser?label=minzipped&v=2.0.0)](https://bundlephobia.com/package/any-date-parser@2.0.0)
-[![Dependency details](https://badgen.net/bundlephobia/dependency-count/any-date-parser?v=2.0.0)](https://www.npmjs.com/package/any-date-parser?activeTab=dependencies)
-[![Tree shakeable](https://badgen.net/bundlephobia/tree-shaking/any-date-parser?v=2.0.0)](https://www.npmjs.com/package/any-date-parser)
-[![ISC License](https://badgen.net/github/license/kensnyder/any-date-parser?v=2.0.0)](https://opensource.org/licenses/ISC)
+[![NPM Link](https://badgen.net/npm/v/any-date-parser?v=2.0.0-rc.1)](https://npmjs.com/package/any-date-parser)
+[![Language](https://badgen.net/static/language/TS?v=2.0.0-rc.1)](https://github.com/search?q=repo:kensnyder/any-date-parser++language:TypeScript&type=code)
+[![Build Status](https://github.com/kensnyder/any-date-parser/actions/workflows/workflow.yml/badge.svg?v=2.0.0-rc.1)](https://github.com/kensnyder/any-date-parser/actions)
+[![Code Coverage](https://codecov.io/gh/kensnyder/any-date-parser/branch/main/graph/badge.svg?v=2.0.0-rc.1)](https://codecov.io/gh/kensnyder/any-date-parser)
+![2400+ Tests](https://badgen.net/static/tests/2400+/green)
+[![Gzipped Size](https://badgen.net/bundlephobia/minzip/any-date-parser?label=minzipped&v=2.0.0-rc.1)](https://bundlephobia.com/package/any-date-parser@2.0.0-rc.1)
+[![Dependency details](https://badgen.net/bundlephobia/dependency-count/any-date-parser?v=2.0.0-rc.1)](https://www.npmjs.com/package/any-date-parser?activeTab=dependencies)
+[![Tree shakeable](https://badgen.net/bundlephobia/tree-shaking/any-date-parser?v=2.0.0-rc.1)](https://www.npmjs.com/package/any-date-parser)
+[![ISC License](https://badgen.net/github/license/kensnyder/any-date-parser?v=2.0.0-rc.1)](https://opensource.org/licenses/ISC)
 
 The most comprehensive and accurate date parser for Node and browsers. It uses
 `Intl` to provide parsing support for all installed locales.
@@ -20,7 +20,7 @@ The most comprehensive and accurate date parser for Node and browsers. It uses
 OR
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/any-date-parser@2.0.0/dist/browser-bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/any-date-parser@2.0.0-rc.1/dist/browser-bundle.js"></script>
 ```
 
 ## Table of Contents
@@ -31,9 +31,6 @@ OR
 1. [Supported formats](#supported-formats)
 1. [Locale support](#locale-support)
 1. [List of all supported locales](https://github.com/kensnyder/any-date-parser/blob/master/test-fixtures/localeList.ts)
-1. [Adding custom formats](#adding-custom-formats)
-1. [Removing parsing rules](#removing-parsing-rules)
-1. [Creating a custom parser](#creating-a-custom-parser)
 1. [Unit tests](#unit-tests)
 1. [Contributing](#contributing)
 
@@ -48,6 +45,7 @@ OR
   property, v2 will behave the same.
 - If an input string does not match any known format, it will attempt a fuzzy
   match, looking for date parts individually.
+- Custom patterns are no longer supported
 
 ## Motivation
 
@@ -173,7 +171,6 @@ This means support for international formats such as:
 - `es-MX` - `viernes, 27 de septiembre de 2024, 10:39:50 a.m. GMT-6`
 - `bn-BD` - `শুক্রবার, ২৭ সেপ্টেম্বর, ২০২৪ এ ১০:৩৬:১০ AM GMT -৬`
 - `el-GR` - `Παρασκευή 27 Σεπτεμβρίου 2024 στις 10:38:16 π.μ. GMT-6`
-- `he-IL` - `יום שישי, 27 בספטמבר 2024 בשעה 10:38:53 GMT-6`
 - `hi-IN` - `शुक्रवार, 27 सितंबर 2024 को 10:39:13 am GMT-6 बजे`
 - `th-TH` - `วันศุกร์ที่ 27 กันยายน พ.ศ. 2567 เวลา 10 นาฬิกา 40 นาที 28 วินาที GMT-6`
 - `ta-IN` - `வெள்ளி, 27 செப்டம்பர், 2024 அன்று 10:43:05 AM GMT-6`
@@ -195,151 +192,7 @@ Check out the
   `-271821-04-20T00:00:00.000Z through +275760-09-13T00:00:00.000Z`.
 - Only English timezone names are supported
 - Does not support the Hijri calendar (`islamic-umalqura`)
-- Does not support `ar` (Arabic) locales
-
-## Adding custom formats
-
-`any-date-parser` has an `addFormat()` function to add a custom parser.
-
-First, parsers must have `matcher` or `template`.
-
-- `matcher`: A RegExp to match a string
-- `template`: A string with template variables such as `_YEAR_` `_MONTH_` etc.
-  that will be converted to a regular expression
-
-Second, parsers must have `units` or `handler`.
-
-- `units`: An array of unit strings to fit matches into (year, month, day, etc.)
-- `handler`: A function that takes matches and returns an object with keys year,
-  month, day etc.
-
-### Example 1: matcher + units
-
-```ts
-import parser, { Format } from 'any-date-parser';
-
-parser.addFormat(
-  new Format({
-    matcher: /^(\d+) days? into month (\d+) in year (\d{4})$/,
-    units: ['day', 'month', 'year'],
-  })
-);
-```
-
-Keep in mind that `\d` does not support other numbering system such as Chinese
-or Bengali. To support those you can use the `template` option given in
-[example 3](#example-3-template--units) and
-[example 4](#example-4-template--handler).
-
-### Example 2: matcher + handler
-
-```ts
-import parser, { Format } from 'any-date-parser';
-
-parser.addFormat(
-  new Format({
-    matcher: /^(Q[1-4]) (\d{4})$/, // String such as "Q4 2004"
-    handler: function ([, quarter, year]) {
-      const monthByQuarter = { Q1: 1, Q2: 4, Q3: 7, Q4: 10 };
-      const month = monthByQuarter[quarter];
-      return { year, month };
-    },
-  })
-);
-```
-
-### Example 3: template + units
-
-```ts
-import parser, { Format } from 'any-date-parser';
-
-parser.addFormat(
-  new Format({
-    template: 'The (_DAY_)(?:_ORDINAL_) day of (_MONTH_), (_YEAR_)',
-    units: ['day', 'month', 'year'],
-  })
-);
-```
-
-### Example 4: template + handler
-
-```ts
-import parser, { Format } from 'any-date-parser';
-
-parser.addFormat(
-  new Format({
-    template: '^(Q[1-4]) (_YEAR_)$', // String such as "Q4 2004"
-    handler: function ([, quarter, year]) {
-      const monthByQuarter = { Q1: 1, Q2: 4, Q3: 7, Q4: 10 };
-      const month = monthByQuarter[quarter];
-      return { year, month };
-    },
-  })
-);
-```
-
-### Removing parsing rules
-
-To remove support for a certain format, use `removeFormat()`
-
-```ts
-import parser, { dayMonth, fuzzy } from 'any-date-parser';
-import dayMonth from 'any-date-parser';
-
-parser.removeFormat(dayMonth);
-parser.removeFormat(fuzzy);
-```
-
-All exported formats:
-
-- `time24Hours`
-- `time12Hours`
-- `yearMonthDayWithDots`
-- `yearMonthDay`
-- `dayMonthnameYear`
-- `monthnameDayYear`
-- `monthDayYear`
-- `dayMonthYear`
-- `chinese`
-- `korean`
-- `twitter`
-- `today`
-- `ago`
-- `monthnameDay`
-- `dayMonthname`
-- `monthDay`
-- `dayMonth`
-- `yearMonthnameDay`
-- `yearMonthDayWithSlashes`
-- `atSeconds`
-- `microsoftJson`
-- `fuzzy`
-
-### Creating a custom parser
-
-To create a new parser with a limited list of formats or your own custom
-formats, use `new Parser`
-
-```ts
-import { Parser, time24Hours, yearMonthDay, ago } from 'any-date-parser';
-
-const myParser = new Parser();
-myParser.addFormats([time24Hours, yearMonthDay, ago]);
-```
-
-Note that formats will be attempted in the order they were added.
-
-You can convert your custom parser to a function. For example:
-
-```ts
-import { Parser, time24Hours, yearMonthDay, ago } from 'any-date-parser';
-const myParser = new Parser();
-// ....
-myParser.addFormats(/*...*/);
-// Pass locale if you want to override the detected default
-Date.fromString = myParser.exportAsFunction();
-Date.fromAny = myParser.exportAsFunctionAny();
-```
+- Does not support right-to-left script locales such as `ar` (Arabic) and `he` (Hebrew)
 
 ## Unit tests
 
@@ -360,23 +213,22 @@ incorporated.
 
 24 hour time (any date format followed by a 24-hour time expression)
 
-- 2020-10-06 17:41:28
-- 2020-10-06T17:41:28Z
 - 17:41:28
-- 2020-10-06T17:41:28.999Z
-- 2020-10-06T17:41:28.999999Z
-- 2020-10-06T17:41:28.999999999Z
-- 2020-10-06T17:41:28 MST
-- 2020-10-06T17:41:28 Eastern Daylight Time
-- 2020-10-06T17:41:28 GMT+03:00
-- 2020-10-06T17:41:28 GMT-9
-- 2020-10-06T17:41:28-09:00
-- 2020-10-06T17:41:28+0900
+- 17:41:28Z
+- 17:41:28.999Z
+- 17:41:28.999999Z
+- 17:41:28.999999999Z
+- 17:41:28 MST
+- 17:41:28 Eastern Daylight Time
+- 17:41:28 GMT+03:00
+- 17:41:28 GMT-9
+- 17:41:28-09:00
+- 17:41:28+0900
 
 12 hour time (any date format followed by a 12-hour time expression)
 
-- March 14, 2015 at 9:26:53 am
-- 14 Mar 2015 9:26:53 a.m.
+- 9:26:53 am
+- 9:26:53 a.m.
 - 9:26:53am
 - 9:26pm
 - 9pm
@@ -451,7 +303,7 @@ day monthname
 - 16 March
 - 16 Mar
 
-month day
+month day (for locales: ee-TG en-AS,CA,FM,GH,GU,KE,MH,MP,US,VI,WS jp-JP sm-AS,SM)
 
 - 03/14
 - 03-14

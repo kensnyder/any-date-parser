@@ -3,7 +3,7 @@ import LocaleHelper from '../LocaleHelper/LocaleHelper';
 import { compile } from '../patterns/patterns';
 import PatternMatcher from './PatternMatcher';
 
-type HandlerResult = {
+export type HandlerResult = {
   year?: string | number;
   month?: string | number;
   monthname?: string;
@@ -18,7 +18,7 @@ type HandlerResult = {
   invalid?: string;
 };
 
-type FinalResult = {
+export type MatcherResult = {
   year: number;
   month: number;
   day: number;
@@ -45,7 +45,7 @@ const matcherByLocale = {};
 export default function getMatcher(locale: string) {
   if (!matcherByLocale[locale]) {
     const helper = LocaleHelper.factory(locale);
-    matcherByLocale[locale] = new PatternMatcher<HandlerResult, FinalResult>({
+    matcherByLocale[locale] = new PatternMatcher<HandlerResult, MatcherResult>({
       doneChecker,
       fallback: getFallback(locale),
       patterns: compile(helper),
@@ -82,7 +82,7 @@ function getFallback(locale: string) {
 
 function getFormatter(helper: LocaleHelper) {
   return function format(extracted: HandlerResult) {
-    const result = {} as FinalResult;
+    const result = {} as MatcherResult;
     for (const [name, value] of Object.entries(extracted)) {
       if (name === 'monthname') {
         if (value) {

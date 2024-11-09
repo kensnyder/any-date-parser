@@ -32,7 +32,8 @@ then
   # make global luxon available to our specs
   export NODE_PATH=$modulesPath
   # set timezone to UTC and run tests
-  TZ=UTC npx vitest "$@"
+  export TZ=UTC
+  npx vitest "$@"
 else
   # Failed
   echo "${RED}We failed to find the full-icu package path."

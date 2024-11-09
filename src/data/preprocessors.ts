@@ -19,10 +19,10 @@ const preprocessors = {
   ],
   he: [[/ב/gi, '']],
   // "of" in various languages
-  de: [[/ um /g, '']],
-  pt: [[/de /gi, '']],
-  es: [[/de /gi, '']],
-  da: [[/den /gi, ''], ...periodsInsteadOfColons],
+  de: [[/ um /g, ' ']],
+  pt: [[/\sde /gi, ' ']],
+  es: [[/\sde /gi, ' ']],
+  da: [[/\sden /gi, ' '], ...periodsInsteadOfColons],
   // Russian symbol after years
   ru: [[/ г\./g, '']],
   th: [
