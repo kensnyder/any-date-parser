@@ -1,5 +1,16 @@
 ## Change Log
 
+### v2.0.1 on 2025-01-10
+
+- Add Timezone name "Coordinated Universal Time"
+
+### v2.0.0 on 2024-11-09
+
+- Rewrite in .ts
+- Drop support for custom patterns
+- Fuzzy date matching to support more formats
+- Support more i18n formats
+
 ### v1.6.0 on 2022-01-23
 
 - Support more i18n formats

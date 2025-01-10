@@ -8,6 +8,7 @@ const timezoneNames = {
   'Mountain Standard Time': -420,
   'Pacific Daylight Time': -420,
   'Pacific Standard Time': -480,
+  'Coordinated Universal Time': 0,
   ACDT: 630, // Australian Central Daylight Savings Time
   ACST: 570, // Australian Central Standard Time
   ACT: 480, // ASEAN Common Time

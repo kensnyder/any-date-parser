@@ -1,26 +1,28 @@
 # any-date-parser
 
-[![NPM Link](https://badgen.net/npm/v/any-date-parser?v=2.0.0-rc.1)](https://npmjs.com/package/any-date-parser)
-[![Language](https://badgen.net/static/language/TS?v=2.0.0-rc.1)](https://github.com/search?q=repo:kensnyder/any-date-parser++language:TypeScript&type=code)
-[![Build Status](https://github.com/kensnyder/any-date-parser/actions/workflows/workflow.yml/badge.svg?v=2.0.0-rc.1)](https://github.com/kensnyder/any-date-parser/actions)
-[![Code Coverage](https://codecov.io/gh/kensnyder/any-date-parser/branch/main/graph/badge.svg?v=2.0.0-rc.1)](https://codecov.io/gh/kensnyder/any-date-parser)
+[![NPM Link](https://badgen.net/npm/v/any-date-parser?v=2.0.1)](https://npmjs.com/package/any-date-parser)
+[![Language](https://badgen.net/static/language/TS?v=2.0.1)](https://github.com/search?q=repo:kensnyder/any-date-parser++language:TypeScript&type=code)
+[![Build Status](https://github.com/kensnyder/any-date-parser/actions/workflows/workflow.yml/badge.svg?v=2.0.1)](https://github.com/kensnyder/any-date-parser/actions)
+[![Code Coverage](https://codecov.io/gh/kensnyder/any-date-parser/branch/main/graph/badge.svg?v=2.0.1)](https://codecov.io/gh/kensnyder/any-date-parser)
 ![2400+ Tests](https://badgen.net/static/tests/2400+/green)
-[![Gzipped Size](https://badgen.net/bundlephobia/minzip/any-date-parser?label=minzipped&v=2.0.0-rc.1)](https://bundlephobia.com/package/any-date-parser@2.0.0-rc.1)
-[![Dependency details](https://badgen.net/bundlephobia/dependency-count/any-date-parser?v=2.0.0-rc.1)](https://www.npmjs.com/package/any-date-parser?activeTab=dependencies)
-[![Tree shakeable](https://badgen.net/bundlephobia/tree-shaking/any-date-parser?v=2.0.0-rc.1)](https://www.npmjs.com/package/any-date-parser)
-[![ISC License](https://badgen.net/github/license/kensnyder/any-date-parser?v=2.0.0-rc.1)](https://opensource.org/licenses/ISC)
+[![Gzipped Size](https://badgen.net/bundlephobia/minzip/any-date-parser?label=minzipped&v=2.0.1)](https://bundlephobia.com/package/any-date-parser@2.0.1)
+[![Dependency details](https://badgen.net/bundlephobia/dependency-count/any-date-parser?v=2.0.1)](https://www.npmjs.com/package/any-date-parser?activeTab=dependencies)
+[![Tree shakeable](https://badgen.net/bundlephobia/tree-shaking/any-date-parser?v=2.0.1)](https://www.npmjs.com/package/any-date-parser)
+[![ISC License](https://badgen.net/github/license/kensnyder/any-date-parser?v=2.0.1)](https://opensource.org/licenses/ISC)
 
 The most comprehensive and accurate date parser for Node and browsers. It uses
 `Intl` to provide parsing support for all installed locales.
 
 ## Installation
 
-`npm install any-date-parser`
+```shell
+npm install any-date-parser
+```
 
 OR
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/any-date-parser@2.0.0-rc.1/dist/browser-bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/any-date-parser@2.0.1/dist/browser-bundle.js"></script>
 ```
 
 ## Table of Contents
@@ -57,12 +59,12 @@ OR
 
 ## Usage
 
-There are three ways to use any-date-parser:
+There are three ways to use `any-date-parser`:
 
 1.) Use the parser object: (Recommended)
 
 - `parser.fromString(string, locale)` - Parses a string and returns a `Date`
-  object. It is the same function as in option 1.
+  object.
 - `parser.fromAny(any, locale)` - Return a `Date` object given a `Date`,
   `Number` or string to parse. It is the same function as in option 1.
 
