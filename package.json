@@ -1,66 +1,68 @@
 {
-	"name": "any-date-parser",
-	"version": "1.5.4",
-	"description": "Parse a wide range of date formats including human-input dates",
-	"tags": [
-		"date",
-		"datetime",
-		"parse",
-		"parser",
-		"date parser",
-		"parse date",
-		"human"
-	],
-	"main": "any-date-parser.js",
-	"types": "index.d.ts",
-	"scripts": {
-		"build": "npx browserify any-date-parser.js -p tinyify -o dist/browser-bundle.js -t",
-		"bump-patch": "node scripts/bump-version.js patch",
-		"bump-minor": "node scripts/bump-version.js minor",
-		"bump-major": "node scripts/bump-version.js major",
-		"demo": "npm run build && npx serve -p 5050 .",
-		"test": "sh ./scripts/test.sh",
-		"watch": "sh ./scripts/test.sh --watch",
-		"coverage": "sh ./scripts/test.sh --collectCoverage",
-		"generate-types": "tsc -p declaration.tsconfig.json"
-	},
-	"browserify": {
-		"transform": [
-			[
-				"babelify",
-				{
-					"presets": [
-						"@babel/preset-env"
-					]
-				}
-			]
-		]
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/kensnyder/any-date-parser.git"
-	},
-	"author": {
-		"name": "Ken Snyder",
-		"email": "kendsnyder@gmail.com"
-	},
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/kensnyder/any-date-parser/issues"
-	},
-	"homepage": "https://github.com/kensnyder/any-date-parser#readme",
-	"devDependencies": {
-		"@babel/core": "7.21.0",
-		"@babel/preset-env": "7.20.2",
-		"@types/node": "^18.15.2",
-		"babelify": "10.0.0",
-		"browserify": "17.0.0",
-		"eslint": "8.36.0",
-		"jest": "29.5.0",
-		"luxon": "1.x",
-		"prettier": "2.8.4",
-		"serve": "14.2.0",
-		"tinyify": "4.0.0",
-		"typescript": "^4.9.5"
-	}
+  "name": "any-date-parser",
+  "version": "2.0.1",
+  "description": "Parse a wide range of date formats including human-input dates",
+  "tags": [
+    "date",
+    "datetime",
+    "parse",
+    "parser",
+    "date parser",
+    "parse date",
+    "human"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE.md"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "demo": "npm run build && npx serve -p 5050 .",
+    "test": "./scripts/test.sh run",
+    "test-watch": "./scripts/test.sh",
+    "are-we-fuzzy-yet": "TZ=UTC bun ./test-fixtures/are-we-fuzzy-yet.ts",
+    "build": "npm run build:clean && npm run build:dts && npm run build:esm && npm run build:cjs",
+    "build:clean": "rimraf dist/ && mkdir dist",
+    "build:dts": "yes | npx dts-bundle-generator -o dist/index.d.ts src/main.ts",
+    "build:esm": "yes | npx esbuild src/main.ts --minify --bundle --platform=node --format=esm --outfile=dist/index.mjs",
+    "build:cjs": "yes | npx esbuild src/main.ts --minify --bundle --platform=node --format=cjs --outfile=dist/index.cjs",
+    "coverage": "./scripts/test.sh run --coverage",
+    "view-coverage": "open ./coverage/lcov-report/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kensnyder/any-date-parser.git"
+  },
+  "author": {
+    "name": "Ken Snyder",
+    "email": "kendsnyder@gmail.com"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kensnyder/any-date-parser/issues"
+  },
+  "homepage": "https://github.com/kensnyder/any-date-parser#readme",
+  "devDependencies": {
+    "@types/node": "22.5.5",
+    "@vitest/coverage-v8": "2.1.1",
+    "eslint": "8.16.0",
+    "luxon": "3.5.0",
+    "prettier": "3.3.3",
+    "prettier-plugin-organize-imports": "4.0.0",
+    "rimraf": "6.0.1",
+    "typescript": "5.6.2",
+    "vitest": "2.1.1"
+  }
 }

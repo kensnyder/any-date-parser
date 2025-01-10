@@ -1,0 +1,32 @@
+name: build
+on: [push]
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x, latest]
+
+    steps:
+      - name: ➡️ Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🟢 Set up Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: ⬇️ Install dependencies
+        run: npm install
+
+      - name: 🏃 Run tests
+        run: npm run coverage
+
+      - name: ☂️ Upload to codecov
+        if: matrix.node-version == 'latest'
+        uses: codecov/codecov-action@v4
+        with:
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true

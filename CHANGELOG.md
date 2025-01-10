@@ -1,18 +1,21 @@
 ## Change Log
 
-### v1.5.4 on 2023-03-13
+### v2.0.1 on 2025-01-10
 
-- #30 - Fix TypeScript imports
+- Add Timezone name "Coordinated Universal Time"
 
-### v1.5.3 on 2022-06-01
+### v2.0.0 on 2024-11-09
 
-- Update dependencies to address npm audit findings
+- Rewrite in .ts
+- Drop support for custom patterns
+- Fuzzy date matching to support more formats
+- Support more i18n formats
 
-### v1.5.2 on 2022-01-31
+### v1.6.0 on 2022-01-23
 
-- Fixes GitHub issue #12
-- Avoid overflowing when month has too many days
-- When year, month or day are missing, default to 2000, Jan, 1 respectively
+- Support more i18n formats
+- Update dev dependencies
+- Pin dev dependencies
 
 ### v1.5.1 on 2021-09-06
 
@@ -26,12 +29,12 @@
 - In browsers, export to window
 - Fix for handling 12pm on 12-hour parser
 - Add demo page (npm run demo)
-- Update dependencies
+- Update dev dependencies
 
 ### v1.4.6 on 2021-07-28
 
 - Fix typo in readme
-- Update dependencies
+- Update dev dependencies
 
 ### v1.4.5 on 2021-05-25
 

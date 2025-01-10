@@ -26,13 +26,14 @@ then
   if ! npm list -g | grep -q 'luxon'
   then
     echo "${GREEN}Attempting to globally install luxon with npm for unit tests...${WHITE}"
-    echo "npm install -g luxon@1"
-    npm install -g luxon@1
+    echo "npm install -g luxon@3"
+    npm install -g luxon@3
   fi
   # make global luxon available to our specs
   export NODE_PATH=$modulesPath
   # set timezone to UTC and run tests
-  TZ=UTC npx jest "$@"
+  export TZ=UTC
+  npx vitest "$@"
 else
   # Failed
   echo "${RED}We failed to find the full-icu package path."
