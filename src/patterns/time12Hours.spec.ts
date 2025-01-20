@@ -2,6 +2,13 @@ import { describe, expect, it } from 'vitest';
 import parser from '../main';
 
 describe('12 hour time', () => {
+  it('should handle 12am', () => {
+    const actual = parser.attempt('12am', 'en-US');
+    const expected = {
+      hour: 0,
+    };
+    expect(actual).toMatchObject(expected);
+  });
   it('should handle hours: "8pm"', () => {
     const actual = parser.attempt('8pm', 'en-US');
     const expected = {

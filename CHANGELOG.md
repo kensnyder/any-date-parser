@@ -1,5 +1,9 @@
 ## Change Log
 
+### v2.0.3 on 2025-01-20
+
+- Properly interpret "12am" as hour 0
+
 ### v2.0.2 on 2025-01-20
 
 - Fix return type of attempt()

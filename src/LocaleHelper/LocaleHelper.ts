@@ -135,6 +135,9 @@ export default class LocaleHelper {
     if (hourInt < 12 && meridiemOffset === 12) {
       hourInt += 12;
     }
+    if (hourInt === 12 && meridiemOffset === 0) {
+      hourInt = 0;
+    }
     return hourInt;
   }
 
