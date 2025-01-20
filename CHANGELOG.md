@@ -1,5 +1,11 @@
 ## Change Log
 
+### v2.0.2 on 2025-01-20
+
+- Fix return type of attempt()
+- Update deps
+- Get demo working
+
 ### v2.0.1 on 2025-01-10
 
 - Add Timezone name "Coordinated Universal Time"

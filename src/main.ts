@@ -2,8 +2,12 @@ import defaultLocale from './data/defaultLocale';
 import { MaybeValidDate } from './MaybeValidDate/MaybeValidDate';
 import getMatcher, { type MatcherResult } from './PatternMatcher/getMatcher';
 import runPreprocessors from './runPreprocessors/runPreprocessors';
+export type { MatcherResult } from './PatternMatcher/getMatcher';
 
-export function attempt(dateStr: string, locale = defaultLocale) {
+export function attempt(
+  dateStr: string,
+  locale = defaultLocale
+): MatcherResult {
   const matcher = getMatcher(locale);
   const processed = runPreprocessors(dateStr, locale);
   return matcher.attempt(processed);

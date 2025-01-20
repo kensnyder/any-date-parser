@@ -3,22 +3,22 @@ import LocaleHelper from '../LocaleHelper/LocaleHelper';
 import { compile } from '../patterns/patterns';
 import PatternMatcher from './PatternMatcher';
 
-export type HandlerResult = {
-  year?: string | number;
-  month?: string | number;
-  monthname?: string;
-  day?: string | number;
-  hour?: string | number;
-  minute?: string | number;
-  second?: string | number;
-  millisecond?: string | number;
-  meridiem?: string;
-  offset?: string | number;
-  zone?: string;
-  invalid?: string;
-};
+export type HandlerResult = Partial<{
+  year: string | number;
+  month: string | number;
+  monthname: string;
+  day: string | number;
+  hour: string | number;
+  minute: string | number;
+  second: string | number;
+  millisecond: string | number;
+  meridiem: string;
+  offset: string | number;
+  zone: string;
+  invalid: string;
+}>;
 
-export type MatcherResult = {
+export type MatcherResult = Partial<{
   year: number;
   month: number;
   day: number;
@@ -27,7 +27,8 @@ export type MatcherResult = {
   second: number;
   millisecond: number;
   offset: number;
-};
+  invalid: string;
+}>;
 
 const finalFields = [
   'year',
@@ -42,7 +43,9 @@ const finalFields = [
 
 const matcherByLocale = {};
 
-export default function getMatcher(locale: string) {
+export default function getMatcher(
+  locale: string
+): PatternMatcher<HandlerResult, MatcherResult> {
   if (!matcherByLocale[locale]) {
     const helper = LocaleHelper.factory(locale);
     matcherByLocale[locale] = new PatternMatcher<HandlerResult, MatcherResult>({
@@ -55,7 +58,7 @@ export default function getMatcher(locale: string) {
   return matcherByLocale[locale];
 }
 
-function doneChecker(res, input: string) {
+function doneChecker(res: HandlerResult, input: string) {
   return (
     input === '' ||
     /^\s+$/.test(input) ||
@@ -129,13 +132,3 @@ function getFormatter(helper: LocaleHelper) {
     return result;
   };
 }
-
-// function toNumber(value, caster) {
-//   if (typeof value === 'number') {
-//     return value;
-//   }
-//   const casted = caster(value);
-//   if (typeof casted === 'number') {
-//     return casted;
-//   }
-// }
