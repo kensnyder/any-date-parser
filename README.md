@@ -1,12 +1,13 @@
 # any-date-parser
 
 [![NPM Link](https://badgen.net/npm/v/any-date-parser?v=2.0.3)](https://npmjs.com/package/any-date-parser)
+[![JsDelivr Hits](https://data.jsdelivr.com/v1/package/npm/any-date-parser/badge)](https://www.jsdelivr.com/package/npm/any-date-parser)
 [![Language](https://badgen.net/static/language/TS?v=2.0.3)](https://github.com/search?q=repo:kensnyder/any-date-parser++language:TypeScript&type=code)
 [![Code Coverage](https://codecov.io/gh/kensnyder/any-date-parser/branch/main/graph/badge.svg?v=2.0.3)](https://codecov.io/gh/kensnyder/any-date-parser)
 ![2400+ Tests](https://badgen.net/static/tests/2400+/green)
 [![Gzipped Size](https://badgen.net/bundlephobia/minzip/any-date-parser?label=minzipped&v=2.0.3)](https://bundlephobia.com/package/any-date-parser@2.0.3)
-[![Dependency details](https://badgen.net/bundlephobia/dependency-count/any-date-parser?v=2.0.3)](https://www.npmjs.com/package/any-date-parser?activeTab=dependencies)
-[![Tree shakeable](https://badgen.net/bundlephobia/tree-shaking/any-date-parser?v=2.0.3)](https://www.npmjs.com/package/any-date-parser)
+[![Dependency Details](https://badgen.net/bundlephobia/dependency-count/any-date-parser?v=2.0.3)](https://www.npmjs.com/package/any-date-parser?activeTab=dependencies)
+[![Tree Shakeable](https://badgen.net/bundlephobia/tree-shaking/any-date-parser?v=2.0.3)](https://www.npmjs.com/package/any-date-parser)
 [![ISC License](https://badgen.net/github/license/kensnyder/any-date-parser?v=2.0.3)](https://opensource.org/licenses/ISC)
 
 The most comprehensive and accurate date parser for Node and browsers. It uses
@@ -18,10 +19,18 @@ The most comprehensive and accurate date parser for Node and browsers. It uses
 npm install any-date-parser
 ```
 
-OR
+OR CJS:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/any-date-parser@2.0.3/dist/browser-bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/any-date-parser@2.0.3/dist/index.cjs"></script>
+```
+
+OR ESM:
+
+```html
+<script type="module">
+  import anyDateParser from 'https://cdn.jsdelivr.net/npm/any-date-parser@2.0.3/dist/index.mjs';
+</script>
 ```
 
 ## Table of Contents
