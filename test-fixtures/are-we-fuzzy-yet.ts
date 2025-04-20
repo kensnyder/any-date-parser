@@ -1,10 +1,7 @@
 import fs from 'node:fs';
-//import parser from '../src/main';
-import { Parser, fuzzy } from '../src/main';
+import parser, { MatcherResult } from '../src/main';
 import localeList from './localeList';
 
-const parser = new Parser();
-parser.addFormat(fuzzy);
 const date = new Date(2020, 0, 31, 1, 31, 20, 789);
 const results = [`Using date ${date.toJSON()}`];
 const dateStyles = ['full', 'long', 'medium'] as const;
@@ -46,9 +43,6 @@ for (const locale of localeList) {
       }
     );
   }
-  // for (const dayPeriod of dayPeriods) {
-  //   testIt(locale, numberSystem, { dayPeriod });
-  // }
 }
 
 fs.writeFileSync(
@@ -57,11 +51,12 @@ fs.writeFileSync(
   'utf-8'
 );
 
-function testIt(locale: string, options, expected) {
+function testIt(
+  locale: string,
+  options: Intl.DateTimeFormatOptions,
+  expected: Partial<MatcherResult>
+) {
   i++;
-  if (locale.startsWith('ar')) {
-    options.calendar = 'gregory';
-  }
   const formatter = new Intl.DateTimeFormat(locale, options);
   const { numberingSystem, calendar } = formatter.resolvedOptions();
   const formatted = formatter.format(date);
@@ -81,8 +76,8 @@ function testIt(locale: string, options, expected) {
 }
 
 function doesOverlap(
-  actual: Record<string, any>,
-  expected: Record<string, any>
+  actual: Partial<MatcherResult>,
+  expected: Partial<MatcherResult>
 ) {
   for (const [key, value] of Object.entries(expected)) {
     if (actual[key] !== value) {

@@ -88,4 +88,30 @@ describe('12 hour time', () => {
     };
     expect(actual).toEqual(expected);
   });
+  it('should capture offsets: "4/19/2021, 10:04:02 AM -04:00"', () => {
+    const actual = parser.attempt('4/19/2021, 10:04:02 AM -04:00', 'en-US');
+    const expected = {
+      year: 2021,
+      month: 4,
+      day: 19,
+      hour: 10,
+      minute: 4,
+      second: 2,
+      offset: -240,
+    };
+    expect(actual).toEqual(expected);
+  });
+  it('should capture zone names: "4/19/2021, 10:04:02 AM UTC"', () => {
+    const actual = parser.attempt('4/19/2021, 10:04:02 AM UTC', 'en-US');
+    const expected = {
+      year: 2021,
+      month: 4,
+      day: 19,
+      hour: 10,
+      minute: 4,
+      second: 2,
+      offset: 0,
+    };
+    expect(actual).toEqual(expected);
+  });
 });

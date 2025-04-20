@@ -24,7 +24,7 @@ jobs:
         run: npm run coverage
 
       - name: ☂️ Upload to codecov
-        if: matrix.node-version == 'latest'
+        if: matrix.node-version == 'latest' && github.ref == 'refs/heads/main'
         uses: codecov/codecov-action@v4
         with:
           fail_ci_if_error: true

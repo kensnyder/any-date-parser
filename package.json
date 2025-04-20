@@ -1,6 +1,6 @@
 {
   "name": "any-date-parser",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "Parse a wide range of date formats including human-input dates",
   "tags": [
     "date",
@@ -33,11 +33,13 @@
     "test": "./scripts/test.sh run",
     "test-watch": "./scripts/test.sh",
     "are-we-fuzzy-yet": "TZ=UTC bun ./test-fixtures/are-we-fuzzy-yet.ts",
-    "build": "npm run build:clean && npm run build:dts && npm run build:esm && npm run build:cjs",
+    "build": "npm run build:clean && npm run build:dts && npm run build:esm && npm run build:cjs && npm run build:js",
     "build:clean": "rimraf dist/ && mkdir dist",
     "build:dts": "yes | npx dts-bundle-generator -o dist/index.d.ts src/main.ts",
-    "build:esm": "yes | npx esbuild src/main.ts --minify --bundle --platform=node --format=esm --outfile=dist/index.mjs",
-    "build:cjs": "yes | npx esbuild src/main.ts --minify --bundle --platform=node --format=cjs --outfile=dist/index.cjs",
+    "build:esm": "yes | npx esbuild src/main.ts --bundle --platform=node --format=esm --outfile=dist/index.mjs",
+    "build:cjs": "yes | npx esbuild src/main.ts --bundle --platform=node --format=cjs --outfile=dist/index.cjs",
+    "browsers": "open https://www.browsers.fyi",
+    "build:js": "yes | npx esbuild src/main.ts --minify --bundle --target=chrome133,edge133,safari16,firefox135 --outfile=dist/browser-bundle.js",
     "coverage": "./scripts/test.sh run --coverage",
     "view-coverage": "open ./coverage/lcov-report/index.html"
   },
@@ -55,14 +57,14 @@
   },
   "homepage": "https://github.com/kensnyder/any-date-parser#readme",
   "devDependencies": {
-    "@types/node": "22.10.7",
-    "@vitest/coverage-v8": "3.0.2",
+    "@types/node": "22.14.1",
+    "@vitest/coverage-v8": "3.1.1",
     "eslint": "8.16.0",
-    "luxon": "3.5.0",
-    "prettier": "3.4.2",
+    "luxon": "3.6.1",
+    "prettier": "3.5.3",
     "prettier-plugin-organize-imports": "4.1.0",
     "rimraf": "6.0.1",
-    "typescript": "5.7.3",
-    "vitest": "3.0.2"
+    "typescript": "5.8.3",
+    "vitest": "3.1.1"
   }
 }

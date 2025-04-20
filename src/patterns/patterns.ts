@@ -105,29 +105,31 @@ export function compile(helper: LocaleHelper) {
       regex: /^(now|today|tomorrow|yesterday)$/i,
       handler: function (match: string[]) {
         const now = nowGetter.now();
-        const keyword = match[1].toLowerCase();
-        switch (keyword) {
-          case 'tomorrow':
-            // JavaScript automatically handles flowing from one day to the next
-            // For example, 31 jan 2020 will auto convert to 1 feb 2020
-            now.setUTCDate(now.getUTCDate() + 1);
-            break;
-          case 'yesterday':
-            now.setUTCDate(now.getUTCDate() - 1);
-            break;
+        const aDay = 24 * 60 * 60 * 1000;
+        const keyword = match[0].toLowerCase();
+        const toAdd = {
+          now: 0,
+          today: 0,
+          tomorrow: aDay,
+          yesterday: -1 * aDay,
+        }[keyword];
+        if (toAdd !== 0) {
+          now.setTime(now.getTime() + toAdd);
         }
         const result = {
-          year: now.getUTCFullYear(),
-          month: now.getUTCMonth() + 1,
-          day: now.getUTCDate(),
-        } as Record<string, number>;
+          year: now.getFullYear(),
+          month: now.getMonth() + 1,
+          day: now.getDate(),
+        };
         if (keyword === 'now') {
-          result.hour = now.getUTCHours();
-          result.minute = now.getUTCMinutes();
-          result.second = now.getUTCSeconds();
-          result.millisecond = now.getUTCMilliseconds();
+          return {
+            ...result,
+            hour: now.getHours(),
+            minute: now.getMinutes(),
+            second: now.getSeconds(),
+            millisecond: now.getMilliseconds(),
+          };
         }
-        console.log('today=>', keyword, result);
         return result;
       },
     },
@@ -240,6 +242,20 @@ export function compile(helper: LocaleHelper) {
         'second',
         'millisecond',
         'zone',
+      ]),
+    },
+    {
+      name: 'hms12WithOffset',
+      regex: helper.compile(
+        '(_H12_):(_MIN_):(_SEC_)\\s*(_MERIDIEM_)\\s*(_OFFSET_)'
+      ),
+      handler: handlerWith([
+        '',
+        'hour',
+        'minute',
+        'second',
+        'meridiem',
+        'offset',
       ]),
     },
     {
@@ -379,6 +395,11 @@ export function compile(helper: LocaleHelper) {
       name: 'onlyZone',
       regex: helper.compile('_ZONE_'),
       handler: handlerWith(['zone']),
+    },
+    {
+      name: 'onlyOffset',
+      regex: helper.compile('_OFFSET_'),
+      handler: handlerWith(['offset']),
     },
   ];
   // console.log(

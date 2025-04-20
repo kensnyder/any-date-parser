@@ -2,10 +2,9 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import parser from '../main';
 import { nowGetter } from './patterns';
 
-describe.skip('now, today, yesterday and tomorrow', () => {
+describe('now, today, yesterday and tomorrow', () => {
   beforeAll(() => {
-    nowGetter.now = () =>
-      new Date(Date.UTC(2019, 7 /* august */, 31, 25, 59, 59, 999));
+    nowGetter.now = () => new Date(2019, 7 /* august */, 31, 23, 59, 59, 999);
   });
   afterAll(() => {
     nowGetter.now = () => new Date();

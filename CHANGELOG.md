@@ -1,5 +1,11 @@
 ## Change Log
 
+### v2.1.0 on 2025-04-05
+
+- Update deps
+- Support "AM/PM" with offset (e.g. "4/19/2021, 10:04:02 AM -04:00")
+- Add back in browser-bundle.js for jsDelivr
+
 ### v2.0.3 on 2025-01-20
 
 - Properly interpret "12am" as hour 0
