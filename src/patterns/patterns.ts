@@ -331,7 +331,7 @@ export function compile(helper: LocaleHelper) {
     },
     {
       name: 'ymd',
-      regex: helper.compile('(_YEAR4_)([.-])(_MONTH_)\\2+(_DAY_)'),
+      regex: helper.compile('(_YEAR4_)([.\/-])(_MONTH_)\\2+(_DAY_)'),
       handler: handlerWith(['', 'year', '', 'month', 'day']),
     },
     {
