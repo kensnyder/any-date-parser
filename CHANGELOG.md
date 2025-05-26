@@ -1,5 +1,10 @@
 ## Change Log
 
+### v2.2.0 on 2025-05-26
+
+- Update deps
+- Support yyyy/mm/dd
+
 ### v2.1.0 on 2025-04-05
 
 - Update deps
