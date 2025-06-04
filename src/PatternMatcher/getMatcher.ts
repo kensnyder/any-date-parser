@@ -124,7 +124,7 @@ function getFormatter(helper: LocaleHelper) {
       }
     }
     if (result.year < 100) {
-      result.year = twoDigitYears[result.year];
+      result.year = twoDigitYears[extracted.year];
     }
     if (result.year && helper.dateOptions.calendar === 'buddhist') {
       result.year -= 543;
