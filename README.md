@@ -141,9 +141,9 @@ Date.fromString('2020-10-15');
 4.) There are npm packages that integrate any-date-parser directly into popular
 date libraries:
 
-- Luxon: [luxon-parser](http://npmjs.com/packages/luxon-parser)
+- Luxon: [luxon-parser](http://npmjs.com/package/luxon-parser)
 - DayJS: [dayjs-parser](http://npmjs.com/package/dayjs-parser)
-- Moment: [moment-parseplus](http://npmjs.com/package/moment-parseplus)
+- Moment: [moment-parseplus](http://npmjs.com/package/moment-parseplus) \[deprecated\]
 
 ## Supported formats
 
