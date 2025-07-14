@@ -1,6 +1,6 @@
 {
   "name": "any-date-parser",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "Parse a wide range of date formats including human-input dates",
   "tags": [
     "date",
@@ -65,14 +65,14 @@
   },
   "homepage": "https://github.com/kensnyder/any-date-parser#readme",
   "devDependencies": {
-    "@types/node": "24.0.1",
-    "@vitest/coverage-v8": "3.2.3",
+    "@types/node": "24.0.13",
+    "@vitest/coverage-v8": "3.2.4",
     "eslint": "8.16.0",
-    "luxon": "3.6.1",
-    "prettier": "3.5.3",
+    "luxon": "3.7.1",
+    "prettier": "3.6.2",
     "prettier-plugin-organize-imports": "4.1.0",
     "rimraf": "6.0.1",
     "typescript": "5.8.3",
-    "vitest": "3.2.3"
+    "vitest": "3.2.4"
   }
 }

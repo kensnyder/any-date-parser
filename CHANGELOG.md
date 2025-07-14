@@ -1,5 +1,10 @@
 ## Change Log
 
+### v2.2.3 on 2025-07-14
+
+- Update deps
+- Update READMEbadges
+
 ### v2.2.2 on 2025-06-16
 
 - Fixes to 2-digit date parsing

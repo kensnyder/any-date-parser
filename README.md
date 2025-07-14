@@ -1,14 +1,13 @@
 # any-date-parser
 
-[![NPM Link](https://badgen.net/npm/v/any-date-parser?v=2.2.2)](https://npmjs.com/package/any-date-parser)
-[![Language](https://badgen.net/static/language/TS?v=2.2.2)](https://github.com/search?q=repo:kensnyder/any-date-parser++language:TypeScript&type=code)
-[![Code Coverage](https://codecov.io/gh/kensnyder/any-date-parser/branch/main/graph/badge.svg?v=2.2.2)](https://codecov.io/gh/kensnyder/any-date-parser)
+[![NPM Link](https://badgen.net/npm/v/any-date-parser?v=2.2.3)](https://npmjs.com/package/any-date-parser)
+[![Language](https://badgen.net/static/language/TS?v=2.2.3)](https://github.com/search?q=repo:kensnyder/any-date-parser++language:TypeScript&type=code)
+![GzippedSize](https://deno.bundlejs.com/?q=any-date-parser&badge&v=2.2.3)
+[![Code Coverage](https://badgen.net/codecov/c/github/kensnyder/any-date-parser?v=2.2.3)](https://codecov.io/gh/kensnyder/any-date-parser)
 ![2400+ Tests](https://badgen.net/static/tests/2400+/green)
-[![jsDelivr stats](https://data.jsdelivr.com/v1/package/npm/any-date-parser/badge)](https://www.jsdelivr.com/package/npm/any-date-parser)
-[![Gzipped Size](https://badgen.net/bundlephobia/minzip/any-date-parser?label=minzipped&v=2.2.2)](https://bundlephobia.com/package/any-date-parser@2.2.2)
-[![Dependency details](https://badgen.net/bundlephobia/dependency-count/any-date-parser?v=2.2.2)](https://www.npmjs.com/package/any-date-parser?activeTab=dependencies)
-[![Tree shakeable](https://badgen.net/bundlephobia/tree-shaking/any-date-parser?v=2.2.2)](https://www.npmjs.com/package/any-date-parser)
-[![ISC License](https://badgen.net/github/license/kensnyder/any-date-parser?v=2.2.2)](https://opensource.org/licenses/ISC)
+[![jsDelivr stats](https://badgen.net/jsdelivr/hits/npm/any-date-parser?v=2.2.3)](https://www.jsdelivr.com/package/npm/any-date-parser)
+![Dependencies](https://badgen.net/static/dependencies/0/green)
+[![ISC License](https://badgen.net/github/license/kensnyder/any-date-parser?v=2.2.3)](https://opensource.org/licenses/ISC)
 
 The most comprehensive and accurate date parser for Node and browsers. It uses
 `Intl` to provide parsing support for all installed locales.
@@ -22,14 +21,14 @@ npm install any-date-parser
 OR
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/any-date-parser@2.2.2/dist/browser-bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/any-date-parser@2.2.3/dist/browser-bundle.js"></script>
 ```
 
 OR
 
 ```html
 <script type="module">
-  import anyDateParser from 'https://cdn.jsdelivr.net/npm/any-date-parser@2.2.2/dist/index.mjs';
+  import anyDateParser from 'https://cdn.jsdelivr.net/npm/any-date-parser@2.2.3/dist/index.mjs';
 </script>
 ```
 
