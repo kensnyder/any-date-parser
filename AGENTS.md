@@ -10,32 +10,49 @@ Ships ESM, CJS, a minified browser bundle, and bundled `.d.ts`.
 
 ## Commands
 
-```bash
-npm test                                   # vitest watch-less run via ./scripts/test.sh run
-npm run test-watch                         # vitest watch mode
-npm run coverage                           # tests + v8 coverage; npm run view-coverage to open
-npm run build                              # clean + dts + esm + cjs + minified browser bundle
-npm run demo                               # build, then serve index.html on :5050
-npm run are-we-fuzzy-yet                   # bun script: parse-rate report across all locales
-npm run lint                               # biome check (format + lint + import order)
-npm run format                             # biome check --write
-bun scripts/parse.ts "15 Oct 2020"         # ad-hoc: print attempt() output for one string (no npm script)
-```
-
-Run a single test file or test name (all args pass through to vitest):
+Bun is the package manager, test runner, and script runner. Use `bun install`, never `npm install`
+— the lockfile is `bun.lock`.
 
 ```bash
-./scripts/test.sh run src/patterns/fuzzy.spec.ts
-./scripts/test.sh run -t "should handle \"8 years ago\""
+bun run test                               # TZ=UTC bun test
+bun run test-watch                         # TZ=UTC bun test --watch
+bun run coverage                           # TZ=UTC bun test --coverage (text table + coverage/lcov.info)
+bun run typecheck                          # tsc --noEmit
+bun run build                              # clean + dts + esm + cjs + minified browser bundle
+bun run demo                               # build, then serve index.html on :5050
+bun run are-we-fuzzy-yet                   # parse-rate report across all locales
+bun run lint                               # biome check (format + lint + import order)
+bun run format                             # biome check --write
+bun scripts/parse.ts "15 Oct 2020"         # ad-hoc: print attempt() output for one string (no package script)
 ```
 
-**Always go through `./scripts/test.sh`, not bare `npx vitest`.** The script sets `TZ=UTC`,
-points `NODE_ICU_DATA` at a global `full-icu` install, and puts global `node_modules` on
-`NODE_PATH` so specs can `import 'luxon'`. It will `npm install -g full-icu luxon@3` if they're
-missing. Without full ICU, the ~2400 locale tests silently compare against the wrong locale data.
+Run a single test file or test name:
+
+```bash
+TZ=UTC bun test src/patterns/fuzzy.spec.ts        # positional args filter by path substring
+TZ=UTC bun test -t "should handle \"8 years ago\""  # -t filters by test name (regex)
+```
+
+`TZ=UTC` is what `bun run test` adds over bare `bun test`; set it yourself when invoking `bun test`
+directly so results don't drift with your machine's timezone. Bun ships full ICU data, so the ~2400
+locale tests get correct locale data with no `full-icu` install — the old `scripts/test.sh` wrapper
+that arranged `NODE_ICU_DATA` and a global `luxon` is gone, and `luxon` is a plain devDependency.
+
+Test-runner config lives in `bunfig.toml` (coverage reporters and ignore patterns) — there is no
+`vitest.config.ts`. Bun discovers `*.spec.ts` automatically, which currently resolves to exactly the
+29 files under `src/`; nothing in `test-fixtures/` matches, so the shared generators are imported,
+not collected.
+
+`build:dts` passes `--no-check` because `dts-bundle-generator` force-disables `skipLibCheck`, and
+the `DOM` lib conflicts with the `@types/node` that `@types/bun` pulls in (`TextDecoder`/
+`TextEncoder`). Run `bun run typecheck` for real type checking; it honors `skipLibCheck` and passes.
+
+`dts-bundle-generator` and `esbuild` are pinned devDependencies rather than run through `bunx`,
+because `bunx` does not install peer dependencies and `dts-bundle-generator` needs `typescript`
+resolvable.
 
 Formatting and linting are both Biome (`biome.json`, single quotes, 80 cols, import organizing).
-`npm run lint` reports; `npm run format` writes fixes. `test-fixtures/dates.json` is excluded because
+`bun run lint` reports; `bun run format` writes fixes. `test-fixtures/dates.json` is excluded because
 `are-we-fuzzy-yet` regenerates it with 4-space indent.
 
 ## Architecture
@@ -107,7 +124,7 @@ preprocessor change, not a new pattern.
 
 ## Tests
 
-Specs are colocated (`src/**/*.spec.ts`); `vitest.config.ts` only includes that glob. Three shared
+Specs are colocated (`src/**/*.spec.ts`) and import from `bun:test`. Three shared
 generators in `test-fixtures/` produce most of the ~2400 cases:
 
 - `testDates.ts` — formats a luxon `DateTime` with a list of luxon format strings × locales, then
@@ -124,6 +141,6 @@ behavior.
 
 ## Releasing
 
-`dist/` is committed. Bump `version` in `package.json`, run `npm run build`, and update the
+Bump `version` in `package.json`, run `bun run build`, and update the
 `?v=x.y.z` query strings in the README badges and the two CDN URLs in the README install section —
 they are hardcoded to the current version. Log the change in `CHANGELOG.md`.

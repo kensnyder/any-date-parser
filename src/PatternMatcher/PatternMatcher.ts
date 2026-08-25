@@ -42,6 +42,7 @@ export default class PatternMatcher<
     let hadMatch = false;
     for (const pattern of this.patterns) {
       const matches = workingString.match(pattern.regex);
+      // console.log('PatternMatcher', { pattern, matches });
       if (!matches) {
         continue;
       }

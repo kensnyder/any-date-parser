@@ -8,7 +8,14 @@
     "noEmit": false,
     "pretty": true,
     "isolatedModules": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
+    "types": [
+      "bun"
+    ],
     "sourceMap": false,
     "skipLibCheck": true,
     "moduleResolution": "Bundler",

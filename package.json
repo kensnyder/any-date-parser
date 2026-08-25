@@ -1,6 +1,6 @@
 {
   "name": "any-date-parser",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "description": "Parse a wide range of date formats including human-input dates",
   "tags": [
     "date",
@@ -37,21 +37,21 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "demo": "npm run build && npx serve -p 5050 .",
-    "test": "./scripts/test.sh run",
+    "demo": "bun run build && bunx serve -p 5050 .",
+    "test": "TZ=UTC bun test",
     "lint": "biome check",
+    "typecheck": "tsc --noEmit",
     "format": "biome check --write",
-    "test-watch": "./scripts/test.sh",
+    "test-watch": "TZ=UTC bun test --watch",
     "are-we-fuzzy-yet": "TZ=UTC bun ./test-fixtures/are-we-fuzzy-yet.ts",
-    "build": "npm run build:clean && npm run build:dts && npm run build:esm && npm run build:cjs && npm run build:js",
-    "build:clean": "rimraf dist/ && mkdir dist",
-    "build:dts": "yes | npx dts-bundle-generator -o dist/index.d.ts src/main.ts",
-    "build:esm": "yes | npx esbuild src/main.ts --bundle --platform=node --format=esm --outfile=dist/index.mjs",
-    "build:cjs": "yes | npx esbuild src/main.ts --bundle --platform=node --format=cjs --outfile=dist/index.cjs",
+    "build": "bun run build:clean && bun run build:dts && bun run build:esm && bun run build:cjs && bun run build:js",
+    "build:clean": "rm -Rf dist/ && mkdir dist",
+    "build:dts": "dts-bundle-generator --no-check -o dist/index.d.ts src/main.ts",
+    "build:esm": "esbuild src/main.ts --bundle --platform=node --format=esm --outfile=dist/index.mjs",
+    "build:cjs": "esbuild src/main.ts --bundle --platform=node --format=cjs --outfile=dist/index.cjs",
     "browsers": "open https://www.browsers.fyi",
-    "build:js": "yes | npx esbuild src/main.ts --minify --bundle --target=chrome134,edge134,safari16,firefox136 --outfile=dist/browser-bundle.js",
-    "coverage": "./scripts/test.sh run --coverage",
-    "view-coverage": "open ./coverage/lcov-report/index.html"
+    "build:js": "esbuild src/main.ts --minify --bundle --target=chrome134,edge134,safari16,firefox136 --outfile=dist/browser-bundle.js",
+    "coverage": "TZ=UTC bun test --coverage"
   },
   "repository": {
     "type": "git",
@@ -68,11 +68,10 @@
   "homepage": "https://github.com/kensnyder/any-date-parser#readme",
   "devDependencies": {
     "@biomejs/biome": "2.5.10",
-    "@types/node": "24.0.13",
-    "@vitest/coverage-v8": "3.2.4",
+    "@types/bun": "1.4.0",
+    "dts-bundle-generator": "9.5.1",
+    "esbuild": "0.28.2",
     "luxon": "3.7.1",
-    "rimraf": "6.0.1",
-    "typescript": "5.8.3",
-    "vitest": "3.2.4"
+    "typescript": "5.8.3"
   }
 }

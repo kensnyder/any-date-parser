@@ -1,0 +1,8 @@
+[install]
+# mirrors the old .npmrc `save-exact=true`; every dep here is pinned
+exact = true
+
+[test]
+coverageReporter = ["text", "lcov"]
+coverageSkipTestFiles = true
+coveragePathIgnorePatterns = ["src/data/*.ts", "test-fixtures/*.ts"]

@@ -1,4 +1,4 @@
-import { expect, it } from 'vitest';
+import { expect, it } from 'bun:test';
 import localeList from '../../test-fixtures/localeList';
 import testDates from '../../test-fixtures/testDates';
 import parser from '../main';

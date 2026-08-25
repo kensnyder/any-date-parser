@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'bun:test';
 import parser from '../src/main';
 
 export default function testParser({ name, expected, locales, dates }) {

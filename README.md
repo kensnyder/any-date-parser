@@ -1,13 +1,13 @@
 # any-date-parser
 
-[![NPM Link](https://badgen.net/npm/v/any-date-parser?v=2.2.3)](https://npmjs.com/package/any-date-parser)
-[![Language](https://badgen.net/static/language/TS?v=2.2.3)](https://github.com/search?q=repo:kensnyder/any-date-parser++language:TypeScript&type=code)
-![GzippedSize](https://deno.bundlejs.com/?q=any-date-parser&badge&v=2.2.3)
-[![Code Coverage](https://badgen.net/codecov/c/github/kensnyder/any-date-parser?v=2.2.3)](https://codecov.io/gh/kensnyder/any-date-parser)
+[![NPM Link](https://badgen.net/npm/v/any-date-parser?v=2.2.4)](https://npmjs.com/package/any-date-parser)
+[![Language](https://badgen.net/static/language/TS?v=2.2.4)](https://github.com/search?q=repo:kensnyder/any-date-parser++language:TypeScript&type=code)
+![GzippedSize](https://deno.bundlejs.com/?q=any-date-parser&badge&v=2.2.4)
+[![Code Coverage](https://badgen.net/codecov/c/github/kensnyder/any-date-parser?v=2.2.4)](https://codecov.io/gh/kensnyder/any-date-parser)
 ![2400+ Tests](https://badgen.net/static/tests/2400+/green)
-[![jsDelivr stats](https://badgen.net/jsdelivr/hits/npm/any-date-parser?v=2.2.3)](https://www.jsdelivr.com/package/npm/any-date-parser)
+[![jsDelivr stats](https://badgen.net/jsdelivr/hits/npm/any-date-parser?v=2.2.4)](https://www.jsdelivr.com/package/npm/any-date-parser)
 ![Dependencies](https://badgen.net/static/dependencies/0/green)
-[![ISC License](https://badgen.net/github/license/kensnyder/any-date-parser?v=2.2.3)](https://opensource.org/licenses/ISC)
+[![ISC License](https://badgen.net/github/license/kensnyder/any-date-parser?v=2.2.4)](https://opensource.org/licenses/ISC)
 
 The most comprehensive and accurate date parser for Node and browsers. It uses
 `Intl` to provide parsing support for all installed locales.
@@ -23,14 +23,14 @@ npm install any-date-parser
 Option 2: CDN
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/any-date-parser@2.2.3/dist/browser-bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/any-date-parser@2.2.4/dist/browser-bundle.js"></script>
 ```
 
-Option 3: CDN Import
+Option 3: CDN import
 
 ```html
 <script type="module">
-  import anyDateParser from 'https://cdn.jsdelivr.net/npm/any-date-parser@2.2.3/dist/index.mjs';
+  import anyDateParser from 'https://cdn.jsdelivr.net/npm/any-date-parser@2.2.4/dist/index.mjs';
 </script>
 ```
 
@@ -172,10 +172,9 @@ Summary:
 `any-date-parser` supports any locale that your runtime's
 [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat)
 supports. In browsers that usually means the operating system language. In Node,
-that means the compiled language or the icu modules included. For unit tests,
-this library uses the [full-icu](https://npmjs.com/package/full-icu) npm package
-to make all locales available. That package is heavy and is not included as a
-dependency.
+that means the compiled language or the icu modules included. The unit tests run
+on Bun, which ships with full ICU data, so every locale is available without any
+extra dependency.
 
 This means support for international formats such as:
 
@@ -207,12 +206,16 @@ Check out the
 
 ## Unit tests
 
-You can git checkout `any-date-parser` and run its tests.
+Tests run on [Bun](https://bun.com). You can git checkout `any-date-parser` and
+run its tests.
 
-- To run tests, run `npm test`
-- To check coverage, run `npm run coverage`
-- _Note_ - `npm test` will attempt to install `full-icu` and `luxon` globally if
-  not present
+- To install dev dependencies, run `bun install`
+- To run tests, run `bun run test` (which is `bun test` with `TZ=UTC` set, so
+  results do not vary with your machine's timezone)
+- To re-run tests on change, run `bun run test-watch`
+- To check coverage, run `bun run coverage` (prints a table and writes
+  `coverage/lcov.info`)
+- _Note_ - Bun ships with full ICU data, so no extra i18n install step is needed
 
 ## Contributing
 

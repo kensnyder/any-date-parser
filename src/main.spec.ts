@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'bun:test';
 import testBuiltInFormats from '../test-fixtures/testBuiltInFormats';
 import { MaybeValidDate } from './MaybeValidDate/MaybeValidDate';
 import parser from './main';

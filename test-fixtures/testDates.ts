@@ -1,5 +1,5 @@
+import { describe, expect, it } from 'bun:test';
 import { DateTime, FixedOffsetZone, VERSION } from 'luxon';
-import { describe, expect, it } from 'vitest';
 import parser from '../src/main';
 
 export default function testDates({ name, formats, expected, locales }) {
