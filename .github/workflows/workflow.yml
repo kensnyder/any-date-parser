@@ -20,6 +20,10 @@ jobs:
       - name: ⬇️ Install dependencies
         run: npm install
 
+      - name: 🧹 Lint and check formatting
+        if: matrix.node-version == 'latest'
+        run: npm run lint
+
       - name: 🏃 Run tests
         run: npm run coverage
 
