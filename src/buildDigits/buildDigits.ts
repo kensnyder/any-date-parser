@@ -1,14 +1,22 @@
 import {
   chineseGroup,
+  type DigitLookup,
   defaultLookup,
   startCodes,
 } from '../data/numberingSystems';
 
-const cache = {};
+/** A regex character class for a numbering system, plus its digit lookup */
+export type Digits = {
+  group: string;
+  lookup: DigitLookup;
+};
 
-export default function buildDigits(nsName: string) {
-  if (cache[nsName]) {
-    return cache[nsName];
+const cache: Record<string, Digits> = {};
+
+export default function buildDigits(nsName: string): Digits {
+  const cached = cache[nsName];
+  if (cached) {
+    return cached;
   }
   if (nsName === 'fullwide' || nsName === 'hanidec') {
     return { group: chineseGroup, lookup: { ...defaultLookup } };
@@ -21,7 +29,7 @@ export default function buildDigits(nsName: string) {
   }
   const start = String.fromCharCode(startCode);
   const end = String.fromCharCode(startCode + 9);
-  const lookup = {};
+  const lookup: DigitLookup = {};
   for (let i = 0; i < 10; i++) {
     lookup[String.fromCharCode(startCode + i)] = i;
   }

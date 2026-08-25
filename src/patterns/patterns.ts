@@ -2,6 +2,8 @@ import { mdyLocales } from '../data/mdyLocales';
 import { chineseGroup as d } from '../data/numberingSystems';
 import unitShortcuts from '../data/unitShortcuts';
 import type LocaleHelper from '../LocaleHelper/LocaleHelper';
+import type { HandlerResult } from '../PatternMatcher/getMatcher';
+import type { Pattern } from '../PatternMatcher/PatternMatcher';
 
 export const nowGetter = {
   now: () => new Date(),
@@ -20,8 +22,8 @@ export function handlerWith(units: string[]) {
   };
 }
 
-export function compile(helper: LocaleHelper) {
-  const patterns = [
+export function compile(helper: LocaleHelper): Pattern<HandlerResult>[] {
+  const patterns: Pattern<HandlerResult>[] = [
     {
       name: 'timestampWithOffset',
       regex: helper.compile(
@@ -102,17 +104,18 @@ export function compile(helper: LocaleHelper) {
     },
     {
       name: 'today',
-      regex: /(now|today|tomorrow|yesterday)/i,
+      regex: /\b(now|today|tomorrow|yesterday)\b/i,
       handler: (match: string[]) => {
         const now = nowGetter.now();
         const aDay = 24 * 60 * 60 * 1000;
         const keyword = match[0].toLowerCase();
-        const toAdd = {
-          now: 0,
-          today: 0,
-          tomorrow: aDay,
-          yesterday: -1 * aDay,
-        }[keyword];
+        const toAdd =
+          {
+            now: 0,
+            today: 0,
+            tomorrow: aDay,
+            yesterday: -1 * aDay,
+          }[keyword] ?? 0;
         if (toAdd !== 0) {
           now.setTime(now.getTime() + toAdd);
         }
@@ -137,12 +140,13 @@ export function compile(helper: LocaleHelper) {
       name: 'ago',
       regex:
         /^(\+|-|in|) ?([\d.]+) ?(years?|months?|weeks?|days?|hours?|minutes?|seconds?|milliseconds?|ms|s|m|h|w|d|M|y)( ago)?$/i,
-      handler: ([, sign, amount, unit, isAgo]) => {
-        amount = parseFloat(amount);
-        if (unit.length <= 2) {
-          unit = unitShortcuts[unit];
+      handler: ([, sign, amountStr, unitStr, isAgo]: string[]) => {
+        let amount = parseFloat(amountStr);
+        let unit: string;
+        if (unitStr.length <= 2) {
+          unit = unitShortcuts[unitStr];
         } else {
-          unit = unit.replace(/s$/, '');
+          unit = unitStr.replace(/s$/, '');
           unit = unit.toLowerCase();
         }
         if (unit === 'week') {

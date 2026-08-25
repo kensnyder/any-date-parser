@@ -1,4 +1,6 @@
-export const startCodes = {
+export type DigitLookup = Record<string, number>;
+
+export const startCodes: Record<string, number> = {
   arab: 1632,
   arabext: 1776,
   bali: 6992,
@@ -23,7 +25,7 @@ export const startCodes = {
 // full-width numbers, hanidec numbers, latin numbers (\d)
 export const chineseGroup = '[１２３４５６７８９０一二三四五六七八九〇\\d]';
 
-export const defaultLookup = {
+export const defaultLookup: DigitLookup = {
   0: 0,
   1: 1,
   2: 2,

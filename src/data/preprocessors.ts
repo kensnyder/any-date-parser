@@ -1,10 +1,13 @@
+/** A find/replace pair applied to a date string before matching */
+type Replacer = [RegExp, string];
+
 // some locales use periods instead of colons in their times
-const periodsInsteadOfColons = [
+const periodsInsteadOfColons: Replacer[] = [
   [/([^\d.]+)(\d{1,2})\.(\d{2})\.(\d{2})(\D|$)/, '$1$2:$3:$4$5'],
   [/([^\d.]+)(\d{1,2})\.(\d{2})(\D|$)/, '$1$2:$3$4'],
 ];
 
-const preprocessors = {
+const preprocessors: Record<string, Replacer[]> = {
   ar: [[/ /g, ' ']], // Some built-in formats contain non-breaking space
   bn: [[/,/g, '']],
   zh: [

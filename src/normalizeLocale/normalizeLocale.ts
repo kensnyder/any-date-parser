@@ -4,7 +4,7 @@
  * @returns {String}
  * @see https://github.com/sindresorhus/os-locale/blob/main/index.js for similar code
  */
-export default function normalizeLocale(name) {
+export default function normalizeLocale(name: string) {
   // some systems use underscores
   name = name.replace(/_/g, '-');
   // some systems append strings like .UTF-8

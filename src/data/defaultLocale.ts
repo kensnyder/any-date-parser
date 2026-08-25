@@ -1,6 +1,6 @@
 import normalizeLocale from '../normalizeLocale/normalizeLocale';
 
-let detectedLocale: string;
+let detectedLocale: string | undefined;
 /* istanbul ignore next */
 if (typeof navigator !== 'undefined') {
   // browser: locale is on navigator object

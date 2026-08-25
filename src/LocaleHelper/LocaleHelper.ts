@@ -7,7 +7,7 @@ import { latn, other } from '../data/templates';
 // import units, { UnitStrings } from '../data/units';
 
 // keep track of singletons by locale name
-const cache = {};
+const cache: Record<string, LocaleHelper> = {};
 
 export default class LocaleHelper {
   /**
@@ -55,10 +55,14 @@ export default class LocaleHelper {
    * @returns
    */
   static factory(locale = defaultLocale): LocaleHelper {
-    if (!cache[locale.toLowerCase()]) {
-      cache[locale.toLowerCase()] = new LocaleHelper(locale);
+    const key = locale.toLowerCase();
+    const cached = cache[key];
+    if (cached) {
+      return cached;
     }
-    return cache[locale.toLowerCase()];
+    const helper = new LocaleHelper(locale);
+    cache[key] = helper;
+    return helper;
   }
 
   /**
@@ -82,13 +86,21 @@ export default class LocaleHelper {
    * @param digitString  Such as "2020" or "二〇二〇"
    * @returns
    */
-  toInt(digitString: string | number): number {
+  toInt(digitString: string | number | undefined): number | undefined {
     if (typeof digitString === 'number') {
       return digitString;
     }
     if (typeof digitString !== 'string') {
       return undefined;
     }
+    return this.stringToInt(digitString);
+  }
+
+  /**
+   * Cast a known digit string to an integer, minding numbering system
+   * @param digitString  Such as "2020" or "二〇二〇"
+   */
+  stringToInt(digitString: string): number {
     if (this.numberingSystem === 'latn' && !this.baseName.startsWith('zh')) {
       // latin digits can be parsed a tad quicker by using parseInt
       const num = parseInt(digitString, 10);
@@ -103,7 +115,7 @@ export default class LocaleHelper {
     return parseInt(latnDigitString, 10);
   }
 
-  millisecondToInt(msString: string | number) {
+  millisecondToInt(msString: string | number | undefined): number | undefined {
     if (typeof msString === 'number') {
       return msString;
     }
@@ -112,14 +124,14 @@ export default class LocaleHelper {
     }
     const digits = msString.slice(0, 3);
     if (digits.length === 1) {
-      return this.toInt(digits) * 100;
+      return this.stringToInt(digits) * 100;
     } else if (digits.length === 2) {
-      return this.toInt(digits) * 10;
+      return this.stringToInt(digits) * 10;
     }
-    return this.toInt(digits);
+    return this.stringToInt(digits);
   }
 
-  monthNameToInt(monthName: string) {
+  monthNameToInt(monthName: string): number | undefined {
     if (typeof monthName !== 'string') {
       return undefined;
     }
@@ -127,12 +139,15 @@ export default class LocaleHelper {
     return this.lookups.month[lower] || 12;
   }
 
-  h12ToInt(digitString: string | number, ampm: string) {
+  h12ToInt(
+    digitString: string | number | undefined,
+    ampm: string,
+  ): number | undefined {
     if (typeof digitString !== 'string') {
       return undefined;
     }
     const meridiemOffset = this.lookups.meridiem[ampm?.toLowerCase()] || 0;
-    let hourInt = this.toInt(digitString);
+    let hourInt = this.stringToInt(digitString);
     if (hourInt < 12 && meridiemOffset === 12) {
       hourInt += 12;
     }
@@ -142,7 +157,7 @@ export default class LocaleHelper {
     return hourInt;
   }
 
-  zoneToOffset(zoneName: string) {
+  zoneToOffset(zoneName: string): number | undefined {
     if (typeof zoneName !== 'string') {
       return undefined;
     }
@@ -155,7 +170,7 @@ export default class LocaleHelper {
    * Convert an offset string to Numeric minutes (e.g. "-0500", "+5", "+03:30")
    * @param offsetString
    */
-  offsetToMinutes(offsetString: string): number {
+  offsetToMinutes(offsetString: string): number | undefined {
     if (typeof offsetString !== 'string') {
       return undefined;
     }
@@ -164,7 +179,8 @@ export default class LocaleHelper {
       const [, sign, hours, minutes] = captured;
       return (
         (sign === '-' || sign === '−' ? -1 : 1) *
-        (this.toInt(hours) * 60 + this.toInt(minutes || 0))
+        (this.stringToInt(hours) * 60 +
+          (minutes ? this.stringToInt(minutes) : 0))
       );
     }
     return 0;
@@ -210,8 +226,8 @@ export default class LocaleHelper {
    * Build lookup for month names
    */
   buildMonthNames() {
-    const vars = {};
-    const lookup = {};
+    const vars: Record<string, boolean> = {};
+    const lookup: Record<string, number> = {};
     if (/^fi/i.test(this.locale)) {
       const months =
         'tammi|helmi|maalis|huhti|touko|kesä|heinä|elo|syys|loka|marras|joulu';
@@ -223,8 +239,9 @@ export default class LocaleHelper {
         });
       });
     } else {
-      const dates = [];
-      const findMonth = item => item.type === 'month';
+      const dates: Date[] = [];
+      const findMonth = (item: Intl.DateTimeFormatPart) =>
+        item.type === 'month';
       for (let monthIdx = 0; monthIdx < 12; monthIdx++) {
         dates.push(new Date(2017, monthIdx, 1));
       }
@@ -233,7 +250,12 @@ export default class LocaleHelper {
         const format = Intl.DateTimeFormat(this.locale, { dateStyle });
         for (let monthIdx = 0; monthIdx < 12; monthIdx++) {
           const parts = format.formatToParts(dates[monthIdx]);
-          let text = parts.find(findMonth).value.toLocaleLowerCase(this.locale);
+          const monthPart = parts.find(findMonth);
+          /* istanbul ignore next */
+          if (!monthPart) {
+            continue;
+          }
+          let text = monthPart.value.toLocaleLowerCase(this.locale);
           if (/^\d+$/.test(text)) {
             // don't consider digits as month names
             continue;
@@ -258,7 +280,12 @@ export default class LocaleHelper {
       const format = Intl.DateTimeFormat(this.locale, { month: 'short' });
       for (let monthIdx = 0; monthIdx < 12; monthIdx++) {
         const parts = format.formatToParts(dates[monthIdx]);
-        let text = parts.find(findMonth).value.toLocaleLowerCase(this.locale);
+        const monthPart = parts.find(findMonth);
+        /* istanbul ignore next */
+        if (!monthPart) {
+          continue;
+        }
+        let text = monthPart.value.toLocaleLowerCase(this.locale);
         text = text.replace(/\.$/, '');
         vars[`${text}\\.?`] = true;
         lookup[text] = monthIdx + 1;
@@ -272,20 +299,25 @@ export default class LocaleHelper {
    * Build lookup for day name
    */
   buildDaynames() {
-    const dates = [];
-    const findDay = item => item.type === 'weekday';
+    const dates: Date[] = [];
+    const findDay = (item: Intl.DateTimeFormatPart) => item.type === 'weekday';
     for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
       // Jan 2017 starts on a sunday
       dates.push(new Date(2017, 0, dayIndex + 1));
     }
     const weekdays = ['long', 'short'] as const;
-    const list = [];
-    const lookup = {};
+    const list: string[] = [];
+    const lookup: Record<string, number> = {};
     for (const weekday of weekdays) {
       const format = Intl.DateTimeFormat(this.locale, { weekday });
       for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
         const parts = format.formatToParts(dates[dayIndex]);
-        let text = parts.find(findDay).value.toLocaleLowerCase(this.locale);
+        const dayPart = parts.find(findDay);
+        /* istanbul ignore next */
+        if (!dayPart) {
+          continue;
+        }
+        let text = dayPart.value.toLocaleLowerCase(this.locale);
         if (weekday === 'short') {
           text = text.replace(/\.$/, '');
           list.push(`${text}\\.?`);
@@ -304,9 +336,10 @@ export default class LocaleHelper {
    */
   buildMeridiems() {
     const dates = [new Date(2017, 0, 1), new Date(2017, 0, 1, 23, 0, 0)];
-    const findDayPeriod = item => item.type === 'dayPeriod';
-    const list = [];
-    const lookup = {};
+    const findDayPeriod = (item: Intl.DateTimeFormatPart) =>
+      item.type === 'dayPeriod';
+    const list: string[] = [];
+    const lookup: Record<string, number> = {};
     const format = Intl.DateTimeFormat(this.locale, { timeStyle: 'long' });
     for (let i = 0; i < 2; i++) {
       const parts = format.formatToParts(dates[i]);

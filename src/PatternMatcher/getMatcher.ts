@@ -39,23 +39,31 @@ const finalFields = [
   'second',
   'millisecond',
   'offset',
-];
+] as const;
 
-const matcherByLocale = {};
+type FinalField = (typeof finalFields)[number];
+
+const matcherByLocale: Record<
+  string,
+  PatternMatcher<HandlerResult, MatcherResult>
+> = {};
 
 export default function getMatcher(
   locale: string,
 ): PatternMatcher<HandlerResult, MatcherResult> {
-  if (!matcherByLocale[locale]) {
-    const helper = LocaleHelper.factory(locale);
-    matcherByLocale[locale] = new PatternMatcher<HandlerResult, MatcherResult>({
-      doneChecker,
-      fallback: getFallback(locale),
-      patterns: compile(helper),
-      formatter: getFormatter(helper),
-    });
+  const cached = matcherByLocale[locale];
+  if (cached) {
+    return cached;
   }
-  return matcherByLocale[locale];
+  const helper = LocaleHelper.factory(locale);
+  const matcher = new PatternMatcher<HandlerResult, MatcherResult>({
+    doneChecker,
+    fallback: getFallback(locale),
+    patterns: compile(helper),
+    formatter: getFormatter(helper),
+  });
+  matcherByLocale[locale] = matcher;
+  return matcher;
 }
 
 function doneChecker(res: HandlerResult, input: string) {
@@ -116,15 +124,15 @@ function getFormatter(helper: LocaleHelper) {
         if (typeof casted === 'number') {
           result.millisecond = casted;
         }
-      } else if (finalFields.includes(name)) {
+      } else if ((finalFields as readonly string[]).includes(name)) {
         const casted = helper.toInt(value);
         if (typeof casted === 'number') {
-          result[name] = casted;
+          result[name as FinalField] = casted;
         }
       }
     }
-    if (result.year < 100) {
-      result.year = twoDigitYears[extracted.year];
+    if (result.year !== undefined && result.year < 100) {
+      result.year = twoDigitYears[String(extracted.year)];
     }
     if (result.year && helper.dateOptions.calendar === 'buddhist') {
       result.year -= 543;

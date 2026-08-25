@@ -24,8 +24,8 @@ export function fromObject(parsed: MatcherResult): MaybeValidDate {
     parsed.second = 59;
   }
   const date = new MaybeValidDate(
-    parsed.year,
-    parsed.month - 1,
+    parsed.year ?? NaN,
+    (parsed.month ?? NaN) - 1,
     parsed.day,
     parsed.hour || 0,
     parsed.minute || 0,

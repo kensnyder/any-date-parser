@@ -1,4 +1,4 @@
-type Pattern<Result> = {
+export type Pattern<Result> = {
   name: string;
   regex: RegExp;
   handler: (matches: string[]) => Result | null;
@@ -54,9 +54,11 @@ export default class PatternMatcher<
             (rawResult as Record<string, any>)[key] = value;
           }
         }
+        // a successful non-global match always sets index
+        const index = matches.index ?? 0;
         workingString =
-          workingString.slice(0, matches.index) +
-          workingString.slice(matches.index + matches[0].length + 1);
+          workingString.slice(0, index) +
+          workingString.slice(index + matches[0].length + 1);
         workingString = workingString.trim();
         if (this.doneChecker(rawResult, workingString)) {
           break;

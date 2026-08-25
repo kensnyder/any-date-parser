@@ -2,10 +2,10 @@
 
 ### v2.2.4 on 2026-08-25
 
+- Close #50 to support "today 9pm"
 - Update deps
 - README clarifications
 - Dev tooling updates (biome, bun)
-- Close #50 to support "today 9pm"
 
 ### v2.2.3 on 2025-07-14
 

@@ -1,6 +1,6 @@
 import timezoneNames from './timezoneNames';
 
-export const latn = {
+export const latn: Record<string, string> = {
   MONTHNAME:
     'january|february|march|april|may|june|july|august|september|october|november|december|jan\\.?|feb\\.?|mar\\.?|apr\\.?|may\\.?|jun\\.?|jul\\.?|aug\\.?|sep\\.?|oct\\.?|nov\\.?|dec\\.?',
   DAYNAME:
@@ -27,7 +27,7 @@ export const latn = {
   GAP: '[\\s/.,-]{1,}',
 };
 
-export const other = {
+export const other: Record<string, string> = {
   ...latn,
   YEAR: '*{4}|*{2}',
   YEAR4: '*{4}',

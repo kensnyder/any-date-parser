@@ -50,7 +50,7 @@
     "build:esm": "esbuild src/main.ts --bundle --platform=node --format=esm --outfile=dist/index.mjs",
     "build:cjs": "esbuild src/main.ts --bundle --platform=node --format=cjs --outfile=dist/index.cjs",
     "browsers": "open https://www.browsers.fyi",
-    "build:js": "esbuild src/main.ts --minify --bundle --target=chrome134,edge134,safari16,firefox136 --outfile=dist/browser-bundle.js",
+    "build:js": "esbuild src/main.ts --minify --bundle --target=chrome150,edge149,safari24,firefox152 --outfile=dist/browser-bundle.js",
     "coverage": "TZ=UTC bun test --coverage"
   },
   "repository": {
@@ -71,7 +71,7 @@
     "@types/bun": "1.4.0",
     "dts-bundle-generator": "9.5.1",
     "esbuild": "0.28.2",
-    "luxon": "3.7.1",
-    "typescript": "5.8.3"
+    "luxon": "3.7.2",
+    "typescript": "7.0.2"
   }
 }

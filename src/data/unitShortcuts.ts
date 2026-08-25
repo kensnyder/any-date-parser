@@ -1,4 +1,4 @@
-const unitShortcuts = {
+const unitShortcuts: Record<string, string> = {
   y: 'year',
   M: 'month',
   d: 'day',
