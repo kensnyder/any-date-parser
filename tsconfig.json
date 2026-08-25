@@ -24,9 +24,8 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src/*.ts"
-  ],
-  "files": [
-    "src/main.ts"
+    "src/**/*.ts",
+    "test-fixtures/**/*.ts",
+    "scripts/**/*.ts"
   ]
 }

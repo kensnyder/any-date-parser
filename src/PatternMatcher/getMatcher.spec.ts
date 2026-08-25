@@ -64,10 +64,13 @@ describe('formatter.format', () => {
     ['Central Standard Time', -360],
     ['invalidZone', undefined],
     ['', undefined],
-  ])('format zone "%s" => %s', (input: string, expected: number) => {
-    const actual = matcher.formatter({ zone: input });
-    expect(actual.offset).toBe(expected);
-  });
+  ])(
+    'format zone "%s" => %s',
+    (input: string, expected: number | undefined) => {
+      const actual = matcher.formatter({ zone: input });
+      expect(actual.offset).toBe(expected);
+    },
+  );
 
   it.each([
     ['+02:00', 120],

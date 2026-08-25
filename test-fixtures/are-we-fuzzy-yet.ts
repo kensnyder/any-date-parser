@@ -80,7 +80,7 @@ function doesOverlap(
   expected: Partial<MatcherResult>,
 ) {
   for (const [key, value] of Object.entries(expected)) {
-    if (actual[key] !== value) {
+    if (actual[key as keyof MatcherResult] !== value) {
       return false;
     }
   }
