@@ -1,4 +1,4 @@
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from 'bun:test';
 import parser from '../main';
 import { nowGetter } from './patterns';
 
@@ -28,6 +28,16 @@ describe('now, today, yesterday and tomorrow', () => {
       year: 2019,
       month: 8,
       day: 31,
+    };
+    expect(actual).toEqual(expected);
+  });
+  it('should handle "today 9pm"', () => {
+    const actual = parser.attempt('today 9pm');
+    const expected = {
+      year: 2019,
+      month: 8,
+      day: 31,
+      hour: 21,
     };
     expect(actual).toEqual(expected);
   });

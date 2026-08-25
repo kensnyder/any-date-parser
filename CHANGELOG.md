@@ -1,9 +1,16 @@
 ## Change Log
 
+### v2.2.4 on 2026-08-25
+
+- Update deps
+- README clarifications
+- Dev tooling updates (biome, bun)
+- Close #50 to support "today 9pm"
+
 ### v2.2.3 on 2025-07-14
 
 - Update deps
-- Update READMEbadges
+- Update README badges
 
 ### v2.2.2 on 2025-06-16
 

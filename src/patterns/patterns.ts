@@ -102,7 +102,7 @@ export function compile(helper: LocaleHelper) {
     },
     {
       name: 'today',
-      regex: /^(now|today|tomorrow|yesterday)$/i,
+      regex: /(now|today|tomorrow|yesterday)/i,
       handler: (match: string[]) => {
         const now = nowGetter.now();
         const aDay = 24 * 60 * 60 * 1000;
