@@ -14,17 +14,19 @@ The most comprehensive and accurate date parser for Node and browsers. It uses
 
 ## Installation
 
+Option 1: NPM
+
 ```shell
 npm install any-date-parser
 ```
 
-OR
+Option 2: CDN
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/any-date-parser@2.2.3/dist/browser-bundle.js"></script>
 ```
 
-OR
+Option 3: CDN Import
 
 ```html
 <script type="module">
@@ -68,12 +70,12 @@ OR
 
 There are three ways to use `any-date-parser`:
 
-1.) Use the parser object: (Recommended)
+1.) Use the `parser` to get a Date:
 
-- `parser.fromString(string, locale)` - Parses a string and returns a `Date`
-  object.
 - `parser.fromAny(any, locale)` - Return a `Date` object given a `Date`,
-  `Number` or string to parse. It is the same function as in option 1.
+  `Number` or string to parse.
+- `parser.fromString(string, locale)` - Parses a string and returns a `Date`
+  object. Returns invalid if string is not a string
 
 Example:
 
@@ -83,9 +85,9 @@ parser.fromString('2020-10-15');
 // same as new Date(2020, 9, 15, 0, 0, 0, 0)
 ```
 
-2.) `parser` also has a function `parser.attempt(string, locale)` that
+2.) Use the `parser` to pull out known parts. The function `parser.attempt(string, locale)`
 returns an object with one or more integer values for the following keys: year,
-month, day, hour, minute, second, millisecond, offset. _Note_ month is returned
+month, day, hour, minute, second, millisecond, offset. **Note:** month is returned
 as a normal 1-based integer, not the 0-based integer the `Date()` constructor
 uses.
 
@@ -122,12 +124,12 @@ parser.attempt('');
 */
 ```
 
-3.) Use a new function directly on `Date`:
+3.) Use the aliases on the `Date` constructor:
 
+- `Date.fromAny(any, locale)` - Return a `Date` object given a `Date`,
+  `Number` or string to parse.
 - `Date.fromString(string, locale)` - Parses a string and returns a `Date`
-  object
-- `Date.fromAny(any, locale)` - Return a `Date` object given a `Date`, `Number`
-  or string to parse
+  object. Returns invalid if string is not a string
 
 Example:
 
@@ -313,7 +315,7 @@ day monthname
 - 16 March
 - 16 Mar
 
-month day (for locales: ee-TG en-AS,CA,FM,GH,GU,KE,MH,MP,US,VI,WS jp-JP sm-AS,SM)
+month day (for locales: `ee-TG`, `en` locales `US`,`AS`,`CA`,`FM`,`GH`,`GU`,`KE`,`MH`,`MP`,`VI`,`WS`, locale `jp-JP`, and `sm` locales `AS`,`SM`)
 
 - 03/14
 - 03-14

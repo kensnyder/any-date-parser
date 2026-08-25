@@ -6,7 +6,7 @@ describe('fromString with out-of-range values', () => {
     const result = parser.fromString('31 feb 2020', 'en-US');
     // console.log('----- rollover', parser.attempt('31 feb 2020'));
     expect(result).toBeInstanceOf(Date);
-    // @ts-ignore  If it isn't a date, this test will exit by now
+    // @ts-expect-error  If it isn't a date, this test will exit by now
     expect(result.toISOString()).toEqual('2020-03-02T00:00:00.000Z');
   });
 });

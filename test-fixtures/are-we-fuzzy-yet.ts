@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import parser, { MatcherResult } from '../src/main';
+import parser, { type MatcherResult } from '../src/main';
 import localeList from './localeList';
 
 const date = new Date(2020, 0, 31, 1, 31, 20, 789);
@@ -23,7 +23,7 @@ for (const locale of localeList) {
         hour: 1,
         minute: 31,
         second: 20,
-      }
+      },
     );
     testIt(
       locale,
@@ -32,7 +32,7 @@ for (const locale of localeList) {
         ...ymd,
         hour: 1,
         minute: 31,
-      }
+      },
     );
     testIt(
       locale,
@@ -40,7 +40,7 @@ for (const locale of localeList) {
       {
         ...ymd,
         hour: 1,
-      }
+      },
     );
   }
 }
@@ -48,13 +48,13 @@ for (const locale of localeList) {
 fs.writeFileSync(
   `${__dirname}/dates.json`,
   JSON.stringify(results, null, 4),
-  'utf-8'
+  'utf-8',
 );
 
 function testIt(
   locale: string,
   options: Intl.DateTimeFormatOptions,
-  expected: Partial<MatcherResult>
+  expected: Partial<MatcherResult>,
 ) {
   i++;
   const formatter = new Intl.DateTimeFormat(locale, options);
@@ -71,13 +71,13 @@ function testIt(
       locale,
       formatted,
       JSON.stringify(parsed),
-    ].join(' > ')
+    ].join(' > '),
   );
 }
 
 function doesOverlap(
   actual: Partial<MatcherResult>,
-  expected: Partial<MatcherResult>
+  expected: Partial<MatcherResult>,
 ) {
   for (const [key, value] of Object.entries(expected)) {
     if (actual[key] !== value) {

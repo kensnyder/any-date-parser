@@ -1,7 +1,7 @@
-import LocaleHelper from '../LocaleHelper/LocaleHelper';
 import { mdyLocales } from '../data/mdyLocales';
 import { chineseGroup as d } from '../data/numberingSystems';
 import unitShortcuts from '../data/unitShortcuts';
+import type LocaleHelper from '../LocaleHelper/LocaleHelper';
 
 export const nowGetter = {
   now: () => new Date(),
@@ -25,7 +25,7 @@ export function compile(helper: LocaleHelper) {
     {
       name: 'timestampWithOffset',
       regex: helper.compile(
-        '^(_YEAR4_)-(_MONTH_)-(_DAY_)[T ](_H24_):(_MIN_):(_SEC_)(?:.(_MS_))? ?(_OFFSET_|Z)?$'
+        '^(_YEAR4_)-(_MONTH_)-(_DAY_)[T ](_H24_):(_MIN_):(_SEC_)(?:.(_MS_))? ?(_OFFSET_|Z)?$',
       ),
       handler: handlerWith([
         '',
@@ -42,7 +42,7 @@ export function compile(helper: LocaleHelper) {
     {
       name: 'timestampWithZone',
       regex: helper.compile(
-        '^(_YEAR4_)-(_MONTH_)-(_DAY_)[T ](_H24_):(_MIN_):(_SEC_)(?:.(_MS_))?\\s*(_ZONE_)$'
+        '^(_YEAR4_)-(_MONTH_)-(_DAY_)[T ](_H24_):(_MIN_):(_SEC_)(?:.(_MS_))?\\s*(_ZONE_)$',
       ),
       handler: handlerWith([
         '',
@@ -59,7 +59,7 @@ export function compile(helper: LocaleHelper) {
     {
       name: 'timestampWithOffsetAndZone',
       regex: helper.compile(
-        '^(_YEAR4_)-(_MONTH_)-(_DAY_)[T ](_H24_):(_MIN_):(_SEC_)(?:.(_MS_))? (_OFFSET_|Z)\\s*(_ZONE_)$'
+        '^(_YEAR4_)-(_MONTH_)-(_DAY_)[T ](_H24_):(_MIN_):(_SEC_)(?:.(_MS_))? (_OFFSET_|Z)\\s*(_ZONE_)$',
       ),
       handler: handlerWith([
         '',
@@ -76,7 +76,7 @@ export function compile(helper: LocaleHelper) {
     {
       name: 'chinese',
       regex: helper.compile(
-        `^(${d}{2,4})\\s*年\\s*(${d}{1,2})\\s*月\\s*(${d}{1,2})\\s*日$`
+        `^(${d}{2,4})\\s*年\\s*(${d}{1,2})\\s*月\\s*(${d}{1,2})\\s*日$`,
       ),
       handler: handlerWith(['', 'year', 'month', 'day']),
     },
@@ -103,7 +103,7 @@ export function compile(helper: LocaleHelper) {
     {
       name: 'today',
       regex: /^(now|today|tomorrow|yesterday)$/i,
-      handler: function (match: string[]) {
+      handler: (match: string[]) => {
         const now = nowGetter.now();
         const aDay = 24 * 60 * 60 * 1000;
         const keyword = match[0].toLowerCase();
@@ -137,7 +137,7 @@ export function compile(helper: LocaleHelper) {
       name: 'ago',
       regex:
         /^(\+|-|in|) ?([\d.]+) ?(years?|months?|weeks?|days?|hours?|minutes?|seconds?|milliseconds?|ms|s|m|h|w|d|M|y)( ago)?$/i,
-      handler: function ([, sign, amount, unit, isAgo]) {
+      handler: ([, sign, amount, unit, isAgo]) => {
         amount = parseFloat(amount);
         if (unit.length <= 2) {
           unit = unitShortcuts[unit];
@@ -182,7 +182,7 @@ export function compile(helper: LocaleHelper) {
     {
       name: 'atSeconds',
       regex: /^@(\d+)$/,
-      handler: function (matches: string[]) {
+      handler: (matches: string[]) => {
         const seconds = parseInt(matches[1], 10);
         const date = new Date(seconds * 1000);
         return {
@@ -198,7 +198,7 @@ export function compile(helper: LocaleHelper) {
     {
       name: 'microsoftJson',
       regex: /^\/Date\((\d+)([+-]\d{4})?\)\/$/,
-      handler: function (matches: string[]) {
+      handler: (matches: string[]) => {
         const milliseconds = parseInt(matches[1], 10);
         const date = new Date(milliseconds);
         return {
@@ -219,7 +219,7 @@ export function compile(helper: LocaleHelper) {
     {
       name: 'full24',
       regex: helper.compile(
-        '(?:^|[\\sT])(_H24_):(_MIN_):(_SEC_)(?:\\.(_MS_))?(Z)?$'
+        '(?:^|[\\sT])(_H24_):(_MIN_):(_SEC_)(?:\\.(_MS_))?(Z)?$',
       ),
       handler: handlerWith([
         '',
@@ -233,7 +233,7 @@ export function compile(helper: LocaleHelper) {
     {
       name: 'zone24',
       regex: helper.compile(
-        '(_H24_):(_MIN_):(_SEC_)(?:\\.(_MS_))?[\\s\\[(]*(_ZONE_)?[\\s\\])]*$'
+        '(_H24_):(_MIN_):(_SEC_)(?:\\.(_MS_))?[\\s\\[(]*(_ZONE_)?[\\s\\])]*$',
       ),
       handler: handlerWith([
         '',
@@ -247,7 +247,7 @@ export function compile(helper: LocaleHelper) {
     {
       name: 'hms12WithOffset',
       regex: helper.compile(
-        '(_H12_):(_MIN_):(_SEC_)\\s*(_MERIDIEM_)\\s*(_OFFSET_)'
+        '(_H12_):(_MIN_):(_SEC_)\\s*(_MERIDIEM_)\\s*(_OFFSET_)',
       ),
       handler: handlerWith([
         '',
@@ -291,21 +291,21 @@ export function compile(helper: LocaleHelper) {
     {
       name: 'yearMonthnameDay',
       regex: helper.compile(
-        '(_YEAR4_)[\\s.-]+(_MONTHNAME_)[\\s,.-]+(_DAY_)(_ORDINAL_)?'
+        '(_YEAR4_)[\\s.-]+(_MONTHNAME_)[\\s,.-]+(_DAY_)(_ORDINAL_)?',
       ),
       handler: handlerWith(['', 'year', 'monthname', 'day']),
     },
     {
       name: 'dayMonthnameYear',
       regex: helper.compile(
-        '(_DAY_)(_ORDINAL_)?[\\s.-]*(_MONTHNAME_)[\\s,.-]+(_YEAR_)'
+        '(_DAY_)(_ORDINAL_)?[\\s.-]*(_MONTHNAME_)[\\s,.-]+(_YEAR_)',
       ),
       handler: handlerWith(['', 'day', '', 'monthname', 'year']),
     },
     {
       name: 'monthnameDayYear',
       regex: helper.compile(
-        '(_MONTHNAME_)[\\s.-]*(_DAY_)(_ORDINAL_)?[\\s,.-]+(_YEAR_)'
+        '(_MONTHNAME_)[\\s.-]*(_DAY_)(_ORDINAL_)?[\\s,.-]+(_YEAR_)',
       ),
       handler: handlerWith(['', 'monthname', 'day', '', 'year']),
     },
@@ -331,7 +331,7 @@ export function compile(helper: LocaleHelper) {
     },
     {
       name: 'ymd',
-      regex: helper.compile('(_YEAR4_)([.\/-])(_MONTH_)\\2+(_DAY_)'),
+      regex: helper.compile('(_YEAR4_)([./-])(_MONTH_)\\2+(_DAY_)'),
       handler: handlerWith(['', 'year', '', 'month', 'day']),
     },
     {
@@ -342,7 +342,7 @@ export function compile(helper: LocaleHelper) {
     {
       name: 'dmy',
       regex: helper.compile(
-        '(_DAY_)(?:_ORDINAL_)?[./\\s-]+(_MONTH_)[./\\s-]+(_YEAR_)'
+        '(_DAY_)(?:_ORDINAL_)?[./\\s-]+(_MONTH_)[./\\s-]+(_YEAR_)',
       ),
       handler: handlerWith(['', 'day', 'month', 'year']),
     },

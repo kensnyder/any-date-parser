@@ -30,7 +30,7 @@ describe('LocaleHelper general', () => {
       return l.compile('_FOOBAR_');
     }
     expect(invalidFoobar).toThrowError(
-      'Template string contains invalid variable _FOOBAR_'
+      'Template string contains invalid variable _FOOBAR_',
     );
   });
 });

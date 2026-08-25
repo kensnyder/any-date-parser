@@ -5,13 +5,13 @@ import localeList from './localeList';
 const dateStyles = ['full', 'long', 'medium'] as const;
 export default function testBuiltInFormats(
   dateObj: Date,
-  parts: Record<string, any>
+  parts: Record<string, any>,
 ) {
   describe(`Built-in formats for ${dateObj.toJSON()}`, () => {
     function testIt(
       locale: string,
       options: Intl.DateTimeFormatOptions,
-      expectedSubset: Record<string, any>
+      expectedSubset: Record<string, any>,
     ) {
       if (locale.startsWith('ar')) {
         options.calendar = 'gregory';
@@ -45,7 +45,7 @@ export default function testBuiltInFormats(
             hour: parts.hour,
             minute: parts.minute,
             second: parts.second,
-          }
+          },
         );
         testIt(
           locale,
@@ -54,7 +54,7 @@ export default function testBuiltInFormats(
             ...ymd,
             hour: parts.hour,
             minute: parts.minute,
-          }
+          },
         );
         testIt(
           locale,
@@ -62,7 +62,7 @@ export default function testBuiltInFormats(
           {
             ...ymd,
             hour: parts.hour,
-          }
+          },
         );
       }
     }

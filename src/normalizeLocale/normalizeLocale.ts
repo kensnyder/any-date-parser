@@ -11,7 +11,7 @@ export default function normalizeLocale(name) {
   name = name.replace(/[.:][\w-]*$/, '');
   try {
     return new Intl.Locale(name).baseName;
-  } catch (e) {
+  } catch {
     return 'en-US';
   }
 }

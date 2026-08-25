@@ -2,11 +2,12 @@ import defaultLocale from './data/defaultLocale';
 import { MaybeValidDate } from './MaybeValidDate/MaybeValidDate';
 import getMatcher, { type MatcherResult } from './PatternMatcher/getMatcher';
 import runPreprocessors from './runPreprocessors/runPreprocessors';
+
 export type { MatcherResult } from './PatternMatcher/getMatcher';
 
 export function attempt(
   dateStr: string,
-  locale = defaultLocale
+  locale = defaultLocale,
 ): MatcherResult {
   const matcher = getMatcher(locale);
   const processed = runPreprocessors(dateStr, locale);
@@ -29,7 +30,7 @@ export function fromObject(parsed: MatcherResult): MaybeValidDate {
     parsed.hour || 0,
     parsed.minute || 0,
     parsed.second || 0,
-    parsed.millisecond || 0
+    parsed.millisecond || 0,
   );
   if (typeof parsed.offset === 'number') {
     return new MaybeValidDate(date.valueOf() - parsed.offset * 60 * 1000);
@@ -39,7 +40,7 @@ export function fromObject(parsed: MatcherResult): MaybeValidDate {
 
 export function fromString(
   dateStr: string,
-  locale = defaultLocale
+  locale = defaultLocale,
 ): MaybeValidDate {
   const result = attempt(dateStr, locale);
   const date = result.invalid ? new MaybeValidDate(NaN) : fromObject(result);
@@ -51,7 +52,7 @@ export function fromString(
 
 export function fromAny(
   any: string | number | Date,
-  locale = defaultLocale
+  locale = defaultLocale,
 ): MaybeValidDate {
   if (any instanceof Date) {
     return new MaybeValidDate(any.valueOf());

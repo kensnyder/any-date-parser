@@ -15,7 +15,7 @@ describe('fuzzy', () => {
   it('should default ignore filler text 3', () => {
     const actual = parser.attempt(
       'In 1929, the stock market crashed on October 29',
-      'en-US'
+      'en-US',
     );
     const expected = { year: 1929, month: 10, day: 29 };
     expect(actual).toEqual(expected);

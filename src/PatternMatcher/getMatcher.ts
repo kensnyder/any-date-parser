@@ -44,7 +44,7 @@ const finalFields = [
 const matcherByLocale = {};
 
 export default function getMatcher(
-  locale: string
+  locale: string,
 ): PatternMatcher<HandlerResult, MatcherResult> {
   if (!matcherByLocale[locale]) {
     const helper = LocaleHelper.factory(locale);

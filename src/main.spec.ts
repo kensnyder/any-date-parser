@@ -19,14 +19,14 @@ describe('parser.attempt', () => {
 });
 describe('Date.fromString', () => {
   it('should be attached to built-in Date', () => {
-    // @ts-ignore
+    // @ts-expect-error
     const res = Date.fromString('Oct 15 2021');
     expect(res).toEqual(new Date(2021, 9, 15));
   });
 });
 describe('Date.fromAny', () => {
   it('should be attached to built-in Date', () => {
-    // @ts-ignore
+    // @ts-expect-error
     const res = Date.fromAny('Oct 15 2021');
     expect(res).toEqual(new Date(2021, 9, 15));
   });

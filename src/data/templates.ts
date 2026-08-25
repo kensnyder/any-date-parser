@@ -5,7 +5,7 @@ export const latn = {
     'january|february|march|april|may|june|july|august|september|october|november|december|jan\\.?|feb\\.?|mar\\.?|apr\\.?|may\\.?|jun\\.?|jul\\.?|aug\\.?|sep\\.?|oct\\.?|nov\\.?|dec\\.?',
   DAYNAME:
     'sunday|monday|tuesday|wednesday|thursday|friday|saturday|sun\\.?|mon\\.?|tue\\.?|wed\\.?|thu\\.?|fri\\.?|sat\\.?',
-  ZONE: '\\(?(?:' + Object.keys(timezoneNames).join('|') + ')\\)?',
+  ZONE: `\\(?(?:${Object.keys(timezoneNames).join('|')})\\)?`,
   MERIDIEM: 'am|pm|a.m.|p.m.',
   ORDINAL: 'st|nd|rd|th|\\.',
   YEAR: '\\d{4}|\\d{2}',

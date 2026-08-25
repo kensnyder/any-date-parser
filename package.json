@@ -39,6 +39,8 @@
   "scripts": {
     "demo": "npm run build && npx serve -p 5050 .",
     "test": "./scripts/test.sh run",
+    "lint": "biome check",
+    "format": "biome check --write",
     "test-watch": "./scripts/test.sh",
     "are-we-fuzzy-yet": "TZ=UTC bun ./test-fixtures/are-we-fuzzy-yet.ts",
     "build": "npm run build:clean && npm run build:dts && npm run build:esm && npm run build:cjs && npm run build:js",
@@ -65,12 +67,10 @@
   },
   "homepage": "https://github.com/kensnyder/any-date-parser#readme",
   "devDependencies": {
+    "@biomejs/biome": "2.5.10",
     "@types/node": "24.0.13",
     "@vitest/coverage-v8": "3.2.4",
-    "eslint": "8.16.0",
     "luxon": "3.7.1",
-    "prettier": "3.6.2",
-    "prettier-plugin-organize-imports": "4.1.0",
     "rimraf": "6.0.1",
     "typescript": "5.8.3",
     "vitest": "3.2.4"

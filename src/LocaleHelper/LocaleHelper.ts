@@ -3,6 +3,7 @@ import baseLookups from '../data/baseLookups';
 import defaultLocale from '../data/defaultLocale';
 import { defaultLookup } from '../data/numberingSystems';
 import { latn, other } from '../data/templates';
+
 // import units, { UnitStrings } from '../data/units';
 
 // keep track of singletons by locale name
@@ -91,7 +92,7 @@ export default class LocaleHelper {
     if (this.numberingSystem === 'latn' && !this.baseName.startsWith('zh')) {
       // latin digits can be parsed a tad quicker by using parseInt
       const num = parseInt(digitString, 10);
-      if (!isNaN(num)) {
+      if (!Number.isNaN(num)) {
         return num;
       }
     }
@@ -198,7 +199,7 @@ export default class LocaleHelper {
     this.lookups.digit = lookup;
     for (const name in other) {
       /* istanbul ignore next */
-      if (!other.hasOwnProperty(name)) {
+      if (!Object.hasOwn(other, name)) {
         continue;
       }
       this.vars[name] = other[name].replace(/\*/g, group);
@@ -327,7 +328,7 @@ export default class LocaleHelper {
    * @param template  The template string such as (_YEAR_)-(_MONTH_)-(_DAY_)
    */
   compile(template: string) {
-    const regexString = template.replace(/_([A-Z0-9]+)_/g, ($0, $1) => {
+    const regexString = template.replace(/_([A-Z0-9]+)_/g, (_$0, $1) => {
       if (!this.vars[$1]) {
         throw new Error(`Template string contains invalid variable _${$1}_`);
       }

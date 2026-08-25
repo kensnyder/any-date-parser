@@ -30,7 +30,7 @@ describe('formatter.format', () => {
     (input: string, expected: number | undefined) => {
       const actual = matcher.formatter({ monthname: input });
       expect(actual.month).toBe(expected);
-    }
+    },
   );
 
   it.each([
@@ -54,7 +54,7 @@ describe('formatter.format', () => {
     (input: Record<string, string>, expected: number | undefined) => {
       const actual = matcher.formatter(input);
       expect(actual.hour).toBe(expected);
-    }
+    },
   );
 
   it.each([
@@ -88,7 +88,7 @@ describe('formatter.format', () => {
     (input: string | undefined, expected: number | undefined) => {
       const actual = matcher.formatter({ offset: input });
       expect(actual.offset).toBe(expected);
-    }
+    },
   );
 
   it.each([
@@ -102,7 +102,7 @@ describe('formatter.format', () => {
     (input: string | undefined, expected: number | undefined) => {
       const actual = matcher.formatter({ millisecond: input });
       expect(actual.millisecond).toBe(expected);
-    }
+    },
   );
 
   it('format all fields', () => {
